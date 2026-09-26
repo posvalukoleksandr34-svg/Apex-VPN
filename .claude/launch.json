@@ -1,0 +1,17 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "desktop-sim",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "dev:sim", "-w", "apps/desktop"],
+      "port": 1420
+    },
+    {
+      "name": "api",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "dev", "-w", "server/api"],
+      "port": 8787
+    }
+  ]
+}

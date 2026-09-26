@@ -1,0 +1,430 @@
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.labelRow {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.label {
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  color: var(--text);
+}
+
+.hint {
+  font-size: var(--text-xs);
+  color: var(--text-subtle);
+}
+
+.error {
+  font-size: var(--text-xs);
+  color: var(--status-error);
+}
+
+.input {
+  height: var(--control-height);
+  padding: 0 var(--space-3);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-strong);
+  background: var(--bg-sunken);
+  color: var(--text);
+  width: 100%;
+  transition: border-color var(--dur-fast) var(--ease-out);
+}
+
+.input::placeholder {
+  color: var(--text-subtle);
+}
+
+.input:hover {
+  border-color: color-mix(in srgb, var(--text) 22%, transparent);
+}
+
+.input:focus-visible {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-soft);
+  outline: none;
+}
+
+.input[aria-invalid="true"] {
+  border-color: var(--status-error);
+}
+
+textarea.input {
+  height: auto;
+  min-height: 120px;
+  padding: var(--space-2) var(--space-3);
+  resize: vertical;
+  line-height: var(--leading-normal);
+}
+
+.withIcon {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.withIcon > svg {
+  position: absolute;
+  left: 10px;
+  color: var(--text-subtle);
+  pointer-events: none;
+}
+
+.withIcon > .input {
+  padding-left: 34px;
+}
+
+.withIcon > .suffix {
+  position: absolute;
+  right: 4px;
+}
+
+/*
+ * Switch, AppKit-style. Holding it stretches the thumb toward the side it
+ * will travel to; releasing springs it across with a little bounce while the
+ * track crossfades to the accent. Geometry: 38×22 track, 18px thumb, 2px
+ * inset, so the thumb travels 2px → 18px (14px while stretched to 22px).
+ */
+.switch {
+  all: unset;
+  flex: none;
+  width: 38px;
+  height: 22px;
+  border-radius: var(--radius-full);
+  background-color: var(--surface-active);
+  box-shadow: inset 0 0 0 1px var(--border), inset 0 1px 2px rgba(0, 0, 0, 0.18);
+  position: relative;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    background-color var(--dur-slow) var(--ease-out),
+    box-shadow var(--dur-slow) var(--ease-out);
+}
+
+.switch:hover:not(:disabled) {
+  background-color: color-mix(in srgb, var(--surface-active) 80%, var(--text) 8%);
+}
+
+.switch[data-state="checked"] {
+  background-color: var(--accent);
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, var(--accent) 70%, black),
+    0 0 12px color-mix(in srgb, var(--accent) 35%, transparent);
+}
+
+.switch[data-state="checked"]:hover:not(:disabled) {
+  background-color: var(--accent-strong);
+}
+
+.switch:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.switch:focus-visible {
+  box-shadow: var(--ring);
+}
+
+.thumb {
+  display: block;
+  width: 18px;
+  height: 18px;
+  border-radius: var(--radius-full);
+  background: #fff;
+  box-shadow:
+    0 2px 5px rgba(0, 0, 0, 0.28),
+    0 0 0 0.5px rgba(0, 0, 0, 0.12);
+  transform: translateX(2px);
+  margin-top: 2px;
+  transition:
+    transform var(--dur-spring) var(--ease-spring-bouncy),
+    width var(--dur-spring) var(--ease-spring);
+  will-change: transform;
+}
+
+.thumb[data-state="checked"] {
+  transform: translateX(18px);
+}
+
+.switch:active:not(:disabled) .thumb {
+  width: 22px;
+  transition:
+    transform var(--dur-spring) var(--ease-spring-bouncy),
+    width var(--dur-base) var(--ease-out);
+}
+
+.switch:active:not(:disabled) .thumb[data-state="checked"] {
+  transform: translateX(14px);
+}
+
+/* Setting row: label + description on the left, control on the right. */
+.settingRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-6);
+  padding: var(--space-4) 0;
+  border-bottom: 1px solid var(--divider);
+}
+
+.settingRow:last-child {
+  border-bottom: none;
+}
+
+.settingText {
+  min-width: 0;
+}
+
+.settingLabel {
+  font-weight: var(--weight-medium);
+}
+
+.settingDesc {
+  color: var(--text-muted);
+  font-size: var(--text-sm);
+  margin-top: 2px;
+  max-width: 64ch;
+}
+
+.settingControl {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+/* Segmented control */
+/*
+ * Segmented control: one highlight that springs to the chosen segment
+ * (measured by `useSlidingIndicator`). Until it has been measured, the
+ * checked segment paints its own background, so nothing flashes on load.
+ */
+.segmented {
+  position: relative;
+  isolation: isolate;
+  display: inline-flex;
+  padding: 3px;
+  gap: 2px;
+  border-radius: var(--radius-sm);
+  background: var(--bg-sunken);
+  border: 1px solid var(--border);
+}
+
+.segmentPill {
+  position: absolute;
+  z-index: -1;
+  top: 3px;
+  bottom: 3px;
+  left: 0;
+  width: var(--indicator-w, 0);
+  translate: var(--indicator-x, 0) 0;
+  border-radius: 6px;
+  background: var(--surface-3);
+  box-shadow: var(--glass-highlight), var(--shadow-sm);
+  opacity: 0;
+}
+
+.segmented[data-indicator="ready"] .segmentPill {
+  opacity: 1;
+}
+
+.segmented[data-indicator="animate"] .segmentPill {
+  opacity: 1;
+  transition:
+    translate var(--dur-spring) var(--ease-spring),
+    width var(--dur-spring) var(--ease-spring);
+}
+
+.segment {
+  all: unset;
+  padding: 5px 12px;
+  border-radius: 6px;
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+  cursor: pointer;
+  white-space: nowrap;
+  transition:
+    color var(--dur-base) var(--ease-out),
+    scale var(--dur-spring) var(--ease-spring);
+}
+
+.segment:hover {
+  color: var(--text);
+}
+
+.segment:active {
+  scale: var(--press-scale);
+  transition:
+    color var(--dur-base) var(--ease-out),
+    scale var(--dur-press) var(--ease-out);
+}
+
+.segment[data-state="checked"] {
+  color: var(--text);
+}
+
+.segmented:not([data-indicator]) .segment[data-state="checked"] {
+  background: var(--surface-3);
+  box-shadow: var(--shadow-sm);
+}
+
+.segment:focus-visible {
+  box-shadow: var(--ring);
+}
+
+/* Radio cards: modes with explanations */
+.radioCards {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.radioCard {
+  all: unset;
+  display: flex;
+  gap: var(--space-3);
+  align-items: flex-start;
+  padding: var(--space-4);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border);
+  background-color: var(--surface-1);
+  cursor: pointer;
+  transition:
+    border-color var(--dur-base) var(--ease-out),
+    background-color var(--dur-base) var(--ease-out),
+    box-shadow var(--dur-base) var(--ease-out),
+    scale var(--dur-spring) var(--ease-spring);
+}
+
+.radioCard:hover:not([data-disabled]) {
+  border-color: var(--glass-border);
+  background-color: var(--glass-bg-hover);
+  -webkit-backdrop-filter: var(--glass-blur);
+  backdrop-filter: var(--glass-blur);
+  box-shadow: var(--glass-highlight), var(--shadow-md);
+}
+
+/* Cards are large, so they press only a little. */
+.radioCard:active:not([data-disabled]) {
+  scale: calc(1 - (1 - var(--press-scale)) * 0.35);
+  transition:
+    border-color var(--dur-base) var(--ease-out),
+    background-color var(--dur-base) var(--ease-out),
+    box-shadow var(--dur-base) var(--ease-out),
+    scale var(--dur-press) var(--ease-out);
+}
+
+.radioCard[data-state="checked"],
+.radioCard[data-state="checked"]:hover {
+  border-color: var(--accent);
+  background-color: var(--accent-soft);
+}
+
+.radioCard[data-disabled] {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.radioCard:focus-visible {
+  box-shadow: var(--ring);
+}
+
+.radioDot {
+  flex: none;
+  width: 18px;
+  height: 18px;
+  margin-top: 2px;
+  border-radius: 50%;
+  border: 2px solid var(--border-strong);
+  display: grid;
+  place-items: center;
+  transition: border-color var(--dur-base) var(--ease-out);
+}
+
+.radioDot::after {
+  content: "";
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent);
+  scale: 0;
+  transition: scale var(--dur-spring) var(--ease-spring-bouncy);
+}
+
+.radioCard[data-state="checked"] .radioDot {
+  border-color: var(--accent);
+}
+
+.radioCard[data-state="checked"] .radioDot::after {
+  scale: 1;
+}
+
+.radioTitle {
+  font-weight: var(--weight-medium);
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.radioDesc {
+  color: var(--text-muted);
+  font-size: var(--text-sm);
+  margin-top: 2px;
+}
+
+/* Select */
+.selectTrigger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+  min-width: 180px;
+  height: var(--control-height);
+  padding: 0 var(--space-3);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-strong);
+  background: var(--bg-sunken);
+  color: var(--text);
+  cursor: pointer;
+}
+
+.selectContent {
+  z-index: 60;
+  overflow: hidden;
+  border-radius: var(--radius-md);
+  background: var(--surface-2);
+  border: 1px solid var(--border-strong);
+  box-shadow: var(--shadow-lg);
+}
+
+.selectViewport {
+  padding: var(--space-1);
+}
+
+.selectItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-xs);
+  cursor: pointer;
+  outline: none;
+  user-select: none;
+}
+
+.selectItem[data-highlighted] {
+  background: var(--surface-hover);
+}
+
+.checkbox {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--accent);
+}

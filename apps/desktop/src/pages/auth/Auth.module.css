@@ -1,0 +1,130 @@
+.screen {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: var(--space-6);
+  background:
+    radial-gradient(60% 60% at 20% 0%, color-mix(in srgb, var(--accent) 16%, transparent), transparent 70%),
+    radial-gradient(50% 50% at 100% 100%, color-mix(in srgb, var(--status-success) 8%, transparent), transparent 70%),
+    var(--bg);
+  overflow-y: auto;
+}
+
+.panel {
+  width: min(420px, 100%);
+  padding: var(--space-8);
+  border-radius: var(--radius-xl);
+  background: var(--surface-1);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-lg);
+  animation: global(rise-in) var(--dur-slow) var(--ease-out);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-bottom: var(--space-6);
+  font-family: var(--font-display);
+  font-weight: var(--weight-semibold);
+  font-size: var(--text-lg);
+}
+
+.title {
+  font-size: var(--text-2xl);
+}
+
+.subtitle {
+  color: var(--text-muted);
+  margin: var(--space-2) 0 var(--space-6);
+}
+
+.form {
+  display: grid;
+  gap: var(--space-4);
+}
+
+/* Centred stack of secondary actions, set apart from the form by a hairline. */
+.footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  margin-top: var(--space-6);
+  padding-top: var(--space-5);
+  border-top: 1px solid var(--divider);
+  font-size: var(--text-sm);
+  line-height: var(--leading-normal);
+  text-align: center;
+}
+
+.prompt {
+  margin: 0;
+  color: var(--text-muted);
+}
+
+/* Shared by every text action: no underline, the colour carries it (the
+   macOS convention); hover brightens, press dims. */
+.linkButton,
+.forgotLink,
+.guestButton {
+  all: unset;
+  cursor: pointer;
+  border-radius: var(--radius-xs);
+  transition:
+    color var(--dur-base) var(--ease-out),
+    opacity var(--dur-base) var(--ease-out);
+}
+
+.linkButton {
+  color: var(--accent);
+  font-weight: var(--weight-medium);
+}
+
+.linkButton:hover {
+  color: var(--accent-strong);
+}
+
+/* On the password label's line: 13px, a quieter accent than the footer link. */
+.forgotLink {
+  font-size: var(--text-sm);
+  font-weight: var(--weight-regular);
+  line-height: var(--leading-normal);
+  color: color-mix(in srgb, var(--accent) 78%, var(--text-muted));
+}
+
+.forgotLink:hover {
+  color: var(--accent);
+}
+
+/* The quiet way out: low contrast until hovered. */
+.guestButton {
+  padding: 2px 8px;
+  color: var(--text-subtle);
+  opacity: 0.8;
+}
+
+.guestButton:hover {
+  color: var(--text-muted);
+  opacity: 1;
+}
+
+.linkButton:active,
+.forgotLink:active,
+.guestButton:active {
+  opacity: 0.6;
+  transition-duration: var(--dur-press);
+}
+
+.linkButton:focus-visible,
+.forgotLink:focus-visible,
+.guestButton:focus-visible {
+  box-shadow: var(--ring);
+}
+
+.codeInput {
+  letter-spacing: 0.4em;
+  font-family: var(--font-mono);
+  font-size: var(--text-xl);
+  text-align: center;
+}

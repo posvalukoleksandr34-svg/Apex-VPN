@@ -1,0 +1,119 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  background: var(--overlay);
+  -webkit-backdrop-filter: blur(6px) saturate(120%);
+  backdrop-filter: blur(6px) saturate(120%);
+  animation: global(fade-in) var(--dur-slow) var(--ease-out);
+}
+
+.overlay[data-state="closed"] {
+  animation: global(fade-out) var(--dur-base) var(--ease-out) forwards;
+}
+
+/* Centred with `translate`, so the spring entrance (which animates `scale`)
+   can't knock it off-centre, as a `transform` animation would. */
+.palette {
+  position: fixed;
+  z-index: 41;
+  top: 12vh;
+  left: 50%;
+  translate: -50% 0;
+  transform-origin: top center;
+  width: min(640px, calc(100vw - 32px));
+  border-radius: var(--radius-lg);
+  background: var(--glass-bg-overlay);
+  -webkit-backdrop-filter: var(--glass-blur-strong);
+  backdrop-filter: var(--glass-blur-strong);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-highlight), var(--shadow-lg);
+  overflow: hidden;
+  animation: global(spring-in) var(--dur-spring) var(--ease-spring);
+}
+
+.palette[data-state="closed"] {
+  animation: global(spring-out) var(--dur-base) var(--ease-out) forwards;
+}
+
+.inputRow {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: 0 var(--space-4);
+  border-bottom: 1px solid var(--border);
+  color: var(--text-subtle);
+}
+
+.input {
+  flex: 1;
+  height: 54px;
+  border: none;
+  background: transparent;
+  color: var(--text);
+  font-size: var(--text-lg);
+  outline: none;
+}
+
+.results {
+  max-height: 52vh;
+  overflow-y: auto;
+  padding: var(--space-2);
+}
+
+.groupLabel {
+  padding: var(--space-2) var(--space-3) var(--space-1);
+  font-size: var(--text-xs);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-caps);
+  color: var(--text-subtle);
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+}
+
+.item[aria-selected="true"] {
+  background: var(--surface-hover);
+}
+
+.itemIcon {
+  display: grid;
+  place-items: center;
+  width: 22px;
+  color: var(--text-muted);
+}
+
+.itemLabel {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.itemHint {
+  color: var(--text-subtle);
+  font-size: var(--text-sm);
+}
+
+.empty {
+  padding: var(--space-8);
+  text-align: center;
+  color: var(--text-muted);
+}
+
+.footer {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-4);
+  border-top: 1px solid var(--border);
+  font-size: var(--text-xs);
+  color: var(--text-subtle);
+}

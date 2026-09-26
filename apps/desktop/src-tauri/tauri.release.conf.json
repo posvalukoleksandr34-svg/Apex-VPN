@@ -1,0 +1,27 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "build": {
+    "beforeBuildCommand": "npm run build && powershell -NoProfile -ExecutionPolicy Bypass -File ../../scripts/prepare-bundle.ps1"
+  },
+  "bundle": {
+    "targets": ["nsis", "msi"],
+    "externalBin": ["binaries/meridiand", "binaries/meridian"],
+    "resources": {
+      "../../../vendor/wireguard-nt/bin/amd64/wireguard.dll": "wireguard.dll"
+    },
+    "windows": {
+      "signCommand": {
+        "cmd": "powershell",
+        "args": ["-NoProfile", "-ExecutionPolicy", "Bypass", "-File", "../../../scripts/sign.ps1", "%1"]
+      },
+      "nsis": {
+        "installMode": "perMachine",
+        "installerHooks": "./windows/installer-hooks.nsh"
+      },
+      "wix": {
+        "fragmentPaths": ["./windows/service.wxs"],
+        "componentRefs": ["MeridianService"]
+      }
+    }
+  }
+}

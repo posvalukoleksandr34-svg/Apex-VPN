@@ -1,0 +1,11 @@
+# Automatically generated - DO NOT EDIT!
+
+[[permission]]
+identifier = "allow-service-request"
+description = "Enables the service_request command without any pre-configured scope."
+commands.allow = ["service_request"]
+
+[[permission]]
+identifier = "deny-service-request"
+description = "Denies the service_request command without any pre-configured scope."
+commands.deny = ["service_request"]

@@ -1,0 +1,206 @@
+/*
+ * Meridian design tokens. Every colour, size and duration in the app comes
+ * from here; components never hard-code values.
+ *
+ * Status colours carry meaning and are used for nothing else:
+ *   --status-success  protected / working
+ *   --status-pending  connecting / in progress
+ *   --status-warning  needs attention (no internet, blocked by choice)
+ *   --status-error    failed
+ *   --status-neutral  off / unprotected
+ */
+
+:root {
+  color-scheme: dark;
+
+  /* Surfaces: a quiet blue-black, lifting in steps. */
+  --bg: #0a0c11;
+  --bg-sunken: #07080c;
+  --surface-1: #10131a;
+  --surface-2: #151923;
+  --surface-3: #1b202c;
+  --surface-hover: #202637;
+  --surface-active: #262d40;
+  --overlay: rgba(4, 6, 10, 0.64);
+
+  --border: rgba(255, 255, 255, 0.07);
+  --border-strong: rgba(255, 255, 255, 0.12);
+  --divider: rgba(255, 255, 255, 0.05);
+
+  --text: #e9ecf3;
+  --text-muted: #a0a8ba;
+  --text-subtle: #6d7589;
+  --text-inverse: #0a0c11;
+
+  /* Brand: a calm, cool blue. Used for focus, selection and links. */
+  --accent: #7b93ff;
+  --accent-strong: #97aaff;
+  --accent-soft: rgba(123, 147, 255, 0.14);
+  --accent-contrast: #0b1030;
+
+  --status-success: #3ddc97;
+  --status-success-soft: rgba(61, 220, 151, 0.13);
+  --status-pending: #7b93ff;
+  --status-pending-soft: rgba(123, 147, 255, 0.14);
+  --status-warning: #f5b454;
+  --status-warning-soft: rgba(245, 180, 84, 0.14);
+  --status-error: #ff6b7d;
+  --status-error-soft: rgba(255, 107, 125, 0.13);
+  --status-neutral: #8a93a7;
+  --status-neutral-soft: rgba(138, 147, 167, 0.12);
+
+  /* Typography: the platform's own UI face (no web fonts are fetched). */
+  --font-sans: "Segoe UI Variable Text", "Segoe UI", -apple-system, BlinkMacSystemFont, "SF Pro Text", "Inter", system-ui, sans-serif;
+  --font-display: "Segoe UI Variable Display", "Segoe UI", -apple-system, "SF Pro Display", "Inter", system-ui, sans-serif;
+  --font-mono: "Cascadia Code", "SF Mono", "JetBrains Mono", Consolas, monospace;
+
+  --text-xs: 0.75rem;   /* 12 */
+  --text-sm: 0.8125rem; /* 13 */
+  --text-md: 0.875rem;  /* 14 */
+  --text-lg: 1rem;      /* 16 */
+  --text-xl: 1.25rem;   /* 20 */
+  --text-2xl: 1.625rem; /* 26 */
+  --text-3xl: 2.125rem; /* 34 */
+  --leading-tight: 1.2;
+  --leading-normal: 1.5;
+  --weight-regular: 400;
+  --weight-medium: 500;
+  --weight-semibold: 600;
+  --tracking-tight: -0.015em;
+  --tracking-caps: 0.06em;
+
+  /* Spacing: 4 px grid, scaled by density. */
+  --density: 1;
+  --space-1: calc(4px * var(--density));
+  --space-2: calc(8px * var(--density));
+  --space-3: calc(12px * var(--density));
+  --space-4: calc(16px * var(--density));
+  --space-5: calc(20px * var(--density));
+  --space-6: calc(24px * var(--density));
+  --space-8: calc(32px * var(--density));
+  --space-10: calc(40px * var(--density));
+  --space-12: calc(48px * var(--density));
+
+  --radius-xs: 6px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 22px;
+  --radius-full: 999px;
+
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.35);
+  --shadow-md: 0 6px 18px rgba(0, 0, 0, 0.32), 0 1px 3px rgba(0, 0, 0, 0.3);
+  --shadow-lg: 0 18px 48px rgba(0, 0, 0, 0.45), 0 2px 8px rgba(0, 0, 0, 0.3);
+  --ring: 0 0 0 2px var(--bg), 0 0 0 4px var(--accent);
+
+  /* Motion: short and purposeful. Zeroed by reduced motion. */
+  --ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --dur-fast: 120ms;
+  --dur-base: 200ms;
+  --dur-slow: 360ms;
+
+  /* Springs, sampled from a damped spring into linear(). One motion language
+     everywhere: a press compresses fast and eases in; the release springs
+     back past rest and settles, as AppKit controls do. */
+  --ease-spring: linear(0, 0.0388, 0.1334, 0.2576, 0.392, 0.5232, 0.643, 0.7466, 0.8323, 0.9, 0.9513, 0.9881, 1.0129, 1.0281, 1.0359, 1.0384, 1.0372, 1.0338, 1.0291, 1.024, 1.0189, 1.0142, 1.0102, 1.0068, 1.0041, 1.0021, 1.0006, 0.9996, 0.999, 0.9986, 0.9985, 0.9986, 1);
+  --ease-spring-bouncy: linear(0, 0.0661, 0.2241, 0.4224, 0.6225, 0.799, 0.9384, 1.0366, 1.0959, 1.1226, 1.1248, 1.1109, 1.0882, 1.0625, 1.0382, 1.0176, 1.0021, 0.9918, 0.9861, 0.9841, 0.9848, 0.9871, 0.9902, 0.9934, 0.9963, 0.9986, 1.0003, 1.0014, 1.0019, 1.002, 1.0018, 1.0015, 1);
+  --dur-press: 90ms;
+  --dur-spring: 560ms;
+  --dur-spring-long: 820ms;
+  --press-scale: 0.96;
+  --press-scale-lg: 0.975;
+  --hover-lift: -2px;
+
+  /* Glass: translucent surface + backdrop blur, a 1px specular top edge and
+     a soft floating shadow. Used for hover states, the toolbar and overlays. */
+  --glass-blur: saturate(170%) blur(20px);
+  --glass-blur-strong: saturate(180%) blur(32px);
+  --glass-bg: color-mix(in srgb, var(--surface-2) 58%, transparent);
+  --glass-bg-hover: color-mix(in srgb, var(--surface-3) 62%, transparent);
+  --glass-bg-overlay: color-mix(in srgb, var(--surface-2) 78%, transparent);
+  --glass-border: rgba(255, 255, 255, 0.09);
+  --glass-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.07);
+  --shadow-float: 0 14px 34px rgba(0, 0, 0, 0.38), 0 3px 8px rgba(0, 0, 0, 0.24);
+
+  --sidebar-width: 232px;
+  --sidebar-collapsed: 68px;
+  --header-height: 56px;
+  --content-max: 1180px;
+  --control-height: calc(36px * var(--density));
+  --control-height-lg: calc(46px * var(--density));
+}
+
+:root[data-theme="light"] {
+  color-scheme: light;
+  --bg: #f5f6f9;
+  --bg-sunken: #eceef3;
+  --surface-1: #ffffff;
+  --surface-2: #f8f9fb;
+  --surface-3: #f0f2f6;
+  --surface-hover: #eceff5;
+  --surface-active: #e3e7f0;
+  --overlay: rgba(20, 24, 36, 0.32);
+  --border: rgba(16, 22, 40, 0.09);
+  --border-strong: rgba(16, 22, 40, 0.16);
+  --divider: rgba(16, 22, 40, 0.06);
+  --text: #141824;
+  --text-muted: #525b70;
+  --text-subtle: #7d8599;
+  --text-inverse: #ffffff;
+  --accent: #4a63e6;
+  --accent-strong: #3a52d1;
+  --accent-soft: rgba(74, 99, 230, 0.1);
+  --accent-contrast: #ffffff;
+  --status-success: #0e9f63;
+  --status-success-soft: rgba(14, 159, 99, 0.1);
+  --status-pending: #4a63e6;
+  --status-pending-soft: rgba(74, 99, 230, 0.1);
+  --status-warning: #b86e00;
+  --status-warning-soft: rgba(184, 110, 0, 0.1);
+  --status-error: #d7263d;
+  --status-error-soft: rgba(215, 38, 61, 0.09);
+  --status-neutral: #6a7285;
+  --status-neutral-soft: rgba(106, 114, 133, 0.1);
+  --shadow-sm: 0 1px 2px rgba(16, 22, 40, 0.06);
+  --shadow-md: 0 6px 18px rgba(16, 22, 40, 0.08), 0 1px 3px rgba(16, 22, 40, 0.06);
+  --shadow-lg: 0 18px 48px rgba(16, 22, 40, 0.14), 0 2px 8px rgba(16, 22, 40, 0.06);
+  --glass-bg: color-mix(in srgb, #ffffff 62%, transparent);
+  --glass-bg-hover: color-mix(in srgb, #ffffff 74%, transparent);
+  --glass-bg-overlay: color-mix(in srgb, #ffffff 80%, transparent);
+  --glass-border: rgba(255, 255, 255, 0.7);
+  --glass-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.85);
+  --shadow-float: 0 14px 34px rgba(16, 22, 40, 0.12), 0 3px 8px rgba(16, 22, 40, 0.06);
+}
+
+:root[data-density="compact"] {
+  --density: 0.8;
+}
+
+/* Reduced motion: no travel, no scaling, no springs. Colour still changes,
+   so every state stays distinguishable. */
+:root[data-motion="reduced"] {
+  --dur-fast: 0ms;
+  --dur-base: 0ms;
+  --dur-slow: 0ms;
+  --dur-press: 0ms;
+  --dur-spring: 0ms;
+  --dur-spring-long: 0ms;
+  --press-scale: 1;
+  --press-scale-lg: 1;
+  --hover-lift: 0px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root:not([data-motion="full"]) {
+    --dur-fast: 0ms;
+    --dur-base: 0ms;
+    --dur-slow: 0ms;
+    --dur-press: 0ms;
+    --dur-spring: 0ms;
+    --dur-spring-long: 0ms;
+    --press-scale: 1;
+    --press-scale-lg: 1;
+    --hover-lift: 0px;
+  }
+}

@@ -1,0 +1,118 @@
+.screen {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: var(--space-6);
+  overflow-y: auto;
+  background:
+    radial-gradient(60% 70% at 50% 0%, color-mix(in srgb, var(--accent) 14%, transparent), transparent 70%),
+    var(--bg);
+}
+
+.panel {
+  width: min(620px, 100%);
+  padding: var(--space-8) var(--space-8) var(--space-6);
+  border-radius: var(--radius-xl);
+  background: var(--surface-1);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-lg);
+}
+
+.progress {
+  display: flex;
+  gap: 6px;
+  margin-bottom: var(--space-8);
+}
+
+.dot {
+  flex: 1;
+  height: 4px;
+  border-radius: var(--radius-full);
+  background: var(--surface-active);
+  transition: background var(--dur-base) var(--ease-out);
+}
+
+.dot[data-done="true"] {
+  background: var(--accent);
+}
+
+.content {
+  min-height: 320px;
+  animation: global(rise-in) var(--dur-base) var(--ease-out);
+}
+
+.heroIcon {
+  display: grid;
+  place-items: center;
+  width: 72px;
+  height: 72px;
+  border-radius: var(--radius-xl);
+  background: var(--accent-soft);
+  color: var(--accent);
+  margin-bottom: var(--space-5);
+}
+
+.title {
+  font-size: var(--text-2xl);
+  margin-bottom: var(--space-3);
+}
+
+.text {
+  color: var(--text-muted);
+  font-size: var(--text-lg);
+  margin-bottom: var(--space-5);
+}
+
+.points {
+  display: grid;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.points li {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.points svg {
+  color: var(--status-success);
+}
+
+.serviceRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-md);
+  background: var(--surface-2);
+}
+
+.card {
+  padding: 0 var(--space-4);
+  border-radius: var(--radius-md);
+  background: var(--surface-2);
+}
+
+.row {
+  display: flex;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+}
+
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  margin-top: var(--space-6);
+  padding-top: var(--space-5);
+  border-top: 1px solid var(--divider);
+}
+
+.stepText {
+  color: var(--text-subtle);
+  font-size: var(--text-sm);
+}

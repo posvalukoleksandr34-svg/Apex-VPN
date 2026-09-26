@@ -1,0 +1,225 @@
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  height: 22px;
+  padding: 0 8px;
+  border-radius: var(--radius-full);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-medium);
+  white-space: nowrap;
+  background: var(--status-neutral-soft);
+  color: var(--status-neutral);
+}
+
+.badge[data-tone="success"] {
+  background: var(--status-success-soft);
+  color: var(--status-success);
+}
+
+.badge[data-tone="pending"] {
+  background: var(--status-pending-soft);
+  color: var(--status-pending);
+}
+
+.badge[data-tone="warning"] {
+  background: var(--status-warning-soft);
+  color: var(--status-warning);
+}
+
+.badge[data-tone="error"] {
+  background: var(--status-error-soft);
+  color: var(--status-error);
+}
+
+.badge[data-tone="accent"] {
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.badge[data-tone="outline"] {
+  background: transparent;
+  border: 1px solid var(--border-strong);
+  color: var(--text-muted);
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex: none;
+  background: currentColor;
+  position: relative;
+}
+
+.dot[data-pulse="true"]::after {
+  content: "";
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  border: 2px solid currentColor;
+  animation: global(pulse-ring) 1.6s var(--ease-out) infinite;
+}
+
+.banner {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-md);
+  background: var(--status-neutral-soft);
+  border: 1px solid transparent;
+  color: var(--text);
+  font-size: var(--text-sm);
+}
+
+.banner > svg {
+  flex: none;
+}
+
+.banner[data-tone="warning"] {
+  background: var(--status-warning-soft);
+  border-color: color-mix(in srgb, var(--status-warning) 25%, transparent);
+}
+
+.banner[data-tone="warning"] > svg {
+  color: var(--status-warning);
+}
+
+.banner[data-tone="error"] {
+  background: var(--status-error-soft);
+  border-color: color-mix(in srgb, var(--status-error) 25%, transparent);
+}
+
+.banner[data-tone="error"] > svg {
+  color: var(--status-error);
+}
+
+.banner[data-tone="accent"] {
+  background: var(--accent-soft);
+  border-color: color-mix(in srgb, var(--accent) 25%, transparent);
+}
+
+.banner[data-tone="accent"] > svg {
+  color: var(--accent);
+}
+
+.bannerText {
+  flex: 1;
+  min-width: 0;
+}
+
+.empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: var(--space-2);
+  padding: var(--space-10) var(--space-6);
+  color: var(--text-muted);
+}
+
+.emptyIcon {
+  display: grid;
+  place-items: center;
+  width: 52px;
+  height: 52px;
+  border-radius: var(--radius-lg);
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  color: var(--text-subtle);
+  margin-bottom: var(--space-2);
+}
+
+.emptyTitle {
+  font-size: var(--text-lg);
+  color: var(--text);
+  font-weight: var(--weight-semibold);
+}
+
+.emptyBody {
+  max-width: 44ch;
+}
+
+.errorState {
+  display: grid;
+  gap: var(--space-3);
+  padding: var(--space-5);
+  border-radius: var(--radius-lg);
+  background: var(--status-error-soft);
+  border: 1px solid color-mix(in srgb, var(--status-error) 22%, transparent);
+}
+
+.errorTitle {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--text-lg);
+  font-weight: var(--weight-semibold);
+}
+
+.errorTitle svg {
+  color: var(--status-error);
+}
+
+.errorGrid {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: var(--space-2) var(--space-4);
+  font-size: var(--text-sm);
+}
+
+.errorGrid dt {
+  color: var(--text-subtle);
+}
+
+.errorGrid dd {
+  margin: 0;
+}
+
+.skeleton {
+  display: block;
+  border-radius: var(--radius-xs);
+  background: linear-gradient(90deg, var(--surface-2), var(--surface-3), var(--surface-2));
+  background-size: 200% 100%;
+  animation: shimmer 1.4s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+  from {
+    background-position: 100% 0;
+  }
+  to {
+    background-position: -100% 0;
+  }
+}
+
+.spinner {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 2px solid var(--border-strong);
+  border-top-color: var(--accent);
+  animation: global(spin) 0.8s linear infinite;
+}
+
+.kbd {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.kbd kbd {
+  min-width: 22px;
+  height: 22px;
+  padding: 0 6px;
+  display: inline-grid;
+  place-items: center;
+  border-radius: 5px;
+  background: var(--surface-3);
+  border: 1px solid var(--border-strong);
+  border-bottom-width: 2px;
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+}

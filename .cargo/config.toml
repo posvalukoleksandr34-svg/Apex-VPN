@@ -1,0 +1,8 @@
+[env]
+# `cargo test -p vpn-types` writes the TypeScript mirror of the IPC types here,
+# so the UI and the service can never disagree about a state's shape.
+TS_RS_EXPORT_DIR = { value = "apps/desktop/src/protocol/generated", relative = true }
+
+[target.x86_64-pc-windows-msvc]
+# Static CRT: the service must not depend on a VC++ redistributable being installed.
+rustflags = ["-C", "target-feature=+crt-static"]

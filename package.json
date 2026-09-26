@@ -1,0 +1,20 @@
+{
+  "name": "meridian",
+  "private": true,
+  "description": "Meridian VPN — desktop client, service and backend",
+  "workspaces": [
+    "server/api",
+    "apps/desktop"
+  ],
+  "scripts": {
+    "api:dev": "npm run dev -w server/api",
+    "api:test": "npm test -w server/api",
+    "desktop:dev": "npm run dev -w apps/desktop",
+    "desktop:test": "npm test -w apps/desktop",
+    "typecheck": "npm run typecheck --workspaces --if-present",
+    "test": "npm test --workspaces --if-present"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}

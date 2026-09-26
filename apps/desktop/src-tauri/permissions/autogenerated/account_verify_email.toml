@@ -1,0 +1,11 @@
+# Automatically generated - DO NOT EDIT!
+
+[[permission]]
+identifier = "allow-account-verify-email"
+description = "Enables the account_verify_email command without any pre-configured scope."
+commands.allow = ["account_verify_email"]
+
+[[permission]]
+identifier = "deny-account-verify-email"
+description = "Denies the account_verify_email command without any pre-configured scope."
+commands.deny = ["account_verify_email"]

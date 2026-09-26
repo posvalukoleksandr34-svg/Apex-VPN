@@ -1,0 +1,95 @@
+.intro {
+  color: var(--text-muted);
+  margin-bottom: var(--space-4);
+  max-width: 76ch;
+}
+
+.facts {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.fact {
+  display: flex;
+  gap: var(--space-4);
+  padding: var(--space-4) var(--space-5);
+}
+
+.fact + .fact {
+  border-top: 1px solid var(--divider);
+}
+
+.factIcon {
+  flex: none;
+  margin-top: 1px;
+  color: var(--text-subtle);
+}
+
+.fact[data-state="verified"] .factIcon {
+  color: var(--status-success);
+}
+
+.fact[data-state="notProtected"] .factIcon {
+  color: var(--status-error);
+}
+
+.factBody {
+  flex: 1;
+  min-width: 0;
+}
+
+.factTop {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+}
+
+.factLabel {
+  font-weight: var(--weight-medium);
+}
+
+.factValue {
+  flex: 1;
+  color: var(--text-muted);
+  font-size: var(--text-sm);
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.factWhy {
+  margin-top: 2px;
+  color: var(--text-subtle);
+  font-size: var(--text-sm);
+}
+
+.leakGrid {
+  display: grid;
+  gap: var(--space-4);
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+}
+
+.leakHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  margin-bottom: var(--space-3);
+}
+
+.leakName {
+  font-weight: var(--weight-semibold);
+  font-size: var(--text-lg);
+}
+
+.leakFinding {
+  color: var(--text-muted);
+  margin-bottom: var(--space-3);
+}
+
+.leakNote {
+  margin-top: var(--space-3);
+  font-size: var(--text-xs);
+  color: var(--text-subtle);
+}

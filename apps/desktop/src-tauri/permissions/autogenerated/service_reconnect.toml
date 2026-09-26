@@ -1,0 +1,11 @@
+# Automatically generated - DO NOT EDIT!
+
+[[permission]]
+identifier = "allow-service-reconnect"
+description = "Enables the service_reconnect command without any pre-configured scope."
+commands.allow = ["service_reconnect"]
+
+[[permission]]
+identifier = "deny-service-reconnect"
+description = "Denies the service_reconnect command without any pre-configured scope."
+commands.deny = ["service_reconnect"]

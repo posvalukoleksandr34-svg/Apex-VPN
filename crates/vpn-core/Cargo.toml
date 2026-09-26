@@ -1,0 +1,26 @@
+[package]
+name = "vpn-core"
+description = "Platform-independent VPN logic: tunnel state machine, kill switch policy, smart connect, relay list verification"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+publish.workspace = true
+
+[dependencies]
+vpn-types.workspace = true
+async-trait.workspace = true
+base64.workspace = true
+ed25519-dalek.workspace = true
+ipnet.workspace = true
+rand.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+thiserror.workspace = true
+tokio.workspace = true
+tracing.workspace = true
+x25519-dalek.workspace = true
+zeroize.workspace = true
+
+[dev-dependencies]
+tokio = { workspace = true, features = ["test-util"] }

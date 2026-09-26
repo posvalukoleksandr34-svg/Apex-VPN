@@ -1,0 +1,1297 @@
+{
+  "app": {
+    "name": "Meridian",
+    "tagline": "Privat, schnell und ehrlich."
+  },
+  "nav": {
+    "dashboard": "Übersicht",
+    "servers": "Server",
+    "profiles": "Profile",
+    "security": "Sicherheit",
+    "diagnostics": "Diagnose",
+    "settings": "Einstellungen",
+    "support": "Support",
+    "account": "Konto",
+    "notifications": "Benachrichtigungen",
+    "search": "Suche",
+    "primary": "Hauptnavigation",
+    "collapse": "Seitenleiste einklappen",
+    "expand": "Seitenleiste ausklappen"
+  },
+  "actions": {
+    "connect": "Verbinden",
+    "disconnect": "Trennen",
+    "cancel": "Abbrechen",
+    "retry": "Erneut versuchen",
+    "unblock": "Trennen und Sperre aufheben",
+    "reconnect_service": "Erneut versuchen",
+    "open_diagnostics": "Diagnose öffnen",
+    "kill_switch_settings": "Kill-Switch-Einstellungen",
+    "sign_in": "Anmelden",
+    "view_plans": "Tarife ansehen",
+    "save": "Speichern",
+    "apply": "Übernehmen",
+    "close": "Schließen",
+    "back": "Zurück",
+    "next": "Weiter",
+    "skip": "Überspringen",
+    "done": "Fertig",
+    "copy": "Kopieren",
+    "copied": "Kopiert",
+    "export": "Exportieren",
+    "clear": "Leeren",
+    "refresh": "Aktualisieren",
+    "remove": "Entfernen",
+    "add": "Hinzufügen",
+    "edit": "Bearbeiten",
+    "delete": "Löschen",
+    "rename": "Umbenennen",
+    "confirm": "Bestätigen",
+    "change": "Ändern",
+    "runAll": "Alle Prüfungen starten",
+    "runAgain": "Erneut ausführen",
+    "reset": "Zurücksetzen",
+    "enable": "Aktivieren",
+    "disable": "Deaktivieren",
+    "continue": "Fortfahren",
+    "send": "Senden",
+    "favorite": "Zu Favoriten",
+    "unfavorite": "Aus Favoriten entfernen",
+    "connectHere": "Mit diesem Server verbinden",
+    "showAdvanced": "Erweiterte Optionen",
+    "hideAdvanced": "Erweiterte Optionen ausblenden",
+    "learnMore": "Mehr erfahren",
+    "moveUp": "Nach oben",
+    "moveDown": "Nach unten",
+    "details": "Details",
+    "revoke": "Entfernen",
+    "signOut": "Abmelden",
+    "measure": "Latenz messen",
+    "browse": "Server durchsuchen"
+  },
+  "common": {
+    "unknown": "Unbekannt",
+    "notMeasured": "Nicht gemessen",
+    "never": "Nie",
+    "on": "An",
+    "off": "Aus",
+    "yes": "Ja",
+    "no": "Nein",
+    "loading": "Wird geladen…",
+    "none": "Keine",
+    "optional": "optional",
+    "recommended": "Empfohlen",
+    "comingSoon": "In diesem Build nicht verfügbar",
+    "unavailable": "Nicht verfügbar",
+    "offlineBanner": "Du bist offline. Die App arbeitet mit den bereits bekannten Daten weiter.",
+    "serviceBanner": "Der VPN-Dienst ist nicht erreichbar, daher ist die Verbindungssteuerung pausiert.",
+    "lastUpdated": "Aktualisiert {{time}}",
+    "seconds": "{{count}} s",
+    "verified": "Geprüft",
+    "notVerified": "Nicht geprüft",
+    "devices": "{{count}} Geräte",
+    "servers": "{{count}} Server",
+    "search": "Suche",
+    "somethingWrong": "Etwas ist schiefgelaufen",
+    "tryAgainLater": "Bitte versuche es gleich noch einmal.",
+    "showPassword": "Passwort anzeigen",
+    "hidePassword": "Passwort verbergen"
+  },
+  "status": {
+    "serviceUnavailable": {
+      "title": "VPN-Dienst läuft nicht",
+      "detail": "Der Meridian-Hintergrunddienst ist nicht erreichbar. Er steuert die Verbindungen, daher ist bis zu seiner Rückkehr keine Verbindung möglich."
+    },
+    "serviceStarting": { "title": "Wird gestartet…", "detail": "Verbindung zum VPN-Dienst wird hergestellt." },
+    "unknown": { "title": "Wird geprüft…", "detail": "Aktueller Status wird beim Dienst abgefragt." },
+    "disconnected": { "title": "Nicht geschützt", "detail": "Dein Datenverkehr läuft nicht über das VPN." },
+    "lockedDown": {
+      "title": "Vom Kill Switch blockiert",
+      "detail": "Kill Switch „Immer an“: Kein Datenverkehr verlässt das Gerät, bis du dich verbindest."
+    },
+    "connecting": { "title": "Verbinden…", "retrying": "Neuer Versuch in {{seconds}} s (Versuch {{attempt}})" },
+    "connected": { "title": "Geschützt", "detail": "Verbunden über {{city}}, {{country}}" },
+    "reconnecting": { "title": "Neu verbinden…" },
+    "offline": {
+      "title": "Keine Internetverbindung",
+      "detail": "Meridian verbindet sich neu, sobald dein Netzwerk zurück ist.",
+      "detailBlocked": "Datenverkehr ist blockiert, bis das VPN wieder verbunden ist."
+    },
+    "disconnecting": { "title": "Trennen…", "detail": "Tunnel wird geschlossen." },
+    "error": { "detailBlocked": "Datenverkehr ist zu deinem Schutz blockiert. Versuche es erneut oder trenne die Verbindung, um die Sperre aufzuheben." },
+    "trafficBlocked": "Datenverkehr blockiert"
+  },
+  "phase": {
+    "waiting_to_retry": "Warten auf neuen Versuch",
+    "selecting_server": "Server wird ausgewählt",
+    "creating_interface": "Sicherer Tunnel wird erstellt",
+    "configuring_network": "Netzwerk wird eingerichtet",
+    "handshaking": "Verbindung zum Server wird aufgebaut",
+    "verifying_tunnel": "Datenverkehr wird geprüft",
+    "checking_tunnel": "Tunnel wird geprüft"
+  },
+  "cause": {
+    "network_changed": "Netzwerk hat sich geändert",
+    "network_restored": "Internet ist wieder da",
+    "woke_from_sleep": "Aus dem Ruhezustand aufgewacht",
+    "handshake_stale": "Server antwortet nicht mehr",
+    "server_unavailable": "Server ist nicht mehr verfügbar",
+    "tunnel_failure": "Verbindung wurde unterbrochen",
+    "settings_changed": "Neue Einstellungen werden übernommen",
+    "user_requested": "Auf Wunsch neu verbinden"
+  },
+  "errors": {
+    "auth_required": {
+      "title": "Zum Verbinden anmelden",
+      "explanation": "Dieses Gerät ist mit keinem Konto verknüpft.",
+      "cause": "Du hast dich abgemeldet oder das Gerät wurde aus deinem Konto entfernt.",
+      "action": "Melde dich erneut an – die App registriert das Gerät dann neu."
+    },
+    "subscription_inactive": {
+      "title": "Dein Tarif ist abgelaufen",
+      "explanation": "Zum Verbinden ist ein aktiver Tarif nötig.",
+      "cause": "Testphase oder Abonnement ist beendet.",
+      "action": "Wähle einen Tarif unter Konto → Abonnement."
+    },
+    "no_internet": {
+      "title": "Keine Internetverbindung",
+      "explanation": "Dein Gerät ist mit keinem Netzwerk verbunden.",
+      "cause": "WLAN ist aus, das Kabel ist nicht eingesteckt oder das Netzwerk ist ausgefallen.",
+      "action": "Verbinde dich mit einem Netzwerk – das VPN stellt sich dann selbst wieder her."
+    },
+    "server_unavailable": {
+      "title": "Server nicht verfügbar",
+      "explanation": "Der gewählte Server nimmt gerade keine Verbindungen an.",
+      "cause": "Wartung, eine Störung oder kein Server passt zu deinen Filtern.",
+      "action": "Wähle einen anderen Standort oder lass Smart Connect entscheiden."
+    },
+    "no_matching_server": {
+      "title": "Kein passender Server",
+      "explanation": "Kein Server passt zum gewählten Land, der Stadt oder den Funktionen.",
+      "cause": "Die Kombination ist zu eng oder die Server sind außer Betrieb.",
+      "action": "Lockere die Filter oder wähle einen anderen Standort."
+    },
+    "relay_list_unavailable": {
+      "title": "Serverliste nicht verfügbar",
+      "explanation": "Die App konnte die Serverliste nicht laden.",
+      "cause": "Du bist offline oder der Meridian-Dienst ist nicht erreichbar.",
+      "action": "Prüfe deine Verbindung und versuche es erneut."
+    },
+    "relay_list_invalid": {
+      "title": "Serverliste abgelehnt",
+      "explanation": "Die geladene Serverliste hat die Signaturprüfung nicht bestanden und wird nicht verwendet.",
+      "cause": "Die Liste wurde unterwegs verändert – eventuell greift dein Netzwerk in den Datenverkehr ein.",
+      "action": "Wechsle das Netzwerk und versuche es erneut. Wenn das nicht hilft, kontaktiere den Support."
+    },
+    "protocol_unavailable": {
+      "title": "Protokoll nicht verfügbar",
+      "explanation": "Das gewählte Protokoll kann in diesem Build oder mit diesem Server nicht genutzt werden.",
+      "cause": "OpenVPN und IKEv2 sind in diesem Build noch nicht enthalten.",
+      "action": "Wähle „Automatisch“ oder WireGuard unter Einstellungen → Protokolle."
+    },
+    "permission_denied": {
+      "title": "Fehlende Berechtigung",
+      "explanation": "Dem VPN-Dienst fehlen die nötigen Berechtigungen.",
+      "cause": "Der Dienst läuft ohne Systemrechte.",
+      "action": "Installiere Meridian neu oder starte den Dienst als Administrator neu."
+    },
+    "driver_unavailable": {
+      "title": "Tunneltreiber fehlt",
+      "explanation": "Der WireGuard-Treiber konnte nicht geladen werden.",
+      "cause": "Die Treiberdatei fehlt oder hat die Signaturprüfung nicht bestanden.",
+      "action": "Installiere Meridian neu."
+    },
+    "handshake_timeout": {
+      "title": "Server hat nicht geantwortet",
+      "explanation": "Der verschlüsselte Handshake mit dem Server hat zu lange gedauert.",
+      "cause": "Dein Netzwerk blockiert möglicherweise VPN-Verkehr (UDP) oder der Server ist überlastet.",
+      "action": "Versuche einen anderen Server, ein anderes Netzwerk oder die automatische Protokollwahl."
+    },
+    "tunnel_verification_failed": {
+      "title": "Datenverkehr erreicht den Tunnel nicht",
+      "explanation": "Der Tunnel wurde erstellt, aber es kam nichts durch ihn zurück.",
+      "cause": "Eine Firewall oder dein Netzwerk stört, oder der Server hat ein Problem.",
+      "action": "Versuche einen anderen Server. Wenn es wieder passiert, starte die Diagnose."
+    },
+    "tunnel_failure": {
+      "title": "Verbindung fehlgeschlagen",
+      "explanation": "Der Tunnel konnte nicht aufgebaut werden.",
+      "cause": "Ein Treiber- oder Netzwerkproblem auf diesem Gerät.",
+      "action": "Versuche es erneut. Wenn es wieder passiert, starte die Diagnose."
+    },
+    "dns_failure": {
+      "title": "DNS konnte nicht eingerichtet werden",
+      "explanation": "Das VPN konnte Windows nicht dazu bringen, den geschützten DNS zu verwenden.",
+      "cause": "Ein anderes Programm verwaltet DNS auf diesem Gerät.",
+      "action": "Versuche es erneut oder wähle eine andere Option unter Einstellungen → DNS."
+    },
+    "routing_failure": {
+      "title": "Routing konnte nicht eingerichtet werden",
+      "explanation": "Der Datenverkehr konnte nicht in den Tunnel geleitet werden.",
+      "cause": "Ein anderes VPN oder Netzwerkprogramm ändert die Routen.",
+      "action": "Schließe andere VPN-Programme und versuche es erneut."
+    },
+    "firewall_failure": {
+      "title": "Kill Switch konnte nicht aktiviert werden",
+      "explanation": "Die Firewall-Regeln ließen sich nicht einrichten, und Meridian hat sich geweigert, ohne sie zu verbinden.",
+      "cause": "Dem Dienst fehlen Rechte oder die Firewall ist durch ein anderes Programm belegt.",
+      "action": "Starte die Diagnose. Wenn du den Kill Switch ausschaltest, kannst du dich ohne diesen Schutz verbinden."
+    },
+    "timeout": {
+      "title": "Zeitüberschreitung",
+      "explanation": "Der Vorgang hat zu lange gedauert.",
+      "cause": "Ein langsames oder instabiles Netzwerk.",
+      "action": "Versuche es erneut."
+    },
+    "configuration_corrupted": {
+      "title": "Einstellungen zurückgesetzt",
+      "explanation": "Die gespeicherten Einstellungen waren nicht lesbar und wurden auf sichere Standardwerte zurückgesetzt.",
+      "cause": "Die Einstellungsdatei war beschädigt.",
+      "action": "Prüfe deine Einstellungen. Eine Kopie der beschädigten Datei wurde für den Support aufbewahrt."
+    },
+    "unsupported_platform": {
+      "title": "Noch nicht unterstützt",
+      "explanation": "Dieser Teil von Meridian ist für dein Betriebssystem noch nicht umgesetzt.",
+      "cause": "Die Unterstützung für macOS und Linux ist in Arbeit.",
+      "action": "Nutze Meridian vorerst unter Windows."
+    },
+    "internal": {
+      "title": "Etwas ist schiefgelaufen",
+      "explanation": "Im VPN-Dienst ist ein unerwarteter Fehler aufgetreten.",
+      "cause": "Ein Programmfehler.",
+      "action": "Versuche es erneut und sende einen Diagnosebericht, wenn es wieder passiert."
+    },
+    "labels": {
+      "explanation": "Was passiert ist",
+      "cause": "Wahrscheinliche Ursache",
+      "action": "Was du tun kannst"
+    }
+  },
+  "dashboard": {
+    "title": "Übersicht",
+    "location": "Standort",
+    "smartLocation": "Smart Connect · {{mode}}",
+    "changeLocation": "Standort ändern",
+    "server": "Server",
+    "noServer": "Standort wählen",
+    "widgets": {
+      "ip": "IP-Adresse",
+      "quality": "Serverqualität",
+      "session": "Sitzung",
+      "protocol": "Protokoll",
+      "security": "Sicherheit",
+      "quickActions": "Schnell verbinden",
+      "recent": "Letzte Standorte"
+    },
+    "ip": {
+      "yours": "Deine IP",
+      "vpn": "VPN-IP",
+      "checkedThrough": "Über das VPN geprüft {{time}}",
+      "checkedWithout": "Deine eigene Adresse, geprüft {{time}}",
+      "notChecked": "Noch nicht geprüft",
+      "check": "Prüfen"
+    },
+    "quality": {
+      "latency": "Latenz",
+      "load": "Auslastung",
+      "measuredHere": "Von diesem Gerät gemessen",
+      "notMeasured": "Noch nicht gemessen"
+    },
+    "session": {
+      "duration": "Dauer",
+      "down": "Download",
+      "up": "Upload",
+      "total": "{{down}} empfangen · {{up}} gesendet",
+      "idle": "Keine aktive Sitzung"
+    },
+    "protocol": {
+      "cipher": "Verschlüsselung",
+      "automatic": "Automatisch"
+    },
+    "security": {
+      "killSwitch": "Kill Switch",
+      "dns": "DNS-Leckschutz",
+      "ipv6": "IPv6",
+      "ipv6Tunneled": "Über das VPN",
+      "ipv6Blocked": "Außerhalb des VPN blockiert",
+      "ipv6Open": "Nicht geschützt",
+      "active": "Aktiv",
+      "inactive": "Inaktiv",
+      "seeAll": "Sicherheitsdetails ansehen"
+    },
+    "quick": {
+      "fastest": "Schnellster",
+      "nearest": "Nächster",
+      "lastUsed": "Zuletzt genutzt",
+      "favorite": "Favorit",
+      "secure": "Datenschutz-Server",
+      "noLastUsed": "Noch keine Verbindungen",
+      "noFavorite": "Noch keine Favoriten"
+    },
+    "recentEmpty": "Standorte, mit denen du dich verbindest, erscheinen hier.",
+    "customize": "Anpassen",
+    "customizeTitle": "Widgets der Übersicht",
+    "customizeHint": "Wähle die Kacheln unter der Verbinden-Schaltfläche aus und ordne sie."
+  },
+  "smart": {
+    "fastest": "Schnellster",
+    "nearest": "Nächster",
+    "lowest_load": "Geringste Auslastung",
+    "best_overall": "Beste Wahl",
+    "desc": {
+      "fastest": "Die geringste von diesem Gerät gemessene Latenz.",
+      "nearest": "Am nächsten an dem Ort, von dem aus du dich verbindest.",
+      "lowest_load": "Der am wenigsten ausgelastete Server.",
+      "best_overall": "Berücksichtigt Latenz, Auslastung, Entfernung und Serverzustand."
+    }
+  },
+  "features": {
+    "streaming": "Streaming",
+    "gaming": "Gaming",
+    "privacy": "Datenschutz",
+    "p2p": "P2P",
+    "low_latency": "Niedrige Latenz"
+  },
+  "serverStatus": {
+    "online": "Online",
+    "busy": "Ausgelastet",
+    "maintenance": "Wartung",
+    "offline": "Offline"
+  },
+  "servers": {
+    "title": "Server",
+    "searchPlaceholder": "Länder, Städte, Server suchen",
+    "tabs": { "recommended": "Empfohlen", "favorites": "Favoriten", "recent": "Zuletzt", "all": "Alle Standorte" },
+    "filters": { "label": "Filter", "all": "Alle", "lowLatency": "Niedrige Latenz" },
+    "sort": { "label": "Sortieren", "best": "Beste", "latency": "Latenz", "load": "Auslastung", "name": "A–Z" },
+    "columns": { "location": "Standort", "latency": "Latenz", "load": "Auslastung", "status": "Status", "protocols": "Protokolle" },
+    "smartConnect": "Smart Connect",
+    "smartIn": "Bester Server in {{place}}",
+    "count": "{{count}} Server",
+    "listAge": "Serverliste v{{version}} · {{time}}",
+    "stale": "Die Serverliste ist veraltet; Latenz und Auslastung können sich geändert haben.",
+    "measure": "Latenz messen",
+    "measuring": "Wird gemessen…",
+    "latencyNote": "Die Latenz wird von diesem Gerät gemessen; „—“ bedeutet „nicht gemessen“.",
+    "emptySearch": { "title": "Keine Treffer", "body": "Nichts passt zu „{{query}}“. Versuche es mit einem Länder- oder Städtenamen." },
+    "emptyFavorites": { "title": "Noch keine Favoriten", "body": "Markiere einen Standort oder Server mit dem Stern, um ihn mit einem Klick zu verbinden." },
+    "emptyRecent": { "title": "Keine letzten Server", "body": "Server, mit denen du dich verbindest, erscheinen hier." },
+    "noList": { "title": "Serverliste nicht verfügbar", "body": "Die Liste ist noch nicht geladen. Sie erscheint hier, sobald der Dienst sie abgerufen hat." },
+    "info": {
+      "title": "Serverdetails",
+      "hostname": "Hostname",
+      "address": "Adresse",
+      "capacity": "Kapazität",
+      "features": "Funktionen",
+      "protocols": "Protokolle",
+      "health": "Zustand",
+      "healthMeasured": "Von der Meridian-Überwachung gemessen {{time}}",
+      "noHealth": "Keine aktuellen Messwerte"
+    }
+  },
+  "profiles": {
+    "title": "Profile",
+    "subtitle": "Speichere einen Standort und passende Einstellungen für jede Tätigkeit und wechsle mit einem Klick.",
+    "new": "Neues Profil",
+    "active": "Aktiv",
+    "use": "Verwenden",
+    "empty": { "title": "Noch keine Profile", "body": "Lege ein Profil für Gaming, Streaming, Arbeit oder Reisen an – jeweils mit eigenem Server und Schutz." },
+    "templates": "Mit Vorlage beginnen",
+    "kinds": { "gaming": "Gaming", "streaming": "Streaming", "work": "Arbeit", "privacy": "Datenschutz", "travel": "Reisen", "custom": "Eigenes" },
+    "editor": {
+      "title": "Profil bearbeiten",
+      "createTitle": "Neues Profil",
+      "name": "Name",
+      "kind": "Typ",
+      "target": "Verbinden mit",
+      "protocol": "Protokoll",
+      "killSwitch": "Kill Switch",
+      "dns": "DNS",
+      "splitTunnel": "Split Tunneling",
+      "allowLan": "Zugriff aufs lokale Netzwerk",
+      "keep": "Aktuellen Wert beibehalten",
+      "connectOnLaunch": "Beim Start von Meridian mit diesem Profil verbinden"
+    },
+    "applyWhileConnected": "Wenn du dieses Profil wählst, verbindet sich das VPN mit seinen Einstellungen neu.",
+    "deleteConfirm": "Profil „{{name}}“ löschen?"
+  },
+  "security": {
+    "title": "Sicherheit",
+    "tabs": { "overview": "Überblick", "ip": "IP & Netzwerk", "leaks": "Leck-Test", "details": "Verbindungsdetails" },
+    "overview": {
+      "intro": "Was Meridian an dieser Verbindung gerade geprüft hat. Es gibt keine Punktzahl: Jeder Punkt ist geprüft, nicht geschützt oder nicht prüfbar – jeweils mit Begründung.",
+      "facts": {
+        "vpn": "VPN-Tunnel",
+        "ip": "Schutz der IP-Adresse",
+        "dns": "DNS-Schutz",
+        "ipv6": "IPv6-Schutz",
+        "killSwitch": "Kill Switch",
+        "protocol": "Protokoll",
+        "encryption": "Verschlüsselung",
+        "server": "Server",
+        "duration": "Verbunden seit"
+      },
+      "state": { "verified": "Geprüft", "notProtected": "Nicht geschützt", "unverifiable": "Nicht prüfbar" },
+      "why": {
+        "vpnUp": "Der Handshake ist erfolgt und Datenverkehr durch den Tunnel wurde bestätigt.",
+        "vpnDown": "Der Tunnel ist nicht aktiv.",
+        "ipChecked": "Eine externe Prüfung sieht die Adresse des VPN-Servers.",
+        "ipOwn": "Eine externe Prüfung sieht deine eigene Adresse.",
+        "ipUnchecked": "Starte eine Sicherheitsprüfung, um zu sehen, was das Internet sieht.",
+        "dnsOn": "Anfragen gehen nur an die DNS-Server des Tunnels; alle anderen blockiert die Firewall.",
+        "dnsOff": "Der DNS-Leckschutz ist aus oder der System-DNS wird verwendet.",
+        "ipv6Tunneled": "IPv6 wird im Tunnel übertragen.",
+        "ipv6Blocked": "IPv6 außerhalb des Tunnels ist blockiert.",
+        "ipv6Open": "IPv6 kann am Tunnel vorbeilaufen.",
+        "ksOn": "Firewall-Regeln blockieren Datenverkehr außerhalb des Tunnels.",
+        "ksOff": "Der Kill Switch ist aus: Bei einer Neuverbindung kann Datenverkehr ungeschützt abfließen.",
+        "ksUnavailable": "Der Dienst hat keinen Zugriff auf die Firewall.",
+        "ksIdle": "Bereit: Die Sperre beginnt, sobald du auf „Verbinden“ drückst. Gerade wird nichts gehalten, also gibt es nichts zu prüfen.",
+        "wireguard": "WireGuard: ChaCha20-Poly1305 mit Curve25519-Schlüsselaustausch."
+      },
+      "runCheck": "Sicherheitsprüfung starten"
+    },
+    "ip": {
+      "intro": "Was ein externer Dienst sieht, wenn dieses Gerät ins Internet geht.",
+      "current": "Aktuelle IP",
+      "yours": "Deine eigene IP (zuletzt ohne Schutz gesehen)",
+      "isp": "Netzwerk / Anbieter",
+      "asn": "ASN",
+      "country": "Land",
+      "city": "Stadt",
+      "timezone": "Zeitzone",
+      "dns": "Verwendete DNS-Server",
+      "ipv6": "IPv6",
+      "webrtc": "WebRTC-Lecks",
+      "throughVpn": "Über das VPN",
+      "notThroughVpn": "Nicht über das VPN",
+      "geoUnavailable": "Standortdetails benötigen eine GeoIP-Datenbank, die auf diesem Server nicht eingerichtet ist.",
+      "never": "Noch nicht geprüft. Starte eine Sicherheitsprüfung.",
+      "ipv6Available": "Verfügbar im Netzwerk {{network}}",
+      "ipv6None": "In deinem Netzwerk nicht verfügbar"
+    },
+    "leaks": {
+      "intro": "Jeder Test beobachtet die Verbindung genau jetzt und meldet genau das, was er gesehen hat. Reichen die Daten nicht, sagt er das – ohne zu raten.",
+      "run": "Auf Lecks testen",
+      "running": "Wird getestet…",
+      "notRun": "Noch nicht getestet",
+      "tests": { "ipv4": "IPv4", "ipv6": "IPv6", "dns": "DNS", "webrtc": "WebRTC" },
+      "verdict": { "protected": "Geschützt", "potential_leak": "Mögliches Leck", "unable_to_verify": "Nicht prüfbar" },
+      "observed": "Beobachtet",
+      "expected": "Erwartet",
+      "connectFirst": "Verbinde dich, um auf Lecks zu testen – ohne Tunnel gibt es nichts zu prüfen."
+    },
+    "details": {
+      "protocol": "Protokoll",
+      "cipher": "Chiffre",
+      "handshake": "Handshake",
+      "lastHandshake": "Letzter Handshake",
+      "server": "Server",
+      "endpoint": "Endpunkt",
+      "interface": "Lokale Schnittstelle",
+      "vpnIp": "Zugewiesene VPN-Adresse",
+      "dns": "DNS (angewendet)",
+      "dnsReported": "DNS (laut Windows)",
+      "mtu": "MTU",
+      "sent": "Gesendet",
+      "received": "Empfangen",
+      "uptime": "Laufzeit",
+      "advanced": "Technische Details",
+      "localKey": "Öffentlicher Schlüssel dieses Geräts",
+      "serverKey": "Öffentlicher Schlüssel des Servers",
+      "luid": "Schnittstellen-LUID / -Index",
+      "routes": "Tunnelrouten",
+      "firewall": "Firewall-Richtlinie",
+      "filters": "{{count}} Filter",
+      "notConnected": "Verbinde dich, um die technischen Details des Tunnels zu sehen."
+    }
+  },
+  "leak": {
+    "findings": {
+      "not_connected": "Keine Verbindung, daher gibt es nichts zu prüfen.",
+      "ip_service_unreachable": "Der IP-Prüfdienst ist nicht erreichbar.",
+      "ip_check_not_public": "Der IP-Prüfdienst läuft auf diesem Computer oder in diesem Netzwerk und kann deine öffentliche Adresse daher nicht sehen.",
+      "exit_is_vpn_server": "Das Internet sieht die Adresse des VPN-Servers.",
+      "exit_is_your_own_ip": "Das Internet sieht deine eigene Adresse. Deine IP ist nicht verborgen.",
+      "exit_differs_from_server": "Die sichtbare Adresse weicht von der veröffentlichten Serveradresse ab; der Server nutzt eventuell eine eigene Ausgangsadresse.",
+      "no_ipv6_check_endpoint": "IPv6 läuft durch den Tunnel, aber es gibt keinen IPv6-Prüfdienst, um die Ausgangsadresse zu bestätigen.",
+      "no_ipv6_on_network": "Dein Netzwerk hat kein IPv6, daher kann darüber nichts abfließen.",
+      "ipv6_blocked_outside_tunnel": "IPv6 außerhalb des Tunnels ist durch geprüfte Firewall-Regeln blockiert.",
+      "firewall_not_verified": "Die IPv6-Sperre ist eingerichtet, aber die Firewall-Regeln konnten nicht bestätigt werden.",
+      "ipv6_not_blocked": "Dein Netzwerk hat IPv6, und es ist außerhalb des Tunnels nicht blockiert.",
+      "system_dns_in_use": "„Automatischer“ DNS ist gewählt, daher können Anfragen an den DNS deines Netzwerks gehen.",
+      "dns_leak_protection_off": "Der DNS-Leckschutz ist aus.",
+      "resolver_outside_tunnel_answered": "Ein DNS-Server außerhalb des Tunnels hat geantwortet. Möglicherweise ein DNS-Leck.",
+      "dns_config_unreadable": "Windows hat die DNS-Einstellungen des Tunnels nicht gemeldet.",
+      "dns_config_verified": "Nur die DNS-Server des Tunnels sind eingerichtet und die Lecksperre ist aktiv.",
+      "dns_only_via_tunnel": "Die DNS-Server deines Netzwerks sind unerreichbar (blockiert); nur der DNS des Tunnels ist eingerichtet.",
+      "unexpected_tunnel_resolver": "Am Tunnel ist ein unerwarteter DNS-Server eingerichtet.",
+      "webrtc_matches_vpn": "WebRTC hat nur die VPN-Adresse preisgegeben.",
+      "webrtc_exposes_own_ip": "WebRTC hat deine eigene öffentliche Adresse preisgegeben.",
+      "webrtc_no_candidates": "WebRTC konnte keinen STUN-Server erreichen, daher ist ein Leck nicht prüfbar.",
+      "webrtc_unavailable": "WebRTC ist in der eingebauten Browser-Engine nicht verfügbar.",
+      "webrtc_note": "Geprüft in der eingebauten Browser-Engine von Meridian über einen öffentlichen STUN-Server (stun.l.google.com). Dein Browser kann sich anders verhalten."
+    }
+  },
+  "diagnostics": {
+    "title": "Diagnose",
+    "tabs": { "checks": "Prüfungen", "logs": "Protokoll" },
+    "intro": "Prüft jeden Teil der Verbindung und erklärt alles, was nicht funktioniert.",
+    "lastRun": "Zuletzt ausgeführt {{time}}",
+    "notRun": "Noch keine Prüfungen ausgeführt.",
+    "copyReport": "Bericht kopieren",
+    "sendReport": "An den Support senden",
+    "status": { "working": "Funktioniert", "warning": "Achtung", "failed": "Fehlgeschlagen", "skipped": "Nicht zutreffend" },
+    "checks": {
+      "internet": "Internetverbindung",
+      "dns": "Namensauflösung (DNS)",
+      "service": "VPN-Dienst",
+      "authentication": "Konto & Gerät",
+      "server_reachability": "Erreichbarkeit der Server",
+      "tunnel": "Tunnel",
+      "routing": "Routing",
+      "kill_switch": "Kill Switch",
+      "ipv6": "IPv6"
+    },
+    "labels": { "what": "Was passiert ist", "causes": "Wahrscheinliche Ursachen", "actions": "Was du tun kannst", "evidence": "Details" },
+    "findings": {
+      "online": { "summary": "Du bist mit dem Internet und dem Meridian-Dienst verbunden." },
+      "no_network": {
+        "summary": "Keine Netzwerkverbindung.",
+        "causes": "WLAN ist aus, das Kabel ist nicht eingesteckt oder der Flugmodus ist an.",
+        "actions": "Verbinde dich mit einem Netzwerk."
+      },
+      "blocked_by_kill_switch": {
+        "summary": "Der Kill Switch blockiert Datenverkehr – das ist erwartet, solange er den Schutz hält.",
+        "causes": "Das VPN verbindet sich neu oder ein Fehler ist aufgetreten, und der Kill Switch schützt dich.",
+        "actions": "Verbinde dich oder trenne die Verbindung, um die Sperre aufzuheben."
+      },
+      "network_up_service_unreachable": {
+        "summary": "Das Netzwerk funktioniert, aber der Meridian-Dienst ist nicht erreichbar.",
+        "causes": "Eine Anmeldeseite im Netzwerk (Hotel, Flughafen), eine Firewall oder eine Meridian-Störung.",
+        "actions": "Öffne einen Browser, schließe eine eventuelle Anmeldeseite ab und starte die Prüfungen erneut."
+      },
+      "resolving": { "summary": "Domainnamen werden normal aufgelöst." },
+      "no_resolvers": {
+        "summary": "Keine DNS-Server eingerichtet.",
+        "causes": "Das Netzwerk hat keine DNS-Server vergeben.",
+        "actions": "Verbinde dich neu mit dem Netzwerk oder lege eigene DNS-Server unter Einstellungen → DNS fest."
+      },
+      "resolvers_not_answering": {
+        "summary": "DNS-Server antworten nicht.",
+        "causes": "Der DNS-Server ist ausgefallen oder das Netzwerk blockiert DNS.",
+        "actions": "Versuche eigene DNS-Server oder ein anderes Netzwerk."
+      },
+      "some_resolvers_failing": {
+        "summary": "Einige DNS-Server antworten nicht.",
+        "causes": "Einer der Server ist ausgefallen.",
+        "actions": "Meist unproblematisch – die übrigen übernehmen."
+      },
+      "running": { "summary": "Der Dienst läuft und hat alles, was er braucht." },
+      "tunnel_driver_missing": {
+        "summary": "Der WireGuard-Treiber ist nicht verfügbar.",
+        "causes": "Die Treiberdatei fehlt oder hat die Signaturprüfung nicht bestanden.",
+        "actions": "Installiere Meridian neu."
+      },
+      "firewall_unavailable": {
+        "summary": "Der Dienst kann die Firewall nicht nutzen, daher funktioniert der Kill Switch nicht.",
+        "causes": "Der Dienst läuft ohne Systemrechte.",
+        "actions": "Installiere Meridian neu oder starte den Dienst als Administrator."
+      },
+      "service_unreachable": {
+        "summary": "Der VPN-Dienst läuft nicht oder ist nicht erreichbar.",
+        "causes": "Er wurde beendet, ist abgestürzt oder falsch installiert.",
+        "actions": "Starte den Computer neu. Wenn das nicht hilft, installiere Meridian neu."
+      },
+      "reachable": { "summary": "Server sind von diesem Gerät aus erreichbar." },
+      "no_server_list": {
+        "summary": "Es gibt noch keine Serverliste.",
+        "causes": "Der Dienst konnte sie nicht laden.",
+        "actions": "Prüfe deine Internetverbindung."
+      },
+      "servers_unreachable": {
+        "summary": "Kein Server hat geantwortet.",
+        "causes": "Dein Netzwerk blockiert ICMP oder VPN-Verkehr, oder es gibt eine Störung.",
+        "actions": "Versuche ein anderes Netzwerk. Wenn es woanders funktioniert, kontaktiere den Support."
+      },
+      "server_list_stale": {
+        "summary": "Server antworten, aber die Serverliste ist veraltet.",
+        "causes": "Die Liste konnte schon länger nicht aktualisiert werden.",
+        "actions": "Sie aktualisiert sich selbst, sobald der Dienst erreichbar ist."
+      },
+      "handshake_fresh": { "summary": "Der Tunnel-Handshake ist aktuell und in Ordnung." },
+      "handshake_stale": {
+        "summary": "Der Server hat seit einer Weile keinen Handshake gemacht.",
+        "causes": "Der Server antwortet nicht mehr oder das Netzwerk stört.",
+        "actions": "Verbinde dich neu oder wähle einen anderen Server."
+      },
+      "no_handshake": {
+        "summary": "Kein Handshake mit dem Server.",
+        "causes": "UDP ist in diesem Netzwerk möglicherweise blockiert.",
+        "actions": "Versuche einen anderen Server oder ein anderes Netzwerk."
+      },
+      "default_route_via_tunnel": { "summary": "Der Internetverkehr läuft durch den Tunnel." },
+      "default_route_bypasses_tunnel": {
+        "summary": "Der Datenverkehr läuft nicht durch den Tunnel.",
+        "causes": "Ein anderes VPN oder Netzwerkprogramm hat die Routen geändert.",
+        "actions": "Schließe andere VPN-Programme und verbinde dich neu."
+      },
+      "route_unknown": {
+        "summary": "Die Route konnte nicht ermittelt werden.",
+        "causes": "Windows hat die Route nicht gemeldet.",
+        "actions": "Verbinde dich neu und starte die Prüfungen erneut."
+      },
+      "active": { "summary": "Die Kill-Switch-Regeln sind eingerichtet und geprüft." },
+      "kill_switch_off": {
+        "summary": "Der Kill Switch ist aus.",
+        "causes": "Er ist in den Einstellungen ausgeschaltet.",
+        "actions": "Schalte ihn unter Einstellungen → Kill Switch ein, damit bei Neuverbindungen kein Datenverkehr offenliegt."
+      },
+      "rules_not_as_expected": {
+        "summary": "Die Firewall-Regeln stimmen nicht mit denen von Meridian überein.",
+        "causes": "Ein anderes Programm hat die Firewall geändert oder die Regeln wurden nicht angewendet.",
+        "actions": "Verbinde dich neu. Wenn das nicht hilft, starte den Computer neu."
+      },
+      "ipv6_tunneled": { "summary": "IPv6 läuft durch den Tunnel." },
+      "no_ipv6_on_network": { "summary": "Dein Netzwerk hat kein IPv6, es kann nichts abfließen." },
+      "ipv6_blocked_outside_tunnel": { "summary": "IPv6 außerhalb des Tunnels ist blockiert." },
+      "ipv6_may_leak": {
+        "summary": "IPv6 kann am Tunnel vorbeilaufen.",
+        "causes": "Der IPv6-Leckschutz ist aus.",
+        "actions": "Aktiviere „IPv6-Lecks blockieren“ unter Einstellungen → Netzwerk."
+      },
+      "not_connected": { "summary": "Keine Verbindung, daher trifft diese Prüfung nicht zu." },
+      "signed_in": { "summary": "Du bist angemeldet und dieses Gerät ist registriert." },
+      "signed_out": {
+        "summary": "Nicht angemeldet.",
+        "causes": "Du hast dich abgemeldet oder die Sitzung ist abgelaufen.",
+        "actions": "Melde dich an."
+      },
+      "device_not_registered": {
+        "summary": "Dieses Gerät ist in keinem Konto registriert.",
+        "causes": "Es wurde entfernt oder die Registrierung wurde nicht abgeschlossen.",
+        "actions": "Melde dich erneut an, um es zu registrieren."
+      },
+      "subscription_inactive": {
+        "summary": "Dein Tarif ist nicht aktiv.",
+        "causes": "Testphase oder Abonnement ist beendet.",
+        "actions": "Wähle einen Tarif unter Konto → Abonnement."
+      },
+      "api_unreachable": {
+        "summary": "Der Meridian-Kontodienst ist nicht erreichbar.",
+        "causes": "Du bist offline oder dein Netzwerk blockiert ihn.",
+        "actions": "Prüfe deine Verbindung und versuche es erneut."
+      }
+    },
+    "logs": {
+      "title": "Verbindungsprotokoll",
+      "intro": "Ereignisse des VPN-Dienstes: Verbindungsversuche, Netzwerkwechsel, Fehler. Niemals dein Datenverkehr oder besuchte Websites. IP-Adressen sind maskiert, außer im Diagnosemodus.",
+      "level": "Stufe",
+      "category": "Kategorie",
+      "all": "Alle",
+      "search": "Protokoll filtern",
+      "live": "Live",
+      "export": "Protokoll exportieren",
+      "exported": "Protokoll gespeichert",
+      "clearConfirm": "Verbindungsprotokoll auf diesem Gerät leeren?",
+      "empty": { "title": "Noch keine Einträge", "body": "Ereignisse erscheinen, wenn sich das VPN verbindet, neu verbindet oder ein Problem meldet." },
+      "levels": { "error": "Fehler", "warn": "Warnung", "info": "Info", "debug": "Debug" },
+      "categories": {
+        "connection": "Verbindung",
+        "server": "Server",
+        "protocol": "Protokoll",
+        "auth": "Konto",
+        "dns": "DNS",
+        "network": "Netzwerk",
+        "firewall": "Firewall",
+        "service": "Dienst"
+      }
+    }
+  },
+  "settings": {
+    "title": "Einstellungen",
+    "sections": {
+      "general": "Allgemein",
+      "appearance": "Darstellung",
+      "connection": "Verbindung",
+      "protocols": "Protokolle",
+      "security": "Sicherheit",
+      "privacy": "Datenschutz",
+      "dns": "DNS",
+      "killSwitch": "Kill Switch",
+      "splitTunneling": "Split Tunneling",
+      "network": "Netzwerk",
+      "autoConnect": "Automatisch verbinden",
+      "notifications": "Benachrichtigungen",
+      "account": "Konto",
+      "subscription": "Abonnement",
+      "diagnostics": "Diagnose",
+      "shortcuts": "Tastenkürzel",
+      "advanced": "Erweitert",
+      "about": "Über"
+    },
+    "saved": "Gespeichert",
+    "saveFailed": "Speichern fehlgeschlagen: {{error}}",
+    "serviceOnly": "Diese Einstellungen verwaltet der VPN-Dienst; sie gelten auch, wenn die App geschlossen ist.",
+    "general": {
+      "language": "Sprache",
+      "languageSystem": "Systemsprache",
+      "launchOnStartup": "Meridian bei der Windows-Anmeldung öffnen",
+      "closeToTray": "Beim Schließen des Fensters im Infobereich weiterlaufen",
+      "confirmDisconnect": "Vor dem Trennen nachfragen",
+      "autoUpdates": "Automatische Updates",
+      "autoUpdatesNote": "Updates sind signiert und werden vor der Installation geprüft. In diesem Entwicklungs-Build ist kein Update-Kanal eingerichtet."
+    },
+    "appearance": {
+      "theme": "Design",
+      "themes": { "dark": "Dunkel", "light": "Hell", "system": "System" },
+      "density": "Dichte",
+      "densities": { "comfortable": "Großzügig", "compact": "Kompakt" },
+      "motion": "Animationen",
+      "motions": { "system": "Wie im System", "reduced": "Reduziert", "full": "Vollständig" },
+      "textSize": "Textgröße"
+    },
+    "connection": {
+      "defaultTarget": "Beim Klick auf „Verbinden“",
+      "defaultSmart": "Smart Connect: {{mode}}",
+      "defaultServer": "Server {{server}}",
+      "autoReconnect": "Bei Verbindungsabbruch automatisch neu verbinden",
+      "switchServerAfter": "Nach so vielen Fehlversuchen einen anderen Server nehmen",
+      "maxAttempts": "Nach so vielen Versuchen aufgeben (0 = unbegrenzt versuchen)"
+    },
+    "protocols": {
+      "intro": "Das Protokoll legt fest, wie Gerät und Server den verschlüsselten Tunnel aufbauen. „Automatisch“ wählt die beste verfügbare Option für dein Netzwerk.",
+      "automatic": {
+        "name": "Automatisch",
+        "desc": "Nutzt WireGuard und weicht in Netzwerken, die UDP blockieren, auf ein TCP-basiertes Protokoll aus, sobald eines in diesem Build verfügbar ist."
+      },
+      "wireguard": {
+        "name": "WireGuard",
+        "desc": "Modern, schlank und schnell; läuft im Windows-Kernel.",
+        "pros": "Am schnellsten; verbindet sich sofort und nahtlos neu; kleiner, geprüfter Code; moderne Kryptografie.",
+        "cons": "Nur UDP, daher blockieren manche strenge Netzwerke es.",
+        "performance": "Ausgezeichnet",
+        "stability": "Ausgezeichnet, wechselt nahtlos zwischen Netzwerken",
+        "compatibility": "Funktioniert in den meisten Netzwerken"
+      },
+      "openvpn": {
+        "name": "OpenVPN",
+        "desc": "Ausgereift und breit unterstützt; kann über TCP-Port 443 laufen.",
+        "pros": "Kommt per TCP durch strenge Firewalls; lange Erfolgsgeschichte.",
+        "cons": "Langsamer als WireGuard; verbindet sich langsamer.",
+        "performance": "Gut",
+        "stability": "Gut",
+        "compatibility": "Ausgezeichnet, auch in Netzwerken, die UDP blockieren"
+      },
+      "ikev2": {
+        "name": "IKEv2/IPsec",
+        "desc": "In Betriebssysteme eingebaut, erholt sich schnell bei Netzwerkwechseln.",
+        "pros": "In Windows eingebaut; verbindet sich schnell neu.",
+        "cons": "Manche Netzwerke blockieren IPsec.",
+        "performance": "Sehr gut",
+        "stability": "Sehr gut in Mobilfunknetzen",
+        "compatibility": "Gut"
+      },
+      "labels": { "pros": "Vorteile", "cons": "Nachteile", "performance": "Leistung", "stability": "Stabilität", "compatibility": "Kompatibilität" },
+      "notBundled": "In diesem Build nicht enthalten",
+      "driverMissing": "Treiber nicht installiert"
+    },
+    "killSwitch": {
+      "intro": "Der Kill Switch nutzt die Windows-Firewall, damit kein Datenverkehr das Gerät am VPN vorbei verlässt.",
+      "modes": {
+        "off": { "name": "Aus", "desc": "Keine Sperre. Beim Verbinden und Neuverbinden kann kurz ungeschützter Datenverkehr abfließen." },
+        "while_connected": { "name": "An, solange verbunden", "desc": "Vom Klick auf „Verbinden“ bis zum Trennen geht nichts am Tunnel vorbei – auch nicht bei Neuverbindungen und Fehlern." },
+        "always_on": { "name": "Immer an", "desc": "Nichts geht jemals am Tunnel vorbei – auch ohne Verbindung und ab dem Systemstart. Ohne Verbindung gibt es kein Internet." }
+      },
+      "blocked": "Blockiert: jede Verbindung, die nicht durch den Tunnel läuft.",
+      "allowed": "Weiterhin erlaubt: Kommunikation innerhalb des Computers, das Beziehen einer Netzwerkadresse (DHCP), die Verbindung zum VPN-Server selbst, die Anmeldung bei Meridian und – wenn du es unten erlaubst – dein lokales Netzwerk.",
+      "allowLan": "Lokales Netzwerk während der Sperre erlauben",
+      "allowLanDesc": "Drucker, Streaming auf den Fernseher und freigegebene Ordner im Heimnetz funktionieren weiter.",
+      "unavailable": "Kill Switch nicht verfügbar: {{reason}}",
+      "offConfirmTitle": "Kill Switch ausschalten?",
+      "offConfirmBody": "Ohne ihn kann deine echte IP-Adresse bei jeder Neuverbindung des VPN für einige Sekunden sichtbar werden.",
+      "alwaysOnConfirmTitle": "Ohne Verbindung allen Datenverkehr blockieren?",
+      "alwaysOnConfirmBody": "Mit „Immer an“ hat das Gerät keinerlei Internetzugang, solange das VPN nicht verbunden ist – auch direkt nach dem Systemstart."
+    },
+    "dns": {
+      "intro": "DNS übersetzt Namen wie example.com in Adressen. Wer diese Anfragen beantwortet, sieht, welche Websites du besuchst.",
+      "mode": "DNS-Server",
+      "modes": {
+        "vpn": { "name": "VPN-DNS", "desc": "Der DNS-Server von Meridian auf dem VPN-Server, erreichbar durch den Tunnel. Empfohlen." },
+        "custom": { "name": "Eigener DNS", "desc": "Von dir gewählte DNS-Server, erreichbar durch den Tunnel." },
+        "system": { "name": "Automatisch (DNS deines Netzwerks)", "desc": "DNS bleibt unverändert. Dein Anbieter kann die besuchten Websites sehen." }
+      },
+      "customServers": "Eigene DNS-Server",
+      "customPlaceholder": "z. B. 9.9.9.9",
+      "addServer": "Server hinzufügen",
+      "invalidIp": "Das ist keine IP-Adresse.",
+      "blockLeaks": "DNS-Leckschutz",
+      "blockLeaksDesc": "Blockiert während der Verbindung DNS-Anfragen an alle Server außer dem, den Meridian verwendet.",
+      "dohNote": "Verschlüsseltes DNS in Browsern (DNS over HTTPS) sieht aus wie normaler Webverkehr und lässt sich nicht per Port blockieren. Es läuft trotzdem im Tunnel.",
+      "status": "Aktuell verwendet",
+      "statusConnected": "{{servers}} durch den Tunnel",
+      "statusDisconnected": "DNS deines Netzwerks ({{servers}}); VPN nicht verbunden",
+      "test": "DNS testen",
+      "testing": "Wird getestet…",
+      "testResult": "{{server}}: {{outcome}} in {{ms}} ms",
+      "testFailed": "{{server}}: {{outcome}}",
+      "leakRisk": "Kann Websites gegenüber deinem Netzwerk offenlegen"
+    },
+    "splitTunneling": {
+      "intro": "Lege fest, welche Apps das VPN nutzen.",
+      "modes": {
+        "off": { "name": "Gesamter Verkehr über das VPN", "desc": "Empfohlen. Alle Apps sind geschützt." },
+        "exclude_apps": { "name": "Ausgewählte Apps ausschließen", "desc": "Ausgewählte Apps verbinden sich direkt, am VPN vorbei." },
+        "only_apps": { "name": "VPN nur für ausgewählte Apps", "desc": "Alles andere verbindet sich direkt." }
+      },
+      "notEnforced": "Split Tunneling braucht einen Netzwerktreiber, der in diesem Build noch fehlt. Die Regeln werden gespeichert, aber bis dahin läuft der gesamte Verkehr über das VPN.",
+      "apps": "Apps",
+      "addApp": "App hinzufügen",
+      "searchApps": "Installierte Apps durchsuchen",
+      "noApps": { "title": "Keine Apps ausgewählt", "body": "Füge Apps hinzu, um festzulegen, wie sie sich verbinden." },
+      "loadingApps": "Installierte Apps werden gesucht…"
+    },
+    "network": {
+      "intro": "Die meisten Nutzer müssen hier nichts ändern.",
+      "ipv6": "IPv6 über das VPN nutzen, wenn verfügbar",
+      "ipv6Desc": "Überträgt IPv6 im Tunnel, sofern der Server es unterstützt.",
+      "blockIpv6": "IPv6-Lecks blockieren",
+      "blockIpv6Desc": "Wenn der Tunnel nur IPv4 überträgt, wird IPv6 außerhalb des Tunnels blockiert.",
+      "allowLan": "Zugriff aufs lokale Netzwerk erlauben",
+      "allowLanDesc": "Zugriff auf Drucker, NAS und andere Heimgeräte während der Verbindung.",
+      "mtu": "MTU",
+      "mtuDesc": "Maximale Paketgröße im Tunnel. „Automatisch“ passt fast immer; verringere den Wert nur, wenn manche Websites nicht vollständig laden.",
+      "mtuAuto": "Automatisch",
+      "mtuWarningTitle": "MTU ändern?",
+      "mtuWarningBody": "Ein falscher Wert kann dazu führen, dass manche Websites hängen oder fehlschlagen. „Automatisch“ (1420) passt für fast jedes Netzwerk.",
+      "keepalive": "Keepalive-Intervall",
+      "keepaliveDesc": "Hält die Verbindung durch Heimrouter und NAT offen. In Sekunden; 0 = aus.",
+      "nat": "NAT-Verhalten",
+      "natDesc": "Dein Gerät teilt sich die öffentliche Adresse des VPN-Servers mit anderen Nutzern (NAT). Eingehende Verbindungen über das VPN erreichen dich nicht.",
+      "reconnect": "Neu verbinden"
+    },
+    "autoConnect": {
+      "intro": "Lass Meridian sich selbst verbinden – je nachdem, wo du bist.",
+      "onAppStart": "Beim Start der App verbinden",
+      "onSystemStart": "Beim Start des Computers verbinden (vor der Anmeldung)",
+      "onUntrusted": "In Netzwerken verbinden, die nicht als vertrauenswürdig gelistet sind",
+      "onOpenWifi": "In offenen WLANs (ohne Passwort) immer verbinden",
+      "reconnectOnline": "Neu verbinden, wenn das Internet zurückkehrt",
+      "trustedTitle": "Vertrauenswürdige Netzwerke",
+      "trustedIntro": "Lege fest, wie sich Meridian in bekannten Netzwerken verhält.",
+      "trustedWarning": "„VPN nicht verwenden“ bedeutet, dass dein Datenverkehr in diesem Netzwerk ungeschützt ist. Das hebt den Kill-Switch-Modus „Immer an“ niemals auf.",
+      "addCurrent": "Aktuelles Netzwerk hinzufügen",
+      "addNetwork": "Netzwerk hinzufügen",
+      "ssid": "WLAN-Name (SSID)",
+      "wired": "Kabelnetzwerk",
+      "name": "Name",
+      "kind": "Typ",
+      "kinds": { "home": "Zuhause", "work": "Arbeit", "public": "Öffentlich", "travel": "Reise", "other": "Sonstiges" },
+      "policy": "In diesem Netzwerk",
+      "policies": { "require_vpn": "Immer VPN verwenden", "optional": "Selbst entscheiden", "bypass": "VPN nicht verwenden" },
+      "noTrusted": { "title": "Keine vertrauenswürdigen Netzwerke", "body": "Füge dein Heim- oder Arbeitsnetzwerk hinzu, um festzulegen, wie sich Meridian dort verhält." },
+      "wifiUnavailable": "Windows hat das Lesen von WLAN-Namen nicht erlaubt (Standortberechtigung). Kabelnetzwerke und manuelle Eingabe funktionieren.",
+      "current": "Aktuelles Netzwerk: {{name}}"
+    },
+    "notifications": {
+      "intro": "Lege fest, worüber du informiert wirst.",
+      "connected": "VPN verbunden",
+      "disconnected": "VPN getrennt",
+      "connectionFailed": "Verbindung fehlgeschlagen",
+      "killSwitch": "Kill Switch blockiert Datenverkehr",
+      "security": "Sicherheitswarnungen (neue Anmeldungen, Passwortänderungen)",
+      "updates": "Updates verfügbar"
+    },
+    "shortcuts": {
+      "intro": "Kürzel funktionieren, wenn das Meridian-Fenster aktiv ist; „Anzeigen/Ausblenden“ funktioniert überall.",
+      "items": {
+        "toggleConnection": "Verbinden / Trennen",
+        "disconnect": "Trennen",
+        "openServers": "Serverauswahl",
+        "search": "Suche",
+        "openSettings": "Einstellungen öffnen",
+        "toggleWindow": "Meridian anzeigen / ausblenden (global)"
+      },
+      "press": "Tastenkombination drücken…",
+      "taken": "Diese Kombination wird bereits von einer anderen App verwendet."
+    },
+    "advanced": {
+      "intro": "Für Fehlersuche und erfahrene Nutzer. Änderungen hier können die Verbindung beeinflussen.",
+      "logLevel": "Protokollstufe des Dienstes",
+      "diagnosticMode": "Diagnosemodus",
+      "diagnosticModeDesc": "Schaltet die Maskierung von IP-Adressen im Verbindungsprotokoll ab. Nur zum Nachstellen eines Problems einschalten.",
+      "diagnosticWarningTitle": "Diagnosemodus einschalten?",
+      "diagnosticWarningBody": "Neue Protokolleinträge enthalten dann vollständige IP-Adressen (deine und die der Server). Sie bleiben auf diesem Gerät, bis du sie exportierst.",
+      "persistentKeepalive": "Persistentes Keepalive (Sekunden)",
+      "resetAll": "VPN-Einstellungen zurücksetzen",
+      "resetConfirm": "Alle Einstellungen des VPN-Dienstes auf die Standardwerte zurücksetzen? Konto, Profile und App-Einstellungen bleiben erhalten.",
+      "rotateKey": "Neuen Geräteschlüssel erzeugen",
+      "rotateKeyDesc": "Ersetzt den WireGuard-Schlüssel dieses Geräts. Meridian registriert den neuen Schlüssel in deinem Konto.",
+      "rotateConfirm": "Neuen Schlüssel erzeugen? Das VPN verbindet sich danach neu.",
+      "interface": "Tunnelschnittstelle"
+    },
+    "about": {
+      "version": "App-Version",
+      "service": "Dienstversion",
+      "driver": "Tunneltreiber",
+      "os": "Betriebssystem",
+      "licenses": "Open-Source-Lizenzen",
+      "update": "Nach Updates suchen",
+      "updateNotConfigured": "Für diesen Entwicklungs-Build ist kein Update-Kanal eingerichtet.",
+      "wireguard": "WireGuard ist eine eingetragene Marke von Jason A. Donenfeld."
+    },
+    "security": {
+      "trustedDevices": "Vertrauenswürdige Geräte",
+      "trustedDevicesDesc": "Geräte, die sich mit deinem Konto verbinden können. Entferne alle, die du nicht kennst.",
+      "appLock": "App-Sperre (Windows Hello / Passwort)",
+      "appLockDesc": "Beim Öffnen von Meridian Windows Hello oder ein Passwort verlangen. In diesem Build noch nicht verfügbar."
+    },
+    "groups": { "app": "App", "vpn": "VPN", "you": "Konto & Datenschutz", "more": "Mehr" }
+  },
+  "privacy": {
+    "title": "Datenschutz",
+    "intro": "Was Meridian genau erfasst, wozu, wo es liegt und wie du es abschaltest. Ohne dein Zutun wird nichts gesendet, außer ein Punkt ist als eingeschaltet markiert.",
+    "state": { "on": "An", "off": "Aus", "always": "Immer", "never": "Wird nie erfasst" },
+    "labels": { "what": "Was", "why": "Wozu", "where": "Wo gespeichert", "control": "So schaltest du es ab" },
+    "items": {
+      "analytics": {
+        "name": "Produktanalyse",
+        "what": "Nichts. Dieser Build enthält keine Analyse.",
+        "why": "—",
+        "where": "—",
+        "control": "Nichts abzuschalten."
+      },
+      "crash": {
+        "name": "Absturzberichte",
+        "what": "Automatisch wird nichts gesendet. Abstürze werden im lokalen Dienstprotokoll festgehalten.",
+        "why": "Damit du oder der Support ein Problem nachvollziehen könnt.",
+        "where": "Nur auf diesem Gerät.",
+        "control": "Leere das Protokoll unter Diagnose → Protokoll."
+      },
+      "diagnostics": {
+        "name": "Diagnoseberichte",
+        "what": "Prüfergebnisse und Dienstversion. Werden nur gesendet, wenn du „An den Support senden“ wählst, und erst nachdem du sie gesehen hast.",
+        "why": "Damit der Support sieht, was nicht funktioniert.",
+        "where": "Das Support-System von Meridian; wird nach 90 Tagen gelöscht.",
+        "control": "Sende sie nicht. Sonst wird nichts gesendet."
+      },
+      "logs": {
+        "name": "Lokales Verbindungsprotokoll",
+        "what": "Verbindungsereignisse (Versuche, Netzwerkwechsel, Fehler). Niemals Datenverkehr, Websites oder DNS-Anfragen. IP-Adressen sind maskiert.",
+        "why": "Damit du siehst, was passiert ist, und es bei einer Hilfeanfrage exportieren kannst.",
+        "where": "Nur auf diesem Gerät, für Administratoren lesbar.",
+        "control": "Leere es unter Diagnose → Protokoll. Es verlässt das Gerät erst, wenn du es exportierst."
+      },
+      "account": {
+        "name": "Kontodaten",
+        "what": "Deine E-Mail, ein Hash deines Passworts, dein Tarif, deine Geräte (Name, Betriebssystem, öffentlicher Schlüssel) und aktive Sitzungen.",
+        "why": "Um dein Konto zu führen und jedem Gerät Zugang zu geben.",
+        "where": "Meridian-Server.",
+        "control": "Lösche dein Konto unter Konto → Profil."
+      },
+      "connection": {
+        "name": "Verbindungsmetadaten",
+        "what": "Werden nicht gespeichert. Server kennen ein verbundenes Gerät nur, solange es verbunden ist, um den Datenverkehr zu routen; es wird kein Verlauf geführt.",
+        "why": "—",
+        "where": "Arbeitsspeicher des VPN-Servers; wird wenige Minuten nach dem Trennen gelöscht.",
+        "control": "Nichts abzuschalten."
+      },
+      "traffic": {
+        "name": "Datenverkehr, Websites und DNS-Anfragen",
+        "what": "Werden nie erfasst oder protokolliert – weder auf diesem Gerät noch auf unseren Servern.",
+        "why": "—",
+        "where": "—",
+        "control": "—"
+      }
+    }
+  },
+  "account": {
+    "title": "Konto",
+    "tabs": { "profile": "Profil", "security": "Sicherheit", "devices": "Geräte", "subscription": "Abonnement" },
+    "signedOut": { "title": "Nicht angemeldet", "body": "Melde dich an, um dich zu verbinden und Geräte und Tarif zu verwalten." },
+    "offline": "Gespeicherte Kontodaten werden angezeigt – sie konnten nicht aktualisiert werden.",
+    "profile": {
+      "email": "E-Mail",
+      "verified": "Bestätigt",
+      "unverified": "Nicht bestätigt",
+      "verifyNow": "E-Mail bestätigen",
+      "memberSince": "Mitglied seit",
+      "language": "Sprache der E-Mails",
+      "delete": "Konto löschen",
+      "deleteTitle": "Konto löschen?",
+      "deleteBody": "Konto, Geräte, Profile, Supportanfragen und Diagnoseberichte werden endgültig gelöscht. Das lässt sich nicht rückgängig machen.",
+      "deletePassword": "Gib zur Bestätigung dein Passwort ein"
+    },
+    "security": {
+      "password": "Passwort",
+      "changePassword": "Passwort ändern",
+      "currentPassword": "Aktuelles Passwort",
+      "newPassword": "Neues Passwort",
+      "passwordChanged": "Passwort geändert. Alle anderen Sitzungen wurden beendet.",
+      "twoFactor": "Zwei-Faktor-Authentifizierung",
+      "twoFactorOn": "An: Zur Anmeldung ist ein Code aus deiner Authenticator-App nötig.",
+      "twoFactorOff": "Aus. Füge einen zweiten Schritt hinzu, um dein Konto zu schützen.",
+      "setup": "Einrichten",
+      "setupTitle": "Zwei-Faktor-Authentifizierung einrichten",
+      "setupStep1": "Füge diesen Schlüssel zu deiner Authenticator-App hinzu (Google Authenticator, 1Password, Aegis…).",
+      "setupStep2": "Gib den angezeigten 6-stelligen Code ein.",
+      "secretKey": "Einrichtungsschlüssel",
+      "recoveryTitle": "Wiederherstellungscodes speichern",
+      "recoveryBody": "Jeder Code erlaubt eine einmalige Anmeldung, falls du deinen Authenticator verlierst. Bewahre sie sicher auf – sie werden nicht noch einmal angezeigt.",
+      "disableTitle": "Zwei-Faktor-Authentifizierung ausschalten?",
+      "code": "6-stelliger Code",
+      "sessions": "Aktive Sitzungen",
+      "thisDevice": "Dieses Gerät",
+      "lastActive": "Zuletzt aktiv {{date}}",
+      "signOutOthers": "Alle anderen Sitzungen abmelden",
+      "noSessions": "Keine anderen Sitzungen.",
+      "qr": "QR-Code für deine Authenticator-App"
+    },
+    "devices": {
+      "intro": "Geräte, die sich mit deinem Konto verbinden können.",
+      "limit": "{{used}} von {{limit}} Geräten",
+      "thisDevice": "Dieses Gerät",
+      "connectedNow": "Gerade verbunden",
+      "lastSeen": "Zuletzt gesehen {{date}}",
+      "added": "Hinzugefügt {{date}}",
+      "revokeTitle": "„{{name}}“ entfernen?",
+      "revokeBody": "Es wird innerhalb einer Minute getrennt und kann sich erst wieder verbinden, wenn es sich erneut anmeldet.",
+      "empty": { "title": "Noch keine Geräte", "body": "Geräte erscheinen hier, sobald du dich auf ihnen anmeldest." },
+      "register": "Dieses Gerät registrieren",
+      "notRegistered": "Dieses Gerät ist noch nicht registriert."
+    },
+    "subscription": {
+      "plan": "Tarif",
+      "status": "Status",
+      "statuses": { "none": "Kein Tarif", "incomplete": "Zahlung nicht bestätigt", "trialing": "Testphase", "active": "Aktiv", "past_due": "Zahlung ausstehend", "canceled": "Gekündigt", "expired": "Abgelaufen" },
+      "renews": "Verlängert sich am {{date}}",
+      "ends": "Endet am {{date}}",
+      "trialEnds": "Testphase endet am {{date}}",
+      "renewal": "Verlängerung",
+      "period": "Abrechnungszeitraum",
+      "periods": { "trial": "Test", "month": "Monatlich", "year": "Jährlich" },
+      "paymentMethod": "Zahlungsmethode",
+      "noPaymentMethod": "Keine Zahlungsmethode hinterlegt",
+      "card": "{{brand}} mit Endziffern {{last4}}",
+      "invoices": "Rechnungen",
+      "noInvoices": "Noch keine Rechnungen.",
+      "changePlan": "Tarif ändern",
+      "choosePlan": "Tarif wählen",
+      "perMonth": "{{price}} / Monat",
+      "perYear": "{{price}} / Jahr",
+      "devicesIncluded": "Bis zu {{count}} Geräte",
+      "cancel": "Tarif kündigen",
+      "cancelTitle": "Tarif kündigen?",
+      "cancelBody": "Du behältst vollen Zugriff bis {{date}}. Danach verlängert sich der Tarif nicht. Bis dahin kannst du ihn fortsetzen.",
+      "resume": "Tarif fortsetzen",
+      "activated": "Tarif aktiviert",
+      "checkoutOpened": "Die Zahlung wurde im Browser geöffnet.",
+      "renewTitle": "Wähle einen Tarif, um dich zu verbinden",
+      "renewBody": "Dein Tarif ist abgelaufen, daher kann sich dieses Gerät nicht verbinden. Wähle einen Tarif, um fortzufahren.",
+      "incompleteBody": "Deine erste Zahlung ist noch nicht bestätigt. Wenn du gerade bezahlt hast, aktualisiert sich das innerhalb einer Minute.",
+      "pastDueBody": "Die Zahlung für diesen Zeitraum ist fehlgeschlagen. Aktualisiere deine Zahlungsmethode, um deinen Tarif zu behalten.",
+      "manageBilling": "Zahlung verwalten",
+      "manualNote": "Der Tarif dieses Kontos wurde ohne Kartenzahlung eingerichtet (Entwicklung / vom Team vergeben)."
+    }
+  },
+  "auth": {
+    "signInTitle": "Bei Meridian anmelden",
+    "signInSubtitle": "Melde dich mit deinem Meridian-Konto an, um dieses Gerät zu verbinden.",
+    "registerTitle": "Konto erstellen",
+    "registerSubtitle": "Starte mit 7 kostenlosen Tagen. Keine Karte nötig.",
+    "email": "E-Mail",
+    "password": "Passwort",
+    "passwordHint": "Mindestens 10 Zeichen. Ein paar zufällige Wörter eignen sich gut.",
+    "signIn": "Anmelden",
+    "register": "Konto erstellen",
+    "noAccount": "Neu bei Meridian?",
+    "haveAccount": "Schon ein Konto?",
+    "forgot": "Passwort vergessen?",
+    "verifyTitle": "Prüfe dein Postfach",
+    "verifyBody": "Wir haben einen 6-stelligen Code an {{email}} gesendet.",
+    "code": "Code",
+    "verify": "Bestätigen",
+    "resend": "Neuen Code senden",
+    "resent": "Falls die Adresse bestätigt werden muss, ist ein neuer Code unterwegs.",
+    "forgotTitle": "Passwort zurücksetzen",
+    "forgotBody": "Gib deine E-Mail ein, wir senden dir einen Code zum Zurücksetzen.",
+    "sendCode": "Code senden",
+    "resetTitle": "Neues Passwort festlegen",
+    "resetBody": "Gib den Code aus der E-Mail und ein neues Passwort ein.",
+    "newPassword": "Neues Passwort",
+    "resetDone": "Passwort zurückgesetzt. Melde dich mit dem neuen Passwort an.",
+    "mfaTitle": "Zwei-Faktor-Authentifizierung",
+    "mfaBody": "Gib den Code aus deiner Authenticator-App ein.",
+    "useRecovery": "Wiederherstellungscode verwenden",
+    "useCode": "Authenticator-Code verwenden",
+    "recoveryCode": "Wiederherstellungscode",
+    "registering": "Dieses Gerät wird eingerichtet…",
+    "enrolled": "Dieses Gerät ist bereit zum Verbinden.",
+    "continueOffline": "Server ohne Anmeldung ansehen"
+  },
+  "apiErrors": {
+    "invalid_credentials": "E-Mail oder Passwort ist falsch.",
+    "too_many_attempts": "Zu viele Versuche. Warte ein paar Minuten.",
+    "rate_limited": "Zu viele Anfragen. Warte einen Moment.",
+    "invalid_code": "Der Code ist falsch oder abgelaufen.",
+    "email_unverified": "Bestätige zuerst deine E-Mail-Adresse.",
+    "password_too_short": "Verwende mindestens 10 Zeichen.",
+    "password_too_long": "Verwende höchstens 128 Zeichen.",
+    "password_too_common": "Dieses Passwort ist zu verbreitet.",
+    "password_too_simple": "Verwende ein weniger gleichförmiges Passwort.",
+    "password_contains_email": "Verwende deine E-Mail nicht im Passwort.",
+    "device_limit_reached": "Das Gerätelimit deines Tarifs ist erreicht. Entferne zuerst ein Gerät.",
+    "subscription_inactive": "Dein Tarif ist nicht aktiv.",
+    "key_in_use": "Der Schlüssel dieses Geräts gehört zu einem anderen Konto.",
+    "mfa_token_invalid": "Die Anmeldung hat zu lange gedauert. Beginne von vorn.",
+    "session_revoked": "Du wurdest abgemeldet.",
+    "token_reused": "Aus Sicherheitsgründen wurde diese Sitzung beendet. Melde dich erneut an.",
+    "account_disabled": "Dieses Konto ist deaktiviert.",
+    "network": "Meridian ist nicht erreichbar. Prüfe deine Internetverbindung.",
+    "invalid_request": "Einige Angaben sind ungültig.",
+    "unknown_plan": "Dieser Tarif ist nicht verfügbar.",
+    "generic": "Etwas ist schiefgelaufen. Versuche es erneut."
+  },
+  "support": {
+    "title": "Support",
+    "tabs": { "help": "Hilfe", "faq": "FAQ", "troubleshooting": "Fehlerbehebung", "contact": "Support kontaktieren" },
+    "searchHelp": "Hilfe durchsuchen",
+    "categories": { "connection": "Verbindungsprobleme", "billing": "Abrechnung", "account": "Konto", "privacy": "Datenschutz", "other": "Sonstiges" },
+    "articles": {
+      "getting-started": {
+        "title": "Erste Schritte",
+        "body": "Klicke in der Übersicht auf „Verbinden“ – Meridian wählt den besten Server (Smart Connect). Um selbst einen Ort zu wählen, öffne „Server“ und wähle ein Land oder eine Stadt. „Geschützt“ erscheint erst, wenn der Tunnel steht und geprüft ist."
+      },
+      "kill-switch": {
+        "title": "Was der Kill Switch macht",
+        "body": "Der Kill Switch nutzt die Windows-Firewall, damit kein Datenverkehr das Gerät am VPN vorbei verlässt. „An, solange verbunden“ schützt vom Klick auf „Verbinden“ bis zum Trennen, auch bei jeder Neuverbindung. „Immer an“ blockiert alles, auch ohne Verbindung."
+      },
+      "dns-leaks": {
+        "title": "DNS-Lecks einfach erklärt",
+        "body": "Jeder Websiteaufruf beginnt mit einer DNS-Anfrage. Gehen diese Anfragen an deinen Anbieter statt durch das VPN, verraten sie, wohin du gehst. Meridian leitet Anfragen durch den Tunnel und blockiert alle Umgehungsversuche."
+      },
+      "split-tunneling": {
+        "title": "Split Tunneling",
+        "body": "Mit Split Tunneling können einzelne Apps am VPN vorbeilaufen. Unter Windows braucht das einen Netzwerktreiber, der in diesem Build noch fehlt; bis dahin werden die Regeln gespeichert und der gesamte Verkehr bleibt im VPN."
+      },
+      "trusted-networks": {
+        "title": "Vertrauenswürdige Netzwerke & automatisches Verbinden",
+        "body": "Füge bekannte Netzwerke (Zuhause, Arbeit) hinzu und wähle, was Meridian dort tut. In allen anderen Netzwerken kann es sich automatisch verbinden. Offene WLANs gelten als nicht vertrauenswürdig."
+      },
+      "privacy": {
+        "title": "Was wir protokollieren (und was nicht)",
+        "body": "Wir protokollieren nie deinen Datenverkehr, besuchte Websites oder DNS-Anfragen. Wir speichern deine Konto-E-Mail, deinen Tarif und deine Geräte. Alle Kategorien stehen unter Einstellungen → Datenschutz."
+      }
+    },
+    "faq": {
+      "q1": "Warum zeigt die App „Nicht prüfbar“?",
+      "a1": "Manche Prüfungen brauchen Daten, die nicht vorhanden sind – etwa einen externen IPv6-Prüfserver. Meridian sagt das offen, statt zu raten.",
+      "q2": "Warum zeigen manche Server „—“ als Latenz?",
+      "a2": "Die Latenz wird von deinem Gerät gemessen. Server, die noch nicht gemessen wurden oder nicht geantwortet haben, zeigen „—“ statt eines Schätzwerts.",
+      "q3": "Wird OpenVPN unterstützt?",
+      "a3": "Nicht in diesem Build. Verwendet wird WireGuard; „Automatisch“ kann auf OpenVPN ausweichen, sobald es hinzugefügt ist.",
+      "q4": "Wie viele Geräte kann ich nutzen?",
+      "a4": "In der Testphase 2 Geräte, in bezahlten Tarifen 10. Verwalte sie unter Konto → Geräte.",
+      "q5": "Nach dem Schließen von Meridian habe ich kein Internet mehr.",
+      "a5": "Wahrscheinlich steht der Kill Switch auf „Immer an“ oder das VPN sollte noch verbunden sein. Öffne Meridian und trenne die Verbindung oder ändere den Kill-Switch-Modus."
+    },
+    "troubleshooting": {
+      "intro": "Wähle, was passiert; jede Anleitung startet die passenden Prüfungen.",
+      "cantConnect": { "title": "Ich kann mich nicht verbinden", "body": "Meist blockiert das Netzwerk VPN-Verkehr oder der Server ist ausgelastet. Starte die Prüfungen und versuche dann einen anderen Server." },
+      "slow": { "title": "Die Verbindung ist langsam", "body": "Wähle einen näheren oder weniger ausgelasteten Server („Server“ → nach Latenz oder Auslastung sortieren). Die Geschwindigkeit hängt von der Entfernung und deiner eigenen Verbindung ab." },
+      "noInternet": { "title": "Verbunden, aber kein Internet", "body": "Starte die Prüfungen. Probleme mit DNS oder Routing erscheinen dort samt Lösungsschritten." },
+      "sitesBlock": { "title": "Eine Website blockiert mich über das VPN", "body": "Versuche einen anderen Server und für Videodienste einen Server mit der Funktion „Streaming“." },
+      "runChecks": "Prüfungen starten"
+    },
+    "contact": {
+      "intro": "Erzähl uns, was nicht stimmt. Wir antworten meist innerhalb eines Tages.",
+      "subject": "Betreff",
+      "category": "Kategorie",
+      "description": "Beschreibung",
+      "descriptionHint": "Was ist passiert, wann, und was wolltest du tun?",
+      "attachments": "Anhänge",
+      "attach": "Dateien anhängen",
+      "attachHint": "Bis zu 5 Dateien, je 10 MB (PNG, JPEG, TXT, JSON, ZIP, PDF).",
+      "includeReport": "Diagnosebericht anhängen",
+      "includeReportHint": "Enthält Prüfergebnisse und Versionen, IP-Adressen sind maskiert. Sieh ihn dir vor dem Senden an.",
+      "preview": "Bericht ansehen",
+      "submit": "Anfrage senden",
+      "sent": "Anfrage Nr. {{number}} gesendet. Wir antworten per E-Mail.",
+      "signInRequired": "Melde dich an, um den Support aus der App zu kontaktieren.",
+      "yourTickets": "Deine Anfragen"
+    }
+  },
+  "onboarding": {
+    "step": "Schritt {{current}} von {{total}}",
+    "welcome": {
+      "title": "Willkommen bei Meridian",
+      "body": "Ein VPN, das deine Verbindung verschlüsselt und deine IP-Adresse verbirgt – und dir offen sagt, wovor es dich schützt."
+    },
+    "privacy": {
+      "title": "Datenschutz ohne Kleingedrucktes",
+      "body": "Wir protokollieren nie deinen Datenverkehr, besuchte Websites oder DNS-Anfragen. Dieser Build sendet keine Analysedaten. Diagnoseberichte werden nur gesendet, wenn du es entscheidest."
+    },
+    "how": {
+      "title": "So funktioniert es",
+      "body": "Ein kleiner Hintergrunddienst baut einen verschlüsselten WireGuard-Tunnel zum gewählten Server auf. Der Dienst braucht Systemrechte, um den Tunnel und die Firewall-Regeln zu erstellen – das hat der Installer eingerichtet.",
+      "service": "VPN-Dienst",
+      "serviceReady": "Läuft",
+      "serviceMissing": "Nicht erreichbar. Installiere den Dienst neu oder starte ihn."
+    },
+    "protection": {
+      "title": "Standardmäßig geschützt",
+      "body": "Diese Funktionen sind standardmäßig eingeschaltet. Du kannst sie später in den Einstellungen ändern."
+    },
+    "autoConnect": {
+      "title": "Automatisch verbinden?",
+      "body": "Meridian kann sich in nicht vertrauenswürdigen Netzwerken – Cafés, Flughäfen – selbst verbinden."
+    },
+    "account": {
+      "title": "Anmelden",
+      "body": "Melde dich an oder erstelle ein Konto, um dieses Gerät zu verbinden."
+    },
+    "connect": {
+      "title": "Alles bereit",
+      "body": "Smart Connect wählt den besten Server. Klicke auf „Verbinden“, wenn du so weit bist."
+    },
+    "finish": "Zur Übersicht"
+  },
+  "notificationsPanel": {
+    "title": "Benachrichtigungen",
+    "markAll": "Alle als gelesen markieren",
+    "empty": { "title": "Alles erledigt", "body": "Verbindungsänderungen, Sicherheitswarnungen und Kontonachrichten erscheinen hier." },
+    "preferences": "Benachrichtigungseinstellungen"
+  },
+  "tray": {
+    "show": "Meridian anzeigen",
+    "quit": "Meridian beenden"
+  },
+  "osNotify": {
+    "connected": "Geschützt: verbunden mit {{city}}, {{country}}",
+    "disconnected": "Getrennt. Dein Datenverkehr läuft nicht über das VPN.",
+    "failed": "Verbindung fehlgeschlagen: {{reason}}",
+    "killSwitch": "Der Kill Switch blockiert Datenverkehr, bis das VPN wieder verbunden ist."
+  },
+  "search": {
+    "placeholder": "Server, Einstellungen, Profile und Hilfe durchsuchen…",
+    "trigger": "Server und Einstellungen suchen",
+    "groups": { "actions": "Aktionen", "servers": "Server", "settings": "Einstellungen", "profiles": "Profile", "help": "Hilfe" },
+    "empty": "Keine Treffer für „{{query}}“.",
+    "hint": "↑↓ auswählen, Enter öffnen, Esc schließen"
+  },
+  "dev": {
+    "banner": "Entwicklungssimulator – kein echtes VPN. Verbindungen, Server, IP-Adressen und Messwerte hier sind nicht echt.",
+    "panel": "Simulator",
+    "simulate": "Simulieren",
+    "slowNetwork": "Langsames Netzwerk",
+    "failHandshake": "Handshakes scheitern",
+    "dropNetwork": "Netzwerk trennen",
+    "restoreNetwork": "Netzwerk wiederherstellen",
+    "networkChange": "WLAN → Hotspot",
+    "sleepWake": "Ruhezustand / Aufwachen",
+    "stopService": "Dienst stoppen",
+    "startService": "Dienst starten",
+    "subscription": "Abonnement",
+    "error": "Fehler auslösen"
+  }
+}

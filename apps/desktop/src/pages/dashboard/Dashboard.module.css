@@ -1,0 +1,412 @@
+.hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(280px, 1fr);
+  gap: var(--space-4);
+  margin-bottom: var(--space-4);
+}
+
+@media (max-width: 1000px) {
+  .hero {
+    grid-template-columns: 1fr;
+  }
+}
+
+.statusCard {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--space-8);
+  padding: var(--space-8);
+  border-radius: var(--radius-xl);
+  background:
+    radial-gradient(120% 140% at 0% 0%, color-mix(in srgb, var(--tone) 10%, transparent) 0%, transparent 55%),
+    var(--surface-1);
+  border: 1px solid var(--border);
+  box-shadow: var(--glass-highlight);
+  overflow: hidden;
+  /* Registered colour (global.css): the glow, ring, icon tile and arc all
+     derive from it, so a state change is one smooth crossfade. */
+  --tone: var(--status-neutral);
+  transition: --tone var(--dur-spring-long) var(--ease-out);
+}
+
+.statusCard[data-tone="success"] {
+  --tone: var(--status-success);
+}
+
+.statusCard[data-tone="pending"] {
+  --tone: var(--status-pending);
+}
+
+.statusCard[data-tone="warning"] {
+  --tone: var(--status-warning);
+}
+
+.statusCard[data-tone="error"] {
+  --tone: var(--status-error);
+}
+
+@media (max-width: 640px) {
+  .statusCard {
+    flex-direction: column;
+    text-align: center;
+    padding: var(--space-6);
+    gap: var(--space-5);
+  }
+}
+
+.ring {
+  position: relative;
+  flex: none;
+  width: 148px;
+  height: 148px;
+  display: grid;
+  place-items: center;
+  color: var(--tone);
+  transition: scale var(--dur-spring) var(--ease-spring);
+}
+
+/* The ring and the main button are one control: pressing the button
+   presses the ring too. */
+.statusCard:has(.primary:active:not(:disabled)) .ring {
+  scale: calc(1 - (1 - var(--press-scale)) * 0.8);
+  transition: scale var(--dur-press) var(--ease-out);
+}
+
+/* Drawn closed, starting at 12 o'clock, when protection is verified. */
+.protectedArc {
+  stroke-dasharray: 440;
+  stroke-dashoffset: 0;
+  transform: rotate(-90deg);
+  transform-origin: center;
+  transform-box: fill-box;
+  animation: draw-ring var(--dur-spring-long) var(--ease-spring) both;
+}
+
+@keyframes draw-ring {
+  from {
+    stroke-dashoffset: 440;
+  }
+}
+
+.ring svg.track {
+  position: absolute;
+  inset: 0;
+}
+
+.ringIcon {
+  display: grid;
+  place-items: center;
+  width: 84px;
+  height: 84px;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--tone) 14%, var(--surface-2));
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    0 0 28px color-mix(in srgb, var(--tone) 22%, transparent);
+}
+
+/* A new status icon pops in with the bouncy spring. */
+.ringIcon > svg {
+  animation: global(pop-in) var(--dur-spring) var(--ease-spring-bouncy);
+}
+
+.pulse {
+  position: absolute;
+  inset: 20px;
+  border-radius: 50%;
+  border: 2px solid var(--tone);
+  animation: global(pulse-ring) 2s var(--ease-out) infinite;
+}
+
+.spinArc {
+  position: absolute;
+  inset: 0;
+  animation:
+    global(spin) 1.4s linear infinite,
+    global(fade-in) var(--dur-slow) var(--ease-out);
+}
+
+/* Headline, detail and button label: replaced text blurs in rather than
+   snapping (keyed by content in StatusHero). */
+.swap {
+  display: inline-block;
+  animation: global(swap-in) var(--dur-spring) var(--ease-spring);
+}
+
+.detail .swap {
+  display: block;
+}
+
+.statusText {
+  min-width: 0;
+}
+
+.headline {
+  font-size: var(--text-3xl);
+  line-height: 1.1;
+  color: var(--text);
+}
+
+.detail {
+  margin-top: var(--space-2);
+  color: var(--text-muted);
+  font-size: var(--text-lg);
+}
+
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-top: var(--space-3);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-top: var(--space-6);
+}
+
+@media (max-width: 640px) {
+  .meta,
+  .actions {
+    justify-content: center;
+  }
+}
+
+.primary {
+  min-width: 180px;
+}
+
+.primary svg {
+  transition: rotate var(--dur-spring) var(--ease-spring-bouncy);
+}
+
+.primary:hover:not(:disabled) svg {
+  rotate: -12deg;
+}
+
+.locationCard {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: var(--space-4);
+}
+
+.locationMain {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.locationName {
+  font-size: var(--text-xl);
+  font-family: var(--font-display);
+  font-weight: var(--weight-semibold);
+}
+
+.locationSub {
+  color: var(--text-muted);
+  font-size: var(--text-sm);
+}
+
+.smartIcon {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 27px;
+  border-radius: 4px;
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.locationStats {
+  display: flex;
+  gap: var(--space-6);
+}
+
+.statLabel {
+  font-size: var(--text-xs);
+  color: var(--text-subtle);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-caps);
+}
+
+.statValue {
+  font-size: var(--text-lg);
+  font-weight: var(--weight-medium);
+}
+
+.widgets {
+  display: grid;
+  gap: var(--space-4);
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  grid-auto-flow: row dense;
+}
+
+.wide {
+  grid-column: span 2;
+}
+
+@media (max-width: 640px) {
+  .wide {
+    grid-column: span 1;
+  }
+}
+
+.bigValue {
+  font-size: var(--text-xl);
+  font-weight: var(--weight-semibold);
+  font-family: var(--font-display);
+  font-variant-numeric: tabular-nums;
+}
+
+.muted {
+  color: var(--text-muted);
+  font-size: var(--text-sm);
+}
+
+.factList {
+  display: grid;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.fact {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  font-size: var(--text-sm);
+}
+
+.quickGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  gap: var(--space-2);
+}
+
+.quick {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-2);
+  padding: var(--space-3);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border);
+  background-color: var(--surface-2);
+  color: var(--text);
+  cursor: pointer;
+  text-align: left;
+  transition:
+    border-color var(--dur-base) var(--ease-out),
+    background-color var(--dur-base) var(--ease-out),
+    box-shadow var(--dur-base) var(--ease-out),
+    translate var(--dur-spring) var(--ease-spring),
+    scale var(--dur-spring) var(--ease-spring);
+}
+
+.quick:hover:not(:disabled) {
+  border-color: var(--glass-border);
+  background-color: var(--glass-bg-hover);
+  -webkit-backdrop-filter: var(--glass-blur);
+  backdrop-filter: var(--glass-blur);
+  box-shadow: var(--glass-highlight), var(--shadow-float);
+  translate: 0 var(--hover-lift);
+}
+
+.quick:active:not(:disabled) {
+  scale: var(--press-scale);
+  transition:
+    border-color var(--dur-base) var(--ease-out),
+    background-color var(--dur-base) var(--ease-out),
+    box-shadow var(--dur-base) var(--ease-out),
+    translate var(--dur-spring) var(--ease-spring),
+    scale var(--dur-press) var(--ease-out);
+}
+
+.quick:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.quick svg {
+  color: var(--accent);
+  transition: scale var(--dur-spring) var(--ease-spring-bouncy);
+}
+
+.quick:hover:not(:disabled) svg {
+  scale: 1.15;
+}
+
+.quickLabel {
+  font-weight: var(--weight-medium);
+  font-size: var(--text-sm);
+}
+
+.quickSub {
+  font-size: var(--text-xs);
+  color: var(--text-subtle);
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  max-width: 100%;
+}
+
+.recentList {
+  display: grid;
+  gap: 2px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.recentItem {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-2);
+  border-radius: var(--radius-sm);
+}
+
+.recentItem:hover {
+  background: var(--surface-2);
+}
+
+.recentName {
+  flex: 1;
+  min-width: 0;
+}
+
+.ipRow {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: var(--space-2) 0;
+}
+
+.ipRow + .ipRow {
+  border-top: 1px solid var(--divider);
+}
+
+.speeds {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-3);
+  margin: var(--space-3) 0;
+}
+
+.speed {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.speed svg {
+  color: var(--text-subtle);
+}

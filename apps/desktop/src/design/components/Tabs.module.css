@@ -1,0 +1,72 @@
+.list {
+  position: relative;
+  display: flex;
+  gap: var(--space-1);
+  border-bottom: 1px solid var(--border);
+  margin-bottom: var(--space-5);
+  overflow-x: auto;
+}
+
+.tab {
+  all: unset;
+  padding: var(--space-2) var(--space-3);
+  color: var(--text-muted);
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  white-space: nowrap;
+  font-weight: var(--weight-medium);
+  border-radius: var(--radius-xs) var(--radius-xs) 0 0;
+  transition:
+    color var(--dur-base) var(--ease-out),
+    background-color var(--dur-base) var(--ease-out);
+}
+
+.tab:hover {
+  color: var(--text);
+  background-color: var(--glass-bg);
+}
+
+.tab[data-state="active"] {
+  color: var(--text);
+}
+
+/* Before the underline is measured, the active tab draws its own. */
+.list:not([data-indicator]) .tab[data-state="active"] {
+  border-bottom-color: var(--accent);
+}
+
+/* One underline that springs from tab to tab. */
+.underline {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 2px;
+  width: var(--indicator-w, 0);
+  translate: var(--indicator-x, 0) 0;
+  border-radius: 2px;
+  background: var(--accent);
+  box-shadow: 0 0 8px color-mix(in srgb, var(--accent) 45%, transparent);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.list[data-indicator] .underline {
+  opacity: 1;
+}
+
+.list[data-indicator="animate"] .underline {
+  transition:
+    translate var(--dur-spring) var(--ease-spring),
+    width var(--dur-spring) var(--ease-spring);
+}
+
+.tab:focus-visible {
+  box-shadow: var(--ring);
+  border-radius: 4px;
+}
+
+.panel {
+  outline: none;
+  animation: global(page-in) var(--dur-spring) var(--ease-spring);
+}

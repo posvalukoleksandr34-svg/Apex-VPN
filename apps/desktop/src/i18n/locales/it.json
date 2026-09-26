@@ -1,0 +1,1297 @@
+{
+  "app": {
+    "name": "Meridian",
+    "tagline": "Privato, veloce e onesto."
+  },
+  "nav": {
+    "dashboard": "Panoramica",
+    "servers": "Server",
+    "profiles": "Profili",
+    "security": "Sicurezza",
+    "diagnostics": "Diagnostica",
+    "settings": "Impostazioni",
+    "support": "Assistenza",
+    "account": "Account",
+    "notifications": "Notifiche",
+    "search": "Cerca",
+    "primary": "Navigazione principale",
+    "collapse": "Comprimi barra laterale",
+    "expand": "Espandi barra laterale"
+  },
+  "actions": {
+    "connect": "Connetti",
+    "disconnect": "Disconnetti",
+    "cancel": "Annulla",
+    "retry": "Riprova",
+    "unblock": "Disconnetti e sblocca",
+    "reconnect_service": "Riprova",
+    "open_diagnostics": "Apri la diagnostica",
+    "kill_switch_settings": "Impostazioni del Kill Switch",
+    "sign_in": "Accedi",
+    "view_plans": "Vedi i piani",
+    "save": "Salva",
+    "apply": "Applica",
+    "close": "Chiudi",
+    "back": "Indietro",
+    "next": "Avanti",
+    "skip": "Salta",
+    "done": "Fatto",
+    "copy": "Copia",
+    "copied": "Copiato",
+    "export": "Esporta",
+    "clear": "Svuota",
+    "refresh": "Aggiorna",
+    "remove": "Rimuovi",
+    "add": "Aggiungi",
+    "edit": "Modifica",
+    "delete": "Elimina",
+    "rename": "Rinomina",
+    "confirm": "Conferma",
+    "change": "Cambia",
+    "runAll": "Esegui tutti i controlli",
+    "runAgain": "Esegui di nuovo",
+    "reset": "Ripristina",
+    "enable": "Attiva",
+    "disable": "Disattiva",
+    "continue": "Continua",
+    "send": "Invia",
+    "favorite": "Aggiungi ai preferiti",
+    "unfavorite": "Rimuovi dai preferiti",
+    "connectHere": "Connettiti a questo server",
+    "showAdvanced": "Opzioni avanzate",
+    "hideAdvanced": "Nascondi opzioni avanzate",
+    "learnMore": "Scopri di più",
+    "moveUp": "Sposta su",
+    "moveDown": "Sposta giù",
+    "details": "Dettagli",
+    "revoke": "Rimuovi",
+    "signOut": "Esci",
+    "measure": "Misura la latenza",
+    "browse": "Sfoglia i server"
+  },
+  "common": {
+    "unknown": "Sconosciuto",
+    "notMeasured": "Non misurata",
+    "never": "Mai",
+    "on": "Attivo",
+    "off": "Disattivo",
+    "yes": "Sì",
+    "no": "No",
+    "loading": "Caricamento…",
+    "none": "Nessuno",
+    "optional": "facoltativo",
+    "recommended": "Consigliato",
+    "comingSoon": "Non disponibile in questa build",
+    "unavailable": "Non disponibile",
+    "offlineBanner": "Sei offline. L'app continua a funzionare con i dati che conosce già.",
+    "serviceBanner": "Il servizio VPN non è raggiungibile, quindi il controllo della connessione è in pausa.",
+    "lastUpdated": "Aggiornato {{time}}",
+    "seconds": "{{count}} s",
+    "verified": "Verificato",
+    "notVerified": "Non verificato",
+    "devices": "{{count}} dispositivi",
+    "servers": "{{count}} server",
+    "search": "Cerca",
+    "somethingWrong": "Qualcosa è andato storto",
+    "tryAgainLater": "Riprova tra un attimo.",
+    "showPassword": "Mostra password",
+    "hidePassword": "Nascondi password"
+  },
+  "status": {
+    "serviceUnavailable": {
+      "title": "Il servizio VPN non è in esecuzione",
+      "detail": "Impossibile raggiungere il servizio in background di Meridian. È lui a gestire le connessioni, quindi non puoi connetterti finché non torna disponibile."
+    },
+    "serviceStarting": { "title": "Avvio…", "detail": "Connessione al servizio VPN." },
+    "unknown": { "title": "Verifica…", "detail": "Richiesta dello stato attuale al servizio." },
+    "disconnected": { "title": "Non protetto", "detail": "Il tuo traffico non passa attraverso la VPN." },
+    "lockedDown": {
+      "title": "Bloccato dal Kill Switch",
+      "detail": "Kill Switch «Sempre attivo»: nessun traffico lascia il dispositivo finché non ti connetti."
+    },
+    "connecting": { "title": "Connessione…", "retrying": "Nuovo tentativo tra {{seconds}} s (tentativo {{attempt}})" },
+    "connected": { "title": "Protetto", "detail": "Connesso tramite {{city}}, {{country}}" },
+    "reconnecting": { "title": "Riconnessione…" },
+    "offline": {
+      "title": "Nessuna connessione a Internet",
+      "detail": "Meridian si riconnetterà quando la rete tornerà disponibile.",
+      "detailBlocked": "Il traffico è bloccato finché la VPN non si riconnette."
+    },
+    "disconnecting": { "title": "Disconnessione…", "detail": "Chiusura del tunnel." },
+    "error": { "detailBlocked": "Il traffico è bloccato per proteggerti. Riprova oppure disconnettiti per rimuovere il blocco." },
+    "trafficBlocked": "Traffico bloccato"
+  },
+  "phase": {
+    "waiting_to_retry": "In attesa di riprovare",
+    "selecting_server": "Scelta del server",
+    "creating_interface": "Creazione del tunnel sicuro",
+    "configuring_network": "Configurazione della rete",
+    "handshaking": "Collegamento con il server",
+    "verifying_tunnel": "Verifica del traffico",
+    "checking_tunnel": "Controllo del tunnel"
+  },
+  "cause": {
+    "network_changed": "La rete è cambiata",
+    "network_restored": "Internet è tornato",
+    "woke_from_sleep": "Ripresa dalla sospensione",
+    "handshake_stale": "Il server non risponde più",
+    "server_unavailable": "Il server non è più disponibile",
+    "tunnel_failure": "La connessione si è interrotta",
+    "settings_changed": "Applicazione delle nuove impostazioni",
+    "user_requested": "Riconnessione su richiesta"
+  },
+  "errors": {
+    "auth_required": {
+      "title": "Accedi per connetterti",
+      "explanation": "Questo dispositivo non è collegato a un account.",
+      "cause": "Sei uscito dall'account oppure il dispositivo è stato rimosso.",
+      "action": "Accedi di nuovo e l'app registrerà di nuovo il dispositivo."
+    },
+    "subscription_inactive": {
+      "title": "Il tuo piano è scaduto",
+      "explanation": "Per connetterti serve un piano attivo.",
+      "cause": "La prova gratuita o l'abbonamento sono terminati.",
+      "action": "Scegli un piano in Account → Abbonamento."
+    },
+    "no_internet": {
+      "title": "Nessuna connessione a Internet",
+      "explanation": "Il dispositivo non è connesso a nessuna rete.",
+      "cause": "Il Wi-Fi è spento, il cavo è scollegato o la rete non funziona.",
+      "action": "Connettiti a una rete e la VPN si ripristinerà da sola."
+    },
+    "server_unavailable": {
+      "title": "Server non disponibile",
+      "explanation": "Il server scelto al momento non accetta connessioni.",
+      "cause": "Manutenzione, un guasto oppure nessun server corrisponde ai filtri.",
+      "action": "Scegli un'altra località o lascia decidere a Smart Connect."
+    },
+    "no_matching_server": {
+      "title": "Nessun server corrispondente",
+      "explanation": "Nessun server corrisponde al paese, alla città o alle funzioni scelte.",
+      "cause": "La combinazione è troppo restrittiva oppure i server sono fuori servizio.",
+      "action": "Allarga i filtri o scegli un'altra località."
+    },
+    "relay_list_unavailable": {
+      "title": "Elenco server non disponibile",
+      "explanation": "L'app non è riuscita a scaricare l'elenco dei server.",
+      "cause": "Sei offline oppure il servizio Meridian non è raggiungibile.",
+      "action": "Controlla la connessione e riprova."
+    },
+    "relay_list_invalid": {
+      "title": "Elenco server rifiutato",
+      "explanation": "L'elenco scaricato non ha superato la verifica della firma e non viene usato.",
+      "cause": "L'elenco è stato alterato lungo il percorso: la tua rete potrebbe interferire con il traffico.",
+      "action": "Cambia rete e riprova. Se non basta, contatta l'assistenza."
+    },
+    "protocol_unavailable": {
+      "title": "Protocollo non disponibile",
+      "explanation": "Il protocollo scelto non può essere usato in questa build o con questo server.",
+      "cause": "OpenVPN e IKEv2 non sono ancora inclusi in questa build.",
+      "action": "Scegli «Automatico» o WireGuard in Impostazioni → Protocolli."
+    },
+    "permission_denied": {
+      "title": "Permessi insufficienti",
+      "explanation": "Il servizio VPN non ha i permessi necessari.",
+      "cause": "Il servizio è in esecuzione senza privilegi di sistema.",
+      "action": "Reinstalla Meridian o riavvia il servizio come amministratore."
+    },
+    "driver_unavailable": {
+      "title": "Driver del tunnel mancante",
+      "explanation": "Impossibile caricare il driver WireGuard.",
+      "cause": "Il file del driver manca o non ha superato la verifica della firma.",
+      "action": "Reinstalla Meridian."
+    },
+    "handshake_timeout": {
+      "title": "Il server non ha risposto",
+      "explanation": "L'handshake cifrato con il server ha impiegato troppo tempo.",
+      "cause": "La tua rete potrebbe bloccare il traffico VPN (UDP) oppure il server è sovraccarico.",
+      "action": "Prova un altro server, un'altra rete o la scelta automatica del protocollo."
+    },
+    "tunnel_verification_failed": {
+      "title": "Il traffico non attraversa il tunnel",
+      "explanation": "Il tunnel è stato creato, ma non è tornato nulla attraverso di esso.",
+      "cause": "Un firewall o la rete interferiscono, oppure il server ha un problema.",
+      "action": "Prova un altro server. Se si ripete, esegui la diagnostica."
+    },
+    "tunnel_failure": {
+      "title": "Connessione non riuscita",
+      "explanation": "Impossibile stabilire il tunnel.",
+      "cause": "Un problema di driver o di rete su questo dispositivo.",
+      "action": "Riprova. Se si ripete, esegui la diagnostica."
+    },
+    "dns_failure": {
+      "title": "Impossibile configurare il DNS",
+      "explanation": "La VPN non è riuscita a far usare a Windows il DNS protetto.",
+      "cause": "Un altro programma gestisce il DNS su questo dispositivo.",
+      "action": "Riprova o scegli un'altra opzione in Impostazioni → DNS."
+    },
+    "routing_failure": {
+      "title": "Impossibile configurare l'instradamento",
+      "explanation": "Impossibile indirizzare il traffico nel tunnel.",
+      "cause": "Un'altra VPN o un programma di rete modifica le rotte.",
+      "action": "Chiudi gli altri programmi VPN e riprova."
+    },
+    "firewall_failure": {
+      "title": "Impossibile attivare il Kill Switch",
+      "explanation": "Le regole del firewall non si sono installate e Meridian ha rifiutato di connettersi senza di esse.",
+      "cause": "Il servizio non ha i permessi oppure il firewall è occupato da un altro programma.",
+      "action": "Esegui la diagnostica. Disattivando il Kill Switch potrai connetterti senza questa protezione."
+    },
+    "timeout": {
+      "title": "Tempo scaduto",
+      "explanation": "L'operazione ha richiesto troppo tempo.",
+      "cause": "Una rete lenta o instabile.",
+      "action": "Riprova."
+    },
+    "configuration_corrupted": {
+      "title": "Impostazioni ripristinate",
+      "explanation": "Le impostazioni salvate non erano leggibili e sono state riportate a valori sicuri.",
+      "cause": "Il file delle impostazioni era danneggiato.",
+      "action": "Controlla le impostazioni. Una copia del file danneggiato è stata conservata per l'assistenza."
+    },
+    "unsupported_platform": {
+      "title": "Non ancora supportato",
+      "explanation": "Questa parte di Meridian non è ancora disponibile per il tuo sistema operativo.",
+      "cause": "Il supporto per macOS e Linux è in lavorazione.",
+      "action": "Per ora usa Meridian su Windows."
+    },
+    "internal": {
+      "title": "Qualcosa è andato storto",
+      "explanation": "Nel servizio VPN si è verificato un errore imprevisto.",
+      "cause": "Un errore del programma.",
+      "action": "Riprova e, se si ripete, invia un rapporto di diagnostica."
+    },
+    "labels": {
+      "explanation": "Cosa è successo",
+      "cause": "Causa probabile",
+      "action": "Cosa fare"
+    }
+  },
+  "dashboard": {
+    "title": "Panoramica",
+    "location": "Località",
+    "smartLocation": "Smart Connect · {{mode}}",
+    "changeLocation": "Cambia località",
+    "server": "Server",
+    "noServer": "Scegli una località",
+    "widgets": {
+      "ip": "Indirizzo IP",
+      "quality": "Qualità del server",
+      "session": "Sessione",
+      "protocol": "Protocollo",
+      "security": "Sicurezza",
+      "quickActions": "Connessione rapida",
+      "recent": "Località recenti"
+    },
+    "ip": {
+      "yours": "Il tuo IP",
+      "vpn": "IP della VPN",
+      "checkedThrough": "Verificato tramite la VPN {{time}}",
+      "checkedWithout": "Il tuo indirizzo, verificato {{time}}",
+      "notChecked": "Non ancora verificato",
+      "check": "Verifica"
+    },
+    "quality": {
+      "latency": "Latenza",
+      "load": "Carico",
+      "measuredHere": "Misurata da questo dispositivo",
+      "notMeasured": "Non ancora misurata"
+    },
+    "session": {
+      "duration": "Durata",
+      "down": "Download",
+      "up": "Upload",
+      "total": "{{down}} ricevuti · {{up}} inviati",
+      "idle": "Nessuna sessione attiva"
+    },
+    "protocol": {
+      "cipher": "Cifratura",
+      "automatic": "Automatico"
+    },
+    "security": {
+      "killSwitch": "Kill Switch",
+      "dns": "Protezione dalle fughe DNS",
+      "ipv6": "IPv6",
+      "ipv6Tunneled": "Tramite la VPN",
+      "ipv6Blocked": "Bloccato fuori dalla VPN",
+      "ipv6Open": "Non protetto",
+      "active": "Attiva",
+      "inactive": "Non attiva",
+      "seeAll": "Vedi i dettagli di sicurezza"
+    },
+    "quick": {
+      "fastest": "Il più veloce",
+      "nearest": "Il più vicino",
+      "lastUsed": "Ultimo usato",
+      "favorite": "Preferito",
+      "secure": "Server per la privacy",
+      "noLastUsed": "Ancora nessuna connessione",
+      "noFavorite": "Ancora nessun preferito"
+    },
+    "recentEmpty": "Qui compariranno le località a cui ti connetti.",
+    "customize": "Personalizza",
+    "customizeTitle": "Widget della panoramica",
+    "customizeHint": "Scegli e ordina i riquadri sotto il pulsante di connessione."
+  },
+  "smart": {
+    "fastest": "Il più veloce",
+    "nearest": "Il più vicino",
+    "lowest_load": "Il meno carico",
+    "best_overall": "Scelta migliore",
+    "desc": {
+      "fastest": "La latenza più bassa misurata da questo dispositivo.",
+      "nearest": "Il più vicino al luogo da cui ti connetti.",
+      "lowest_load": "Il server meno occupato.",
+      "best_overall": "Tiene conto di latenza, carico, distanza e stato del server."
+    }
+  },
+  "features": {
+    "streaming": "Streaming",
+    "gaming": "Gaming",
+    "privacy": "Privacy",
+    "p2p": "P2P",
+    "low_latency": "Bassa latenza"
+  },
+  "serverStatus": {
+    "online": "Online",
+    "busy": "Occupato",
+    "maintenance": "Manutenzione",
+    "offline": "Offline"
+  },
+  "servers": {
+    "title": "Server",
+    "searchPlaceholder": "Cerca paesi, città, server",
+    "tabs": { "recommended": "Consigliati", "favorites": "Preferiti", "recent": "Recenti", "all": "Tutte le località" },
+    "filters": { "label": "Filtro", "all": "Tutti", "lowLatency": "Bassa latenza" },
+    "sort": { "label": "Ordina", "best": "Migliori", "latency": "Latenza", "load": "Carico", "name": "A–Z" },
+    "columns": { "location": "Località", "latency": "Latenza", "load": "Carico", "status": "Stato", "protocols": "Protocolli" },
+    "smartConnect": "Smart Connect",
+    "smartIn": "Miglior server: {{place}}",
+    "count": "{{count}} server",
+    "listAge": "Elenco server v{{version}} · {{time}}",
+    "stale": "L'elenco dei server non è aggiornato; latenza e carico potrebbero essere cambiati.",
+    "measure": "Misura la latenza",
+    "measuring": "Misurazione…",
+    "latencyNote": "La latenza è misurata da questo dispositivo; «—» significa «non misurata».",
+    "emptySearch": { "title": "Nessun risultato", "body": "Niente corrisponde a «{{query}}». Prova con il nome di un paese o di una città." },
+    "emptyFavorites": { "title": "Ancora nessun preferito", "body": "Aggiungi una stella a una località o a un server per connetterti con un clic." },
+    "emptyRecent": { "title": "Nessun server recente", "body": "Qui compariranno i server a cui ti connetti." },
+    "noList": { "title": "Elenco server non disponibile", "body": "L'elenco non è ancora stato caricato. Comparirà qui appena il servizio lo avrà scaricato." },
+    "info": {
+      "title": "Dettagli del server",
+      "hostname": "Nome host",
+      "address": "Indirizzo",
+      "capacity": "Capacità",
+      "features": "Funzioni",
+      "protocols": "Protocolli",
+      "health": "Stato",
+      "healthMeasured": "Misurato dal monitoraggio di Meridian {{time}}",
+      "noHealth": "Nessuna misurazione recente"
+    }
+  },
+  "profiles": {
+    "title": "Profili",
+    "subtitle": "Salva una località e le impostazioni adatte a ogni attività e passa dall'una all'altra con un clic.",
+    "new": "Nuovo profilo",
+    "active": "Attivo",
+    "use": "Usa",
+    "empty": { "title": "Ancora nessun profilo", "body": "Crea un profilo per gaming, streaming, lavoro o viaggi, ognuno con il proprio server e la propria protezione." },
+    "templates": "Parti da un modello",
+    "kinds": { "gaming": "Gaming", "streaming": "Streaming", "work": "Lavoro", "privacy": "Privacy", "travel": "Viaggi", "custom": "Personalizzato" },
+    "editor": {
+      "title": "Modifica profilo",
+      "createTitle": "Nuovo profilo",
+      "name": "Nome",
+      "kind": "Tipo",
+      "target": "Connetti a",
+      "protocol": "Protocollo",
+      "killSwitch": "Kill Switch",
+      "dns": "DNS",
+      "splitTunnel": "Split tunneling",
+      "allowLan": "Accesso alla rete locale",
+      "keep": "Mantieni il valore attuale",
+      "connectOnLaunch": "Connetti con questo profilo all'avvio di Meridian"
+    },
+    "applyWhileConnected": "Scegliendo questo profilo la VPN si riconnetterà con le sue impostazioni.",
+    "deleteConfirm": "Eliminare il profilo «{{name}}»?"
+  },
+  "security": {
+    "title": "Sicurezza",
+    "tabs": { "overview": "Riepilogo", "ip": "IP e rete", "leaks": "Test delle fughe", "details": "Dettagli della connessione" },
+    "overview": {
+      "intro": "Cosa Meridian ha verificato su questa connessione in questo momento. Non c'è un punteggio: ogni voce è verificata, non protetta o non verificabile, con il motivo.",
+      "facts": {
+        "vpn": "Tunnel VPN",
+        "ip": "Protezione dell'indirizzo IP",
+        "dns": "Protezione DNS",
+        "ipv6": "Protezione IPv6",
+        "killSwitch": "Kill Switch",
+        "protocol": "Protocollo",
+        "encryption": "Cifratura",
+        "server": "Server",
+        "duration": "Connesso da"
+      },
+      "state": { "verified": "Verificato", "notProtected": "Non protetto", "unverifiable": "Non verificabile" },
+      "why": {
+        "vpnUp": "L'handshake è avvenuto e il traffico attraverso il tunnel è confermato.",
+        "vpnDown": "Il tunnel non è attivo.",
+        "ipChecked": "Una verifica esterna vede l'indirizzo del server VPN.",
+        "ipOwn": "Una verifica esterna vede il tuo indirizzo.",
+        "ipUnchecked": "Esegui un controllo di sicurezza per vedere cosa vede Internet.",
+        "dnsOn": "Le richieste vanno solo ai server DNS del tunnel; tutti gli altri sono bloccati dal firewall.",
+        "dnsOff": "La protezione dalle fughe DNS è disattivata o si usa il DNS di sistema.",
+        "ipv6Tunneled": "IPv6 viaggia dentro il tunnel.",
+        "ipv6Blocked": "IPv6 fuori dal tunnel è bloccato.",
+        "ipv6Open": "IPv6 può aggirare il tunnel.",
+        "ksOn": "Le regole del firewall bloccano il traffico fuori dal tunnel.",
+        "ksOff": "Il Kill Switch è disattivato: durante una riconnessione il traffico può uscire senza protezione.",
+        "ksUnavailable": "Il servizio non ha accesso al firewall.",
+        "ksIdle": "Pronto: il blocco inizia appena premi «Connetti». Al momento non c'è nulla da trattenere, quindi niente da verificare.",
+        "wireguard": "WireGuard: ChaCha20-Poly1305 con scambio di chiavi Curve25519."
+      },
+      "runCheck": "Esegui un controllo di sicurezza"
+    },
+    "ip": {
+      "intro": "Cosa vede un servizio esterno quando questo dispositivo va su Internet.",
+      "current": "IP attuale",
+      "yours": "Il tuo IP (ultimo visto senza protezione)",
+      "isp": "Rete / provider",
+      "asn": "ASN",
+      "country": "Paese",
+      "city": "Città",
+      "timezone": "Fuso orario",
+      "dns": "Server DNS in uso",
+      "ipv6": "IPv6",
+      "webrtc": "Fughe WebRTC",
+      "throughVpn": "Tramite la VPN",
+      "notThroughVpn": "Non tramite la VPN",
+      "geoUnavailable": "Per i dettagli sulla posizione serve un database GeoIP, che su questo server non è configurato.",
+      "never": "Non ancora verificato. Esegui un controllo di sicurezza.",
+      "ipv6Available": "Disponibile sulla rete {{network}}",
+      "ipv6None": "Non disponibile sulla tua rete"
+    },
+    "leaks": {
+      "intro": "Ogni test osserva la connessione in questo momento e riporta esattamente ciò che ha visto. Se i dati non bastano lo dice, senza tirare a indovinare.",
+      "run": "Cerca fughe",
+      "running": "Test in corso…",
+      "notRun": "Non ancora eseguito",
+      "tests": { "ipv4": "IPv4", "ipv6": "IPv6", "dns": "DNS", "webrtc": "WebRTC" },
+      "verdict": { "protected": "Protetto", "potential_leak": "Possibile fuga", "unable_to_verify": "Non verificabile" },
+      "observed": "Osservato",
+      "expected": "Previsto",
+      "connectFirst": "Connettiti per cercare fughe: senza tunnel non c'è nulla da verificare."
+    },
+    "details": {
+      "protocol": "Protocollo",
+      "cipher": "Cifrario",
+      "handshake": "Handshake",
+      "lastHandshake": "Ultimo handshake",
+      "server": "Server",
+      "endpoint": "Endpoint",
+      "interface": "Interfaccia locale",
+      "vpnIp": "Indirizzo VPN assegnato",
+      "dns": "DNS (applicato)",
+      "dnsReported": "DNS (secondo Windows)",
+      "mtu": "MTU",
+      "sent": "Inviati",
+      "received": "Ricevuti",
+      "uptime": "Tempo di attività",
+      "advanced": "Dettagli tecnici",
+      "localKey": "Chiave pubblica di questo dispositivo",
+      "serverKey": "Chiave pubblica del server",
+      "luid": "LUID / indice dell'interfaccia",
+      "routes": "Rotte del tunnel",
+      "firewall": "Criterio del firewall",
+      "filters": "{{count}} filtri",
+      "notConnected": "Connettiti per vedere i dettagli tecnici del tunnel."
+    }
+  },
+  "leak": {
+    "findings": {
+      "not_connected": "Non sei connesso, quindi non c'è nulla da verificare.",
+      "ip_service_unreachable": "Il servizio di verifica dell'IP non è raggiungibile.",
+      "ip_check_not_public": "Il servizio di verifica dell'IP è su questo computer o su questa rete, quindi non può vedere il tuo indirizzo pubblico.",
+      "exit_is_vpn_server": "Internet vede l'indirizzo del server VPN.",
+      "exit_is_your_own_ip": "Internet vede il tuo indirizzo. Il tuo IP non è nascosto.",
+      "exit_differs_from_server": "L'indirizzo visibile è diverso da quello pubblicato del server; il server potrebbe usare un indirizzo di uscita separato.",
+      "no_ipv6_check_endpoint": "IPv6 passa nel tunnel, ma non esiste un servizio di verifica IPv6 per confermare l'indirizzo di uscita.",
+      "no_ipv6_on_network": "La tua rete non ha IPv6, quindi non può esserci alcuna fuga attraverso di esso.",
+      "ipv6_blocked_outside_tunnel": "IPv6 fuori dal tunnel è bloccato da regole del firewall verificate.",
+      "firewall_not_verified": "Il blocco IPv6 è configurato, ma non è stato possibile confermare le regole del firewall.",
+      "ipv6_not_blocked": "La tua rete ha IPv6 e fuori dal tunnel non è bloccato.",
+      "system_dns_in_use": "È selezionato il DNS «Automatico», quindi le richieste possono andare al DNS della tua rete.",
+      "dns_leak_protection_off": "La protezione dalle fughe DNS è disattivata.",
+      "resolver_outside_tunnel_answered": "Un server DNS fuori dal tunnel ha risposto. Possibile fuga DNS.",
+      "dns_config_unreadable": "Windows non ha riportato le impostazioni DNS del tunnel.",
+      "dns_config_verified": "Sono configurati solo i server DNS del tunnel e il blocco delle fughe è attivo.",
+      "dns_only_via_tunnel": "I server DNS della tua rete sono irraggiungibili (bloccati); è configurato solo il DNS del tunnel.",
+      "unexpected_tunnel_resolver": "Sul tunnel è configurato un server DNS inatteso.",
+      "webrtc_matches_vpn": "WebRTC ha rivelato solo l'indirizzo della VPN.",
+      "webrtc_exposes_own_ip": "WebRTC ha rivelato il tuo indirizzo pubblico.",
+      "webrtc_no_candidates": "WebRTC non ha raggiunto alcun server STUN, quindi la fuga non è verificabile.",
+      "webrtc_unavailable": "WebRTC non è disponibile nel motore browser integrato.",
+      "webrtc_note": "Verificato nel motore browser integrato di Meridian tramite un server STUN pubblico (stun.l.google.com). Il tuo browser potrebbe comportarsi diversamente."
+    }
+  },
+  "diagnostics": {
+    "title": "Diagnostica",
+    "tabs": { "checks": "Controlli", "logs": "Registro" },
+    "intro": "Verifica ogni parte della connessione e spiega tutto ciò che non funziona.",
+    "lastRun": "Ultima esecuzione {{time}}",
+    "notRun": "Nessun controllo ancora eseguito.",
+    "copyReport": "Copia il rapporto",
+    "sendReport": "Invia all'assistenza",
+    "status": { "working": "Funziona", "warning": "Attenzione", "failed": "Non riuscito", "skipped": "Non applicabile" },
+    "checks": {
+      "internet": "Connessione a Internet",
+      "dns": "Risoluzione dei nomi (DNS)",
+      "service": "Servizio VPN",
+      "authentication": "Account e dispositivo",
+      "server_reachability": "Raggiungibilità dei server",
+      "tunnel": "Tunnel",
+      "routing": "Instradamento",
+      "kill_switch": "Kill Switch",
+      "ipv6": "IPv6"
+    },
+    "labels": { "what": "Cosa è successo", "causes": "Cause probabili", "actions": "Cosa fare", "evidence": "Dettagli" },
+    "findings": {
+      "online": { "summary": "Sei connesso a Internet e al servizio Meridian." },
+      "no_network": {
+        "summary": "Nessuna connessione di rete.",
+        "causes": "Il Wi-Fi è spento, il cavo è scollegato o è attiva la modalità aereo.",
+        "actions": "Connettiti a una rete."
+      },
+      "blocked_by_kill_switch": {
+        "summary": "Il Kill Switch blocca il traffico: è normale finché mantiene la protezione.",
+        "causes": "La VPN si sta riconnettendo o c'è stato un errore, e il Kill Switch ti sta proteggendo.",
+        "actions": "Connettiti o disconnettiti per rimuovere il blocco."
+      },
+      "network_up_service_unreachable": {
+        "summary": "La rete funziona, ma il servizio Meridian non è raggiungibile.",
+        "causes": "Una pagina di accesso della rete (hotel, aeroporto), un firewall o un guasto di Meridian.",
+        "actions": "Apri un browser, completa l'eventuale pagina di accesso ed esegui di nuovo i controlli."
+      },
+      "resolving": { "summary": "I nomi di dominio vengono risolti normalmente." },
+      "no_resolvers": {
+        "summary": "Nessun server DNS configurato.",
+        "causes": "La rete non ha fornito server DNS.",
+        "actions": "Riconnettiti alla rete o imposta DNS personalizzati in Impostazioni → DNS."
+      },
+      "resolvers_not_answering": {
+        "summary": "I server DNS non rispondono.",
+        "causes": "Il server DNS non funziona o la rete blocca il DNS.",
+        "actions": "Prova DNS personalizzati o un'altra rete."
+      },
+      "some_resolvers_failing": {
+        "summary": "Alcuni server DNS non rispondono.",
+        "causes": "Uno dei server non funziona.",
+        "actions": "Di solito non è un problema: gli altri lo sostituiscono."
+      },
+      "running": { "summary": "Il servizio è in esecuzione e ha tutto ciò che gli serve." },
+      "tunnel_driver_missing": {
+        "summary": "Il driver WireGuard non è disponibile.",
+        "causes": "Il file del driver manca o non ha superato la verifica della firma.",
+        "actions": "Reinstalla Meridian."
+      },
+      "firewall_unavailable": {
+        "summary": "Il servizio non può usare il firewall, quindi il Kill Switch non funziona.",
+        "causes": "Il servizio è in esecuzione senza privilegi di sistema.",
+        "actions": "Reinstalla Meridian o avvia il servizio come amministratore."
+      },
+      "service_unreachable": {
+        "summary": "Il servizio VPN non è in esecuzione o non è raggiungibile.",
+        "causes": "È stato arrestato, si è bloccato o è installato in modo errato.",
+        "actions": "Riavvia il computer. Se non basta, reinstalla Meridian."
+      },
+      "reachable": { "summary": "I server sono raggiungibili da questo dispositivo." },
+      "no_server_list": {
+        "summary": "Non c'è ancora un elenco dei server.",
+        "causes": "Il servizio non è riuscito a scaricarlo.",
+        "actions": "Controlla la connessione a Internet."
+      },
+      "servers_unreachable": {
+        "summary": "Nessun server ha risposto.",
+        "causes": "La tua rete blocca ICMP o il traffico VPN, oppure c'è un guasto.",
+        "actions": "Prova un'altra rete. Se altrove funziona, contatta l'assistenza."
+      },
+      "server_list_stale": {
+        "summary": "I server rispondono, ma l'elenco non è aggiornato.",
+        "causes": "Da tempo non è stato possibile aggiornare l'elenco.",
+        "actions": "Si aggiornerà da solo quando il servizio sarà raggiungibile."
+      },
+      "handshake_fresh": { "summary": "L'handshake del tunnel è recente e regolare." },
+      "handshake_stale": {
+        "summary": "Il server non esegue un handshake da un po'.",
+        "causes": "Il server non risponde più o la rete interferisce.",
+        "actions": "Riconnettiti o scegli un altro server."
+      },
+      "no_handshake": {
+        "summary": "Nessun handshake con il server.",
+        "causes": "UDP potrebbe essere bloccato su questa rete.",
+        "actions": "Prova un altro server o un'altra rete."
+      },
+      "default_route_via_tunnel": { "summary": "Il traffico Internet passa attraverso il tunnel." },
+      "default_route_bypasses_tunnel": {
+        "summary": "Il traffico non passa attraverso il tunnel.",
+        "causes": "Un'altra VPN o un programma di rete ha cambiato le rotte.",
+        "actions": "Chiudi gli altri programmi VPN e riconnettiti."
+      },
+      "route_unknown": {
+        "summary": "Impossibile determinare la rotta.",
+        "causes": "Windows non ha riportato la rotta.",
+        "actions": "Riconnettiti ed esegui di nuovo i controlli."
+      },
+      "active": { "summary": "Le regole del Kill Switch sono installate e verificate." },
+      "kill_switch_off": {
+        "summary": "Il Kill Switch è disattivato.",
+        "causes": "È disattivato nelle impostazioni.",
+        "actions": "Attivalo in Impostazioni → Kill Switch per non esporre il traffico durante le riconnessioni."
+      },
+      "rules_not_as_expected": {
+        "summary": "Le regole del firewall non corrispondono a quelle installate da Meridian.",
+        "causes": "Un altro programma ha modificato il firewall o le regole non sono state applicate.",
+        "actions": "Riconnettiti. Se non basta, riavvia il computer."
+      },
+      "ipv6_tunneled": { "summary": "IPv6 passa attraverso il tunnel." },
+      "no_ipv6_on_network": { "summary": "La tua rete non ha IPv6, non può esserci alcuna fuga." },
+      "ipv6_blocked_outside_tunnel": { "summary": "IPv6 fuori dal tunnel è bloccato." },
+      "ipv6_may_leak": {
+        "summary": "IPv6 può aggirare il tunnel.",
+        "causes": "La protezione dalle fughe IPv6 è disattivata.",
+        "actions": "Attiva «Blocca le fughe IPv6» in Impostazioni → Rete."
+      },
+      "not_connected": { "summary": "Non sei connesso, quindi questo controllo non si applica." },
+      "signed_in": { "summary": "Hai effettuato l'accesso e questo dispositivo è registrato." },
+      "signed_out": {
+        "summary": "Accesso non effettuato.",
+        "causes": "Sei uscito dall'account o la sessione è scaduta.",
+        "actions": "Accedi."
+      },
+      "device_not_registered": {
+        "summary": "Questo dispositivo non è registrato in un account.",
+        "causes": "È stato rimosso oppure la registrazione non è stata completata.",
+        "actions": "Accedi di nuovo per registrarlo."
+      },
+      "subscription_inactive": {
+        "summary": "Il tuo piano non è attivo.",
+        "causes": "La prova gratuita o l'abbonamento sono terminati.",
+        "actions": "Scegli un piano in Account → Abbonamento."
+      },
+      "api_unreachable": {
+        "summary": "Il servizio account di Meridian non è raggiungibile.",
+        "causes": "Sei offline o la tua rete lo blocca.",
+        "actions": "Controlla la connessione e riprova."
+      }
+    },
+    "logs": {
+      "title": "Registro delle connessioni",
+      "intro": "Eventi del servizio VPN: tentativi di connessione, cambi di rete, errori. Mai il tuo traffico o i siti visitati. Gli indirizzi IP sono mascherati, salvo in modalità diagnostica.",
+      "level": "Livello",
+      "category": "Categoria",
+      "all": "Tutti",
+      "search": "Filtra il registro",
+      "live": "In tempo reale",
+      "export": "Esporta il registro",
+      "exported": "Registro salvato",
+      "clearConfirm": "Svuotare il registro delle connessioni su questo dispositivo?",
+      "empty": { "title": "Ancora nessuna voce", "body": "Gli eventi compariranno quando la VPN si connette, si riconnette o segnala un problema." },
+      "levels": { "error": "Errore", "warn": "Avviso", "info": "Info", "debug": "Debug" },
+      "categories": {
+        "connection": "Connessione",
+        "server": "Server",
+        "protocol": "Protocollo",
+        "auth": "Account",
+        "dns": "DNS",
+        "network": "Rete",
+        "firewall": "Firewall",
+        "service": "Servizio"
+      }
+    }
+  },
+  "settings": {
+    "title": "Impostazioni",
+    "sections": {
+      "general": "Generali",
+      "appearance": "Aspetto",
+      "connection": "Connessione",
+      "protocols": "Protocolli",
+      "security": "Sicurezza",
+      "privacy": "Privacy",
+      "dns": "DNS",
+      "killSwitch": "Kill Switch",
+      "splitTunneling": "Split tunneling",
+      "network": "Rete",
+      "autoConnect": "Connessione automatica",
+      "notifications": "Notifiche",
+      "account": "Account",
+      "subscription": "Abbonamento",
+      "diagnostics": "Diagnostica",
+      "shortcuts": "Scorciatoie da tastiera",
+      "advanced": "Avanzate",
+      "about": "Informazioni"
+    },
+    "saved": "Salvato",
+    "saveFailed": "Salvataggio non riuscito: {{error}}",
+    "serviceOnly": "Queste impostazioni sono gestite dal servizio VPN e valgono anche quando l'app è chiusa.",
+    "general": {
+      "language": "Lingua",
+      "languageSystem": "Lingua di sistema",
+      "launchOnStartup": "Apri Meridian all'accesso a Windows",
+      "closeToTray": "Chiudendo la finestra, continua a funzionare nell'area di notifica",
+      "confirmDisconnect": "Chiedi conferma prima di disconnettere",
+      "autoUpdates": "Aggiornamenti automatici",
+      "autoUpdatesNote": "Gli aggiornamenti sono firmati e verificati prima dell'installazione. In questa build di sviluppo non è configurato alcun canale di aggiornamento."
+    },
+    "appearance": {
+      "theme": "Tema",
+      "themes": { "dark": "Scuro", "light": "Chiaro", "system": "Sistema" },
+      "density": "Densità",
+      "densities": { "comfortable": "Ampia", "compact": "Compatta" },
+      "motion": "Animazioni",
+      "motions": { "system": "Come il sistema", "reduced": "Ridotte", "full": "Complete" },
+      "textSize": "Dimensione del testo"
+    },
+    "connection": {
+      "defaultTarget": "Quando premi «Connetti»",
+      "defaultSmart": "Smart Connect: {{mode}}",
+      "defaultServer": "Server {{server}}",
+      "autoReconnect": "Riconnetti automaticamente se la connessione cade",
+      "switchServerAfter": "Passa a un altro server dopo questo numero di tentativi falliti",
+      "maxAttempts": "Rinuncia dopo questo numero di tentativi (0 = riprova all'infinito)"
+    },
+    "protocols": {
+      "intro": "Il protocollo stabilisce come dispositivo e server costruiscono il tunnel cifrato. «Automatico» sceglie l'opzione migliore disponibile per la tua rete.",
+      "automatic": {
+        "name": "Automatico",
+        "desc": "Usa WireGuard e, sulle reti che bloccano UDP, passerà a un protocollo basato su TCP quando sarà disponibile in questa build."
+      },
+      "wireguard": {
+        "name": "WireGuard",
+        "desc": "Moderno, leggero e veloce; funziona nel kernel di Windows.",
+        "pros": "Il più veloce; si connette e si riconnette all'istante; codice ridotto e verificato; crittografia moderna.",
+        "cons": "Solo UDP, quindi alcune reti restrittive lo bloccano.",
+        "performance": "Eccellente",
+        "stability": "Eccellente, passa da una rete all'altra senza interruzioni",
+        "compatibility": "Funziona sulla maggior parte delle reti"
+      },
+      "openvpn": {
+        "name": "OpenVPN",
+        "desc": "Maturo e ampiamente supportato; può funzionare sulla porta TCP 443.",
+        "pros": "Supera i firewall restrittivi tramite TCP; lunga esperienza sul campo.",
+        "cons": "Più lento di WireGuard; si connette più lentamente.",
+        "performance": "Buona",
+        "stability": "Buona",
+        "compatibility": "Eccellente, anche sulle reti che bloccano UDP"
+      },
+      "ikev2": {
+        "name": "IKEv2/IPsec",
+        "desc": "Integrato nei sistemi operativi, si riprende rapidamente ai cambi di rete.",
+        "pros": "Integrato in Windows; si riconnette rapidamente.",
+        "cons": "Alcune reti bloccano IPsec.",
+        "performance": "Molto buona",
+        "stability": "Molto buona sulle reti mobili",
+        "compatibility": "Buona"
+      },
+      "labels": { "pros": "Vantaggi", "cons": "Svantaggi", "performance": "Prestazioni", "stability": "Stabilità", "compatibility": "Compatibilità" },
+      "notBundled": "Non incluso in questa build",
+      "driverMissing": "Driver non installato"
+    },
+    "killSwitch": {
+      "intro": "Il Kill Switch usa il firewall di Windows per impedire che il traffico lasci il dispositivo aggirando la VPN.",
+      "modes": {
+        "off": { "name": "Disattivato", "desc": "Nessun blocco. Durante la connessione e la riconnessione il traffico può uscire brevemente senza protezione." },
+        "while_connected": { "name": "Attivo durante la connessione", "desc": "Dal momento in cui premi «Connetti» fino alla disconnessione nulla aggira il tunnel, nemmeno durante riconnessioni ed errori." },
+        "always_on": { "name": "Sempre attivo", "desc": "Nulla aggira mai il tunnel, anche senza connessione e fin dall'avvio del sistema. Senza connessione non avrai Internet." }
+      },
+      "blocked": "Cosa viene bloccato: qualsiasi connessione che non passi dal tunnel.",
+      "allowed": "Cosa resta consentito: la comunicazione interna al computer, l'ottenimento di un indirizzo di rete (DHCP), il collegamento al server VPN stesso, l'accesso a Meridian e la rete locale, se la consenti qui sotto.",
+      "allowLan": "Consenti la rete locale durante il blocco",
+      "allowLanDesc": "Stampanti, trasmissione alla TV e cartelle condivise sulla rete di casa continuano a funzionare.",
+      "unavailable": "Kill Switch non disponibile: {{reason}}",
+      "offConfirmTitle": "Disattivare il Kill Switch?",
+      "offConfirmBody": "Senza di esso il tuo vero indirizzo IP può essere esposto per qualche secondo a ogni riconnessione della VPN.",
+      "alwaysOnConfirmTitle": "Bloccare tutto il traffico quando non sei connesso?",
+      "alwaysOnConfirmBody": "Con «Sempre attivo» il dispositivo non ha alcun accesso a Internet finché la VPN non è connessa, anche subito dopo l'avvio del sistema."
+    },
+    "dns": {
+      "intro": "Il DNS trasforma nomi come example.com in indirizzi. Chi risponde a queste richieste vede quali siti visiti.",
+      "mode": "Server DNS",
+      "modes": {
+        "vpn": { "name": "DNS della VPN", "desc": "Il server DNS di Meridian sul server VPN, raggiunto attraverso il tunnel. Consigliato." },
+        "custom": { "name": "DNS personalizzato", "desc": "Server DNS scelti da te, raggiunti attraverso il tunnel." },
+        "system": { "name": "Automatico (DNS della tua rete)", "desc": "Il DNS resta invariato. Il tuo provider può vedere i siti che visiti." }
+      },
+      "customServers": "Server DNS personalizzati",
+      "customPlaceholder": "ad es. 9.9.9.9",
+      "addServer": "Aggiungi server",
+      "invalidIp": "Non è un indirizzo IP.",
+      "blockLeaks": "Protezione dalle fughe DNS",
+      "blockLeaksDesc": "Durante la connessione blocca le richieste DNS verso qualsiasi server diverso da quello usato da Meridian.",
+      "dohNote": "Il DNS cifrato nei browser (DNS over HTTPS) sembra normale traffico web e non può essere bloccato per porta. Viaggia comunque dentro il tunnel.",
+      "status": "In uso ora",
+      "statusConnected": "{{servers}} attraverso il tunnel",
+      "statusDisconnected": "DNS della tua rete ({{servers}}); VPN non connessa",
+      "test": "Prova il DNS",
+      "testing": "Prova in corso…",
+      "testResult": "{{server}}: {{outcome}} in {{ms}} ms",
+      "testFailed": "{{server}}: {{outcome}}",
+      "leakRisk": "Può rivelare i siti alla tua rete"
+    },
+    "splitTunneling": {
+      "intro": "Scegli quali app usano la VPN.",
+      "modes": {
+        "off": { "name": "Tutto il traffico tramite la VPN", "desc": "Consigliato. Tutte le app sono protette." },
+        "exclude_apps": { "name": "Escludi le app selezionate", "desc": "Le app selezionate si connettono direttamente, aggirando la VPN." },
+        "only_apps": { "name": "VPN solo per le app selezionate", "desc": "Tutto il resto si connette direttamente." }
+      },
+      "notEnforced": "Lo split tunneling richiede un driver di rete che non è ancora incluso in questa build. Le regole vengono salvate, ma fino ad allora tutto il traffico passa dalla VPN.",
+      "apps": "App",
+      "addApp": "Aggiungi app",
+      "searchApps": "Cerca tra le app installate",
+      "noApps": { "title": "Nessuna app selezionata", "body": "Aggiungi app per scegliere come si connettono." },
+      "loadingApps": "Ricerca delle app installate…"
+    },
+    "network": {
+      "intro": "La maggior parte degli utenti non deve modificare nulla qui.",
+      "ipv6": "Usa IPv6 tramite la VPN, se disponibile",
+      "ipv6Desc": "Trasporta IPv6 dentro il tunnel quando il server lo supporta.",
+      "blockIpv6": "Blocca le fughe IPv6",
+      "blockIpv6Desc": "Se il tunnel trasporta solo IPv4, l'IPv6 fuori dal tunnel viene bloccato.",
+      "allowLan": "Consenti l'accesso alla rete locale",
+      "allowLanDesc": "Accedi a stampanti, NAS e altri dispositivi di casa mentre sei connesso.",
+      "mtu": "MTU",
+      "mtuDesc": "Dimensione massima dei pacchetti nel tunnel. «Automatico» va bene quasi sempre; riducila solo se alcuni siti non si caricano del tutto.",
+      "mtuAuto": "Automatico",
+      "mtuWarningTitle": "Modificare l'MTU?",
+      "mtuWarningBody": "Un valore errato può far bloccare o fallire alcuni siti. «Automatico» (1420) va bene per quasi tutte le reti.",
+      "keepalive": "Intervallo keepalive",
+      "keepaliveDesc": "Mantiene aperta la connessione attraverso router domestici e NAT. In secondi; 0 = disattivato.",
+      "nat": "Comportamento NAT",
+      "natDesc": "Il tuo dispositivo condivide l'indirizzo pubblico del server VPN con altri utenti (NAT). Le connessioni in ingresso tramite la VPN non ti raggiungono.",
+      "reconnect": "Riconnessione"
+    },
+    "autoConnect": {
+      "intro": "Lascia che Meridian si connetta da solo, in base a dove ti trovi.",
+      "onAppStart": "Connetti all'avvio dell'app",
+      "onSystemStart": "Connetti all'avvio del computer (prima dell'accesso)",
+      "onUntrusted": "Connetti sulle reti non presenti nell'elenco delle reti attendibili",
+      "onOpenWifi": "Connetti sempre sulle reti Wi-Fi aperte (senza password)",
+      "reconnectOnline": "Riconnetti quando torna Internet",
+      "trustedTitle": "Reti attendibili",
+      "trustedIntro": "Stabilisci come si comporta Meridian sulle reti che conosci.",
+      "trustedWarning": "«Non usare la VPN» significa che su quella rete il tuo traffico non è protetto. Non annulla mai la modalità Kill Switch «Sempre attivo».",
+      "addCurrent": "Aggiungi la rete attuale",
+      "addNetwork": "Aggiungi rete",
+      "ssid": "Nome Wi-Fi (SSID)",
+      "wired": "Rete cablata",
+      "name": "Nome",
+      "kind": "Tipo",
+      "kinds": { "home": "Casa", "work": "Lavoro", "public": "Pubblica", "travel": "Viaggio", "other": "Altro" },
+      "policy": "Su questa rete",
+      "policies": { "require_vpn": "Usa sempre la VPN", "optional": "Decido io", "bypass": "Non usare la VPN" },
+      "noTrusted": { "title": "Nessuna rete attendibile", "body": "Aggiungi la rete di casa o del lavoro per decidere come si comporta Meridian." },
+      "wifiUnavailable": "Windows non ha consentito di leggere i nomi delle reti Wi-Fi (autorizzazione alla posizione). Le reti cablate e l'inserimento manuale funzionano.",
+      "current": "Rete attuale: {{name}}"
+    },
+    "notifications": {
+      "intro": "Scegli di cosa essere avvisato.",
+      "connected": "VPN connessa",
+      "disconnected": "VPN disconnessa",
+      "connectionFailed": "Connessione non riuscita",
+      "killSwitch": "Il Kill Switch blocca il traffico",
+      "security": "Avvisi di sicurezza (nuovi accessi, cambi di password)",
+      "updates": "Aggiornamenti disponibili"
+    },
+    "shortcuts": {
+      "intro": "Le scorciatoie funzionano quando la finestra di Meridian è attiva; «Mostra/nascondi» funziona ovunque.",
+      "items": {
+        "toggleConnection": "Connetti / disconnetti",
+        "disconnect": "Disconnetti",
+        "openServers": "Scelta del server",
+        "search": "Cerca",
+        "openSettings": "Apri le impostazioni",
+        "toggleWindow": "Mostra / nascondi Meridian (globale)"
+      },
+      "press": "Premi una combinazione di tasti…",
+      "taken": "Questa combinazione è già usata da un'altra app."
+    },
+    "advanced": {
+      "intro": "Per la risoluzione dei problemi e gli utenti esperti. Le modifiche qui possono influire sulla connessione.",
+      "logLevel": "Livello di registro del servizio",
+      "diagnosticMode": "Modalità diagnostica",
+      "diagnosticModeDesc": "Disattiva il mascheramento degli indirizzi IP nel registro delle connessioni. Attivala solo mentre riproduci un problema.",
+      "diagnosticWarningTitle": "Attivare la modalità diagnostica?",
+      "diagnosticWarningBody": "Le nuove voci del registro conterranno indirizzi IP completi (tuoi e dei server). Restano su questo dispositivo finché non le esporti.",
+      "persistentKeepalive": "Keepalive persistente (secondi)",
+      "resetAll": "Ripristina le impostazioni VPN",
+      "resetConfirm": "Riportare tutte le impostazioni del servizio VPN ai valori predefiniti? Account, profili e preferenze dell'app restano invariati.",
+      "rotateKey": "Genera una nuova chiave del dispositivo",
+      "rotateKeyDesc": "Sostituisce la chiave WireGuard di questo dispositivo. Meridian registrerà la nuova chiave nel tuo account.",
+      "rotateConfirm": "Generare una nuova chiave? La VPN si riconnetterà.",
+      "interface": "Interfaccia del tunnel"
+    },
+    "about": {
+      "version": "Versione dell'app",
+      "service": "Versione del servizio",
+      "driver": "Driver del tunnel",
+      "os": "Sistema operativo",
+      "licenses": "Licenze open source",
+      "update": "Controlla gli aggiornamenti",
+      "updateNotConfigured": "Per questa build di sviluppo non è configurato alcun canale di aggiornamento.",
+      "wireguard": "WireGuard è un marchio registrato di Jason A. Donenfeld."
+    },
+    "security": {
+      "trustedDevices": "Dispositivi attendibili",
+      "trustedDevicesDesc": "Dispositivi che possono connettersi con il tuo account. Rimuovi quelli che non riconosci.",
+      "appLock": "Blocco dell'app (Windows Hello / password)",
+      "appLockDesc": "Richiedi Windows Hello o una password all'apertura di Meridian. Non ancora disponibile in questa build."
+    },
+    "groups": { "app": "App", "vpn": "VPN", "you": "Account e privacy", "more": "Altro" }
+  },
+  "privacy": {
+    "title": "Privacy",
+    "intro": "Cosa raccoglie esattamente Meridian, perché, dove lo conserva e come disattivarlo. Nulla viene inviato senza una tua azione, a meno che una voce non sia indicata come attiva.",
+    "state": { "on": "Attivo", "off": "Disattivo", "always": "Sempre", "never": "Mai raccolto" },
+    "labels": { "what": "Cosa", "why": "Perché", "where": "Dove è conservato", "control": "Come disattivarlo" },
+    "items": {
+      "analytics": {
+        "name": "Analisi del prodotto",
+        "what": "Nulla. Questa build non contiene analisi.",
+        "why": "—",
+        "where": "—",
+        "control": "Non c'è nulla da disattivare."
+      },
+      "crash": {
+        "name": "Rapporti sugli arresti anomali",
+        "what": "Nulla viene inviato automaticamente. Gli arresti anomali vengono annotati nel registro locale del servizio.",
+        "why": "Perché tu o l'assistenza possiate capire un problema.",
+        "where": "Solo su questo dispositivo.",
+        "control": "Svuota il registro in Diagnostica → Registro."
+      },
+      "diagnostics": {
+        "name": "Rapporti di diagnostica",
+        "what": "Risultati dei controlli e versione del servizio. Vengono inviati solo se scegli «Invia all'assistenza» e solo dopo averli visti.",
+        "why": "Perché l'assistenza veda cosa non funziona.",
+        "where": "Il sistema di assistenza di Meridian; eliminati dopo 90 giorni.",
+        "control": "Non inviarli. Altrimenti non viene inviato nulla."
+      },
+      "logs": {
+        "name": "Registro locale delle connessioni",
+        "what": "Eventi di connessione (tentativi, cambi di rete, errori). Mai traffico, siti o richieste DNS. Gli indirizzi IP sono mascherati.",
+        "why": "Perché tu possa vedere cosa è successo ed esportarlo quando chiedi aiuto.",
+        "where": "Solo su questo dispositivo, leggibile dagli amministratori.",
+        "control": "Svuotalo in Diagnostica → Registro. Non lascia il dispositivo finché non lo esporti."
+      },
+      "account": {
+        "name": "Dati dell'account",
+        "what": "La tua email, un hash della password, il piano, i dispositivi (nome, sistema operativo, chiave pubblica) e le sessioni attive.",
+        "why": "Per gestire il tuo account e dare accesso a ciascun dispositivo.",
+        "where": "Server di Meridian.",
+        "control": "Elimina il tuo account in Account → Profilo."
+      },
+      "connection": {
+        "name": "Metadati delle connessioni",
+        "what": "Non vengono conservati. I server conoscono un dispositivo connesso solo finché è connesso, per instradare il traffico; non viene tenuto alcuno storico.",
+        "why": "—",
+        "where": "Memoria del server VPN; cancellata entro pochi minuti dalla disconnessione.",
+        "control": "Non c'è nulla da disattivare."
+      },
+      "traffic": {
+        "name": "Traffico, siti e richieste DNS",
+        "what": "Mai raccolti né registrati, né su questo dispositivo né sui nostri server.",
+        "why": "—",
+        "where": "—",
+        "control": "—"
+      }
+    }
+  },
+  "account": {
+    "title": "Account",
+    "tabs": { "profile": "Profilo", "security": "Sicurezza", "devices": "Dispositivi", "subscription": "Abbonamento" },
+    "signedOut": { "title": "Accesso non effettuato", "body": "Accedi per connetterti e gestire dispositivi e piano." },
+    "offline": "Sono mostrati i dati dell'account salvati: non è stato possibile aggiornarli.",
+    "profile": {
+      "email": "Email",
+      "verified": "Verificata",
+      "unverified": "Non verificata",
+      "verifyNow": "Verifica l'email",
+      "memberSince": "Membro dal",
+      "language": "Lingua delle email",
+      "delete": "Elimina account",
+      "deleteTitle": "Eliminare l'account?",
+      "deleteBody": "Account, dispositivi, profili, richieste di assistenza e rapporti di diagnostica verranno eliminati definitivamente. L'operazione non può essere annullata.",
+      "deletePassword": "Inserisci la password per confermare"
+    },
+    "security": {
+      "password": "Password",
+      "changePassword": "Cambia password",
+      "currentPassword": "Password attuale",
+      "newPassword": "Nuova password",
+      "passwordChanged": "Password cambiata. Tutte le altre sessioni sono state chiuse.",
+      "twoFactor": "Autenticazione a due fattori",
+      "twoFactorOn": "Attiva: per accedere serve un codice dalla tua app di autenticazione.",
+      "twoFactorOff": "Disattivata. Aggiungi un secondo passaggio per proteggere il tuo account.",
+      "setup": "Configura",
+      "setupTitle": "Configura l'autenticazione a due fattori",
+      "setupStep1": "Aggiungi questa chiave alla tua app di autenticazione (Google Authenticator, 1Password, Aegis…).",
+      "setupStep2": "Inserisci il codice a 6 cifre che mostra.",
+      "secretKey": "Chiave di configurazione",
+      "recoveryTitle": "Salva i codici di recupero",
+      "recoveryBody": "Ogni codice consente un accesso singolo se perdi l'app di autenticazione. Conservali in un posto sicuro: non verranno mostrati di nuovo.",
+      "disableTitle": "Disattivare l'autenticazione a due fattori?",
+      "code": "Codice a 6 cifre",
+      "sessions": "Sessioni attive",
+      "thisDevice": "Questo dispositivo",
+      "lastActive": "Ultima attività {{date}}",
+      "signOutOthers": "Esci da tutte le altre sessioni",
+      "noSessions": "Nessun'altra sessione.",
+      "qr": "Codice QR per la tua app di autenticazione"
+    },
+    "devices": {
+      "intro": "Dispositivi che possono connettersi con il tuo account.",
+      "limit": "{{used}} di {{limit}} dispositivi",
+      "thisDevice": "Questo dispositivo",
+      "connectedNow": "Connesso ora",
+      "lastSeen": "Ultimo accesso {{date}}",
+      "added": "Aggiunto {{date}}",
+      "revokeTitle": "Rimuovere «{{name}}»?",
+      "revokeBody": "Verrà disconnesso entro un minuto e non potrà connettersi finché non accederà di nuovo.",
+      "empty": { "title": "Ancora nessun dispositivo", "body": "I dispositivi compariranno qui dopo che avrai effettuato l'accesso su di essi." },
+      "register": "Registra questo dispositivo",
+      "notRegistered": "Questo dispositivo non è ancora registrato."
+    },
+    "subscription": {
+      "plan": "Piano",
+      "status": "Stato",
+      "statuses": { "none": "Nessun piano", "incomplete": "Pagamento non confermato", "trialing": "Prova gratuita", "active": "Attivo", "past_due": "Pagamento in sospeso", "canceled": "Annullato", "expired": "Scaduto" },
+      "renews": "Si rinnova il {{date}}",
+      "ends": "Termina il {{date}}",
+      "trialEnds": "La prova termina il {{date}}",
+      "renewal": "Rinnovo",
+      "period": "Periodo di fatturazione",
+      "periods": { "trial": "Prova", "month": "Mensile", "year": "Annuale" },
+      "paymentMethod": "Metodo di pagamento",
+      "noPaymentMethod": "Nessun metodo di pagamento registrato",
+      "card": "{{brand}} che termina con {{last4}}",
+      "invoices": "Fatture",
+      "noInvoices": "Ancora nessuna fattura.",
+      "changePlan": "Cambia piano",
+      "choosePlan": "Scegli un piano",
+      "perMonth": "{{price}} / mese",
+      "perYear": "{{price}} / anno",
+      "devicesIncluded": "Fino a {{count}} dispositivi",
+      "cancel": "Annulla il piano",
+      "cancelTitle": "Annullare il piano?",
+      "cancelBody": "Mantieni l'accesso completo fino al {{date}}. Dopo il piano non si rinnoverà. Fino ad allora puoi riattivarlo.",
+      "resume": "Riattiva il piano",
+      "activated": "Piano attivato",
+      "checkoutOpened": "Il pagamento si è aperto nel browser.",
+      "renewTitle": "Scegli un piano per connetterti",
+      "renewBody": "Il tuo piano è terminato, quindi questo dispositivo non può connettersi. Scegli un piano per continuare.",
+      "incompleteBody": "Il primo pagamento non è ancora confermato. Se hai appena pagato, lo stato si aggiorna entro un minuto.",
+      "pastDueBody": "Il pagamento di questo periodo non è andato a buon fine. Aggiorna il metodo di pagamento per mantenere il piano.",
+      "manageBilling": "Gestisci pagamenti",
+      "manualNote": "Il piano di questo account è stato impostato senza pagamento con carta (sviluppo / assegnato dal team)."
+    }
+  },
+  "auth": {
+    "signInTitle": "Accedi a Meridian",
+    "signInSubtitle": "Accedi con il tuo account Meridian per connettere questo dispositivo.",
+    "registerTitle": "Crea il tuo account",
+    "registerSubtitle": "Inizia con 7 giorni gratuiti. Nessuna carta richiesta.",
+    "email": "Email",
+    "password": "Password",
+    "passwordHint": "Almeno 10 caratteri. Alcune parole casuali vanno benissimo.",
+    "signIn": "Accedi",
+    "register": "Crea account",
+    "noAccount": "Nuovo su Meridian?",
+    "haveAccount": "Hai già un account?",
+    "forgot": "Password dimenticata?",
+    "verifyTitle": "Controlla la tua email",
+    "verifyBody": "Abbiamo inviato un codice a 6 cifre a {{email}}.",
+    "code": "Codice",
+    "verify": "Verifica",
+    "resend": "Invia un nuovo codice",
+    "resent": "Se l'indirizzo deve essere verificato, un nuovo codice è in arrivo.",
+    "forgotTitle": "Reimposta la password",
+    "forgotBody": "Inserisci la tua email e ti invieremo un codice per reimpostarla.",
+    "sendCode": "Invia codice",
+    "resetTitle": "Scegli una nuova password",
+    "resetBody": "Inserisci il codice ricevuto via email e una nuova password.",
+    "newPassword": "Nuova password",
+    "resetDone": "Password reimpostata. Accedi con la nuova password.",
+    "mfaTitle": "Autenticazione a due fattori",
+    "mfaBody": "Inserisci il codice dalla tua app di autenticazione.",
+    "useRecovery": "Usa un codice di recupero",
+    "useCode": "Usa il codice dell'app di autenticazione",
+    "recoveryCode": "Codice di recupero",
+    "registering": "Configurazione di questo dispositivo…",
+    "enrolled": "Questo dispositivo è pronto per connettersi.",
+    "continueOffline": "Sfoglia i server senza accedere"
+  },
+  "apiErrors": {
+    "invalid_credentials": "Email o password non corrette.",
+    "too_many_attempts": "Troppi tentativi. Attendi qualche minuto.",
+    "rate_limited": "Troppe richieste. Attendi un momento.",
+    "invalid_code": "Il codice è errato o scaduto.",
+    "email_unverified": "Verifica prima il tuo indirizzo email.",
+    "password_too_short": "Usa almeno 10 caratteri.",
+    "password_too_long": "Usa al massimo 128 caratteri.",
+    "password_too_common": "Questa password è troppo comune.",
+    "password_too_simple": "Usa una password meno ripetitiva.",
+    "password_contains_email": "Non usare la tua email nella password.",
+    "device_limit_reached": "Hai raggiunto il limite di dispositivi del piano. Rimuovi prima un dispositivo.",
+    "subscription_inactive": "Il tuo piano non è attivo.",
+    "key_in_use": "La chiave di questo dispositivo appartiene a un altro account.",
+    "mfa_token_invalid": "L'accesso ha richiesto troppo tempo. Ricomincia.",
+    "session_revoked": "Sei stato disconnesso dall'account.",
+    "token_reused": "Per sicurezza questa sessione è stata chiusa. Accedi di nuovo.",
+    "account_disabled": "Questo account è disattivato.",
+    "network": "Impossibile raggiungere Meridian. Controlla la connessione a Internet.",
+    "invalid_request": "Alcuni dati non sono validi.",
+    "unknown_plan": "Questo piano non è disponibile.",
+    "generic": "Qualcosa è andato storto. Riprova."
+  },
+  "support": {
+    "title": "Assistenza",
+    "tabs": { "help": "Guida", "faq": "Domande frequenti", "troubleshooting": "Risoluzione dei problemi", "contact": "Contatta l'assistenza" },
+    "searchHelp": "Cerca nella guida",
+    "categories": { "connection": "Problemi di connessione", "billing": "Fatturazione", "account": "Account", "privacy": "Privacy", "other": "Altro" },
+    "articles": {
+      "getting-started": {
+        "title": "Per iniziare",
+        "body": "Premi «Connetti» nella panoramica e Meridian sceglierà il server migliore (Smart Connect). Per scegliere tu il luogo, apri «Server» e seleziona un paese o una città. «Protetto» compare solo quando il tunnel è attivo e verificato."
+      },
+      "kill-switch": {
+        "title": "Cosa fa il Kill Switch",
+        "body": "Il Kill Switch usa il firewall di Windows per impedire che il traffico lasci il dispositivo aggirando la VPN. «Attivo durante la connessione» protegge da quando premi «Connetti» fino alla disconnessione, incluse le riconnessioni. «Sempre attivo» blocca tutto anche senza connessione."
+      },
+      "dns-leaks": {
+        "title": "Le fughe DNS spiegate in breve",
+        "body": "Ogni visita a un sito inizia con una richiesta DNS. Se queste richieste vanno al tuo provider invece che attraverso la VPN, rivelano dove stai andando. Meridian invia le richieste nel tunnel e blocca ogni tentativo di aggirarlo."
+      },
+      "split-tunneling": {
+        "title": "Split tunneling",
+        "body": "Lo split tunneling permette ad alcune app di aggirare la VPN. Su Windows richiede un driver di rete non ancora incluso in questa build; fino ad allora le regole vengono salvate e tutto il traffico resta nella VPN."
+      },
+      "trusted-networks": {
+        "title": "Reti attendibili e connessione automatica",
+        "body": "Aggiungi le reti che conosci (casa, lavoro) e scegli cosa deve fare Meridian su di esse. Su qualsiasi altra rete può connettersi automaticamente. Le reti Wi-Fi aperte sono sempre considerate non attendibili."
+      },
+      "privacy": {
+        "title": "Cosa registriamo (e cosa no)",
+        "body": "Non registriamo mai il tuo traffico, i siti visitati o le richieste DNS. Conserviamo l'email dell'account, il piano e i dispositivi. Tutte le categorie sono descritte in Impostazioni → Privacy."
+      }
+    },
+    "faq": {
+      "q1": "Perché l'app mostra «Non verificabile»?",
+      "a1": "Alcuni controlli richiedono dati che non sono disponibili, ad esempio un server esterno di verifica IPv6. Meridian lo dice apertamente invece di tirare a indovinare.",
+      "q2": "Perché alcuni server mostrano «—» come latenza?",
+      "a2": "La latenza è misurata dal tuo dispositivo. I server non ancora misurati o che non hanno risposto mostrano «—» invece di un valore stimato.",
+      "q3": "OpenVPN è supportato?",
+      "a3": "Non in questa build. Viene usato WireGuard; «Automatico» potrà passare a OpenVPN quando sarà aggiunto.",
+      "q4": "Quanti dispositivi posso usare?",
+      "a4": "Durante la prova gratuita 2 dispositivi, con i piani a pagamento 10. Gestiscili in Account → Dispositivi.",
+      "q5": "Dopo aver chiuso Meridian non ho più Internet.",
+      "a5": "Probabilmente il Kill Switch è su «Sempre attivo» oppure la VPN doveva ancora essere connessa. Apri Meridian e disconnettiti oppure cambia la modalità del Kill Switch."
+    },
+    "troubleshooting": {
+      "intro": "Scegli cosa sta succedendo; ogni guida esegue i controlli pertinenti.",
+      "cantConnect": { "title": "Non riesco a connettermi", "body": "Di solito la rete blocca il traffico VPN o il server è occupato. Esegui i controlli, poi prova un altro server." },
+      "slow": { "title": "La connessione è lenta", "body": "Scegli un server più vicino o meno carico («Server» → ordina per latenza o carico). La velocità dipende dalla distanza e dalla tua connessione." },
+      "noInternet": { "title": "Connesso, ma senza Internet", "body": "Esegui i controlli. I problemi di DNS o di instradamento compariranno lì con i passaggi per risolverli." },
+      "sitesBlock": { "title": "Un sito mi blocca quando uso la VPN", "body": "Prova un altro server e, per i servizi video, un server con la funzione «Streaming»." },
+      "runChecks": "Esegui i controlli"
+    },
+    "contact": {
+      "intro": "Raccontaci cosa non va. Di solito rispondiamo entro un giorno.",
+      "subject": "Oggetto",
+      "category": "Categoria",
+      "description": "Descrizione",
+      "descriptionHint": "Cosa è successo, quando e cosa stavi cercando di fare.",
+      "attachments": "Allegati",
+      "attach": "Allega file",
+      "attachHint": "Fino a 5 file, da 10 MB ciascuno (PNG, JPEG, TXT, JSON, ZIP, PDF).",
+      "includeReport": "Allega il rapporto di diagnostica",
+      "includeReportHint": "Contiene i risultati dei controlli e le versioni, con gli indirizzi IP mascherati. Controllalo prima di inviare.",
+      "preview": "Visualizza il rapporto",
+      "submit": "Invia la richiesta",
+      "sent": "Richiesta n. {{number}} inviata. Ti risponderemo via email.",
+      "signInRequired": "Accedi per contattare l'assistenza dall'app.",
+      "yourTickets": "Le tue richieste"
+    }
+  },
+  "onboarding": {
+    "step": "Passo {{current}} di {{total}}",
+    "welcome": {
+      "title": "Benvenuto in Meridian",
+      "body": "Una VPN che cifra la tua connessione e nasconde il tuo indirizzo IP, e ti dice con onestà da cosa ti protegge."
+    },
+    "privacy": {
+      "title": "Privacy senza clausole scritte in piccolo",
+      "body": "Non registriamo mai il tuo traffico, i siti visitati o le richieste DNS. Questa build non invia dati di analisi. I rapporti di diagnostica vengono inviati solo se lo decidi tu."
+    },
+    "how": {
+      "title": "Come funziona",
+      "body": "Un piccolo servizio in background crea un tunnel WireGuard cifrato verso il server scelto. Il servizio ha bisogno di privilegi di sistema per creare il tunnel e le regole del firewall: se ne è occupato il programma di installazione.",
+      "service": "Servizio VPN",
+      "serviceReady": "In esecuzione",
+      "serviceMissing": "Non raggiungibile. Reinstalla o avvia il servizio."
+    },
+    "protection": {
+      "title": "Protetto fin dall'inizio",
+      "body": "Queste funzioni sono attive per impostazione predefinita. Potrai cambiarle in seguito nelle impostazioni."
+    },
+    "autoConnect": {
+      "title": "Connettersi automaticamente?",
+      "body": "Meridian può connettersi da solo sulle reti non attendibili, come bar e aeroporti."
+    },
+    "account": {
+      "title": "Accedi",
+      "body": "Accedi o crea un account per connettere questo dispositivo."
+    },
+    "connect": {
+      "title": "Tutto pronto",
+      "body": "Smart Connect sceglierà il server migliore. Premi «Connetti» quando vuoi."
+    },
+    "finish": "Vai alla panoramica"
+  },
+  "notificationsPanel": {
+    "title": "Notifiche",
+    "markAll": "Segna tutte come lette",
+    "empty": { "title": "Nessuna novità", "body": "Qui compariranno i cambi di connessione, gli avvisi di sicurezza e le notizie sull'account." },
+    "preferences": "Preferenze di notifica"
+  },
+  "tray": {
+    "show": "Mostra Meridian",
+    "quit": "Esci da Meridian"
+  },
+  "osNotify": {
+    "connected": "Protetto: connesso a {{city}}, {{country}}",
+    "disconnected": "Disconnesso. Il tuo traffico non passa attraverso la VPN.",
+    "failed": "Connessione non riuscita: {{reason}}",
+    "killSwitch": "Il Kill Switch blocca il traffico finché la VPN non si riconnette."
+  },
+  "search": {
+    "placeholder": "Cerca server, impostazioni, profili e guida…",
+    "trigger": "Cerca server e impostazioni",
+    "groups": { "actions": "Azioni", "servers": "Server", "settings": "Impostazioni", "profiles": "Profili", "help": "Guida" },
+    "empty": "Nessun risultato per «{{query}}».",
+    "hint": "↑↓ per scegliere, Invio per aprire, Esc per chiudere"
+  },
+  "dev": {
+    "banner": "Simulatore di sviluppo: non è una vera VPN. Connessioni, server, indirizzi IP e misurazioni qui non sono reali.",
+    "panel": "Simulatore",
+    "simulate": "Simula",
+    "slowNetwork": "Rete lenta",
+    "failHandshake": "Handshake falliti",
+    "dropNetwork": "Interrompi la rete",
+    "restoreNetwork": "Ripristina la rete",
+    "networkChange": "Wi-Fi → hotspot",
+    "sleepWake": "Sospensione / ripresa",
+    "stopService": "Arresta il servizio",
+    "startService": "Avvia il servizio",
+    "subscription": "Abbonamento",
+    "error": "Provoca un errore"
+  }
+}

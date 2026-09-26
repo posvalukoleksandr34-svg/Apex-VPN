@@ -1,0 +1,11 @@
+# Automatically generated - DO NOT EDIT!
+
+[[permission]]
+identifier = "allow-account-register"
+description = "Enables the account_register command without any pre-configured scope."
+commands.allow = ["account_register"]
+
+[[permission]]
+identifier = "deny-account-register"
+description = "Denies the account_register command without any pre-configured scope."
+commands.deny = ["account_register"]

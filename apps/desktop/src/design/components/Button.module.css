@@ -1,0 +1,155 @@
+/*
+ * Press: compresses in --dur-press with a plain ease-out (it must feel
+ * instant). Release: the transform transition switches back to the spring,
+ * so the button springs past rest and settles. Background, border and
+ * shadow always ease; only the transform springs.
+ */
+.button {
+  --btn-bg: var(--surface-3);
+  --btn-bg-hover: var(--surface-hover);
+  --btn-fg: var(--text);
+  --btn-border: var(--border);
+  --btn-shadow: none;
+  --btn-shadow-hover: var(--glass-highlight), var(--shadow-sm);
+  --btn-press: var(--press-scale);
+  --btn-transform-timing: var(--dur-spring) var(--ease-spring);
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  height: var(--control-height);
+  padding: 0 var(--space-4);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--btn-border);
+  background-color: var(--btn-bg);
+  box-shadow: var(--btn-shadow);
+  color: var(--btn-fg);
+  font-size: var(--text-md);
+  font-weight: var(--weight-medium);
+  white-space: nowrap;
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    background-color var(--dur-base) var(--ease-out),
+    border-color var(--dur-base) var(--ease-out),
+    box-shadow var(--dur-base) var(--ease-out),
+    color var(--dur-base) var(--ease-out),
+    transform var(--btn-transform-timing),
+    opacity var(--dur-fast);
+}
+
+.button:hover:not(:disabled) {
+  background-color: var(--btn-bg-hover);
+  box-shadow: var(--btn-shadow-hover);
+}
+
+.button:active:not(:disabled) {
+  --btn-transform-timing: var(--dur-press) var(--ease-out);
+  transform: scale(var(--btn-press));
+}
+
+.button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Filled buttons: a top sheen and a coloured glow on hover (soft depth). */
+.primary,
+.success {
+  background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0) 60%);
+}
+
+.primary {
+  --btn-bg: var(--accent);
+  --btn-bg-hover: var(--accent-strong);
+  --btn-fg: var(--accent-contrast);
+  --btn-border: transparent;
+  --btn-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.22), 0 1px 2px rgba(0, 0, 0, 0.25);
+  --btn-shadow-hover: inset 0 1px 0 rgba(255, 255, 255, 0.28), 0 8px 22px color-mix(in srgb, var(--accent) 38%, transparent);
+}
+
+/* Neutral buttons turn to frosted glass on hover. */
+.secondary,
+.ghost {
+  --btn-bg-hover: var(--glass-bg-hover);
+}
+
+.secondary:hover:not(:disabled),
+.ghost:hover:not(:disabled) {
+  -webkit-backdrop-filter: var(--glass-blur);
+  backdrop-filter: var(--glass-blur);
+  border-color: var(--glass-border);
+}
+
+.secondary {
+  --btn-bg: var(--surface-3);
+}
+
+.ghost {
+  --btn-bg: transparent;
+  --btn-border: transparent;
+  --btn-fg: var(--text-muted);
+  --btn-shadow-hover: var(--glass-highlight);
+}
+
+.ghost:hover:not(:disabled) {
+  color: var(--text);
+}
+
+.danger {
+  --btn-bg: var(--status-error-soft);
+  --btn-bg-hover: color-mix(in srgb, var(--status-error) 22%, transparent);
+  --btn-fg: var(--status-error);
+  --btn-border: transparent;
+  --btn-shadow-hover: 0 6px 18px color-mix(in srgb, var(--status-error) 22%, transparent);
+}
+
+.success {
+  --btn-bg: var(--status-success);
+  --btn-bg-hover: color-mix(in srgb, var(--status-success) 88%, white);
+  --btn-fg: #06221a;
+  --btn-border: transparent;
+  --btn-shadow-hover: 0 8px 22px color-mix(in srgb, var(--status-success) 34%, transparent);
+}
+
+.sm {
+  height: calc(30px * var(--density));
+  padding: 0 var(--space-3);
+  font-size: var(--text-sm);
+}
+
+.lg {
+  /* Big buttons compress less, so they read as heavy rather than squashy. */
+  --btn-press: var(--press-scale-lg);
+  height: var(--control-height-lg);
+  padding: 0 var(--space-6);
+  font-size: var(--text-lg);
+  border-radius: var(--radius-md);
+}
+
+.block {
+  width: 100%;
+}
+
+.icon {
+  width: var(--control-height);
+  padding: 0;
+  /* Small targets need a deeper press to read: twice the usual depth (and
+     still none when motion is reduced, where --press-scale is 1). */
+  --btn-press: calc(1 - (1 - var(--press-scale)) * 2);
+}
+
+.icon.sm {
+  width: calc(30px * var(--density));
+}
+
+.spinner {
+  width: 1em;
+  height: 1em;
+  border-radius: 50%;
+  border: 2px solid currentColor;
+  border-right-color: transparent;
+  animation: global(spin) 0.8s linear infinite;
+}

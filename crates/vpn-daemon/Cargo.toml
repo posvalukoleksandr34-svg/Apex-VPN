@@ -1,0 +1,54 @@
+[package]
+name = "vpn-daemon"
+description = "meridiand: the privileged VPN service"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+publish.workspace = true
+
+[features]
+# Allows development-only service options (private relays, http API) in an
+# optimized build. Never enabled for shipped builds.
+dev-fleet = []
+
+[[bin]]
+name = "meridiand"
+path = "src/main.rs"
+
+[dependencies]
+vpn-types.workspace = true
+vpn-core.workspace = true
+vpn-platform.workspace = true
+vpn-ipc.workspace = true
+anyhow.workspace = true
+async-trait.workspace = true
+base64.workspace = true
+clap.workspace = true
+rand.workspace = true
+reqwest.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+sha2.workspace = true
+thiserror.workspace = true
+tokio = { workspace = true, features = ["full"] }
+tracing.workspace = true
+tracing-appender.workspace = true
+tracing-subscriber.workspace = true
+zeroize.workspace = true
+
+[target.'cfg(windows)'.dependencies]
+windows-service = "0.7"
+
+[target.'cfg(windows)'.dependencies.windows-sys]
+version = "0.61"
+features = [
+    "Win32_Foundation",
+    "Win32_Security",
+    "Win32_Security_Authorization",
+    "Win32_Storage_FileSystem",
+    "Win32_System_Threading",
+]
+
+[dev-dependencies]
+tempfile = "3"

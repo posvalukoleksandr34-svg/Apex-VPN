@@ -1,0 +1,52 @@
+[workspace]
+resolver = "2"
+members = [
+    "crates/vpn-types",
+    "crates/vpn-core",
+    "crates/vpn-platform",
+    "crates/vpn-ipc",
+    "crates/vpn-daemon",
+    "crates/vpn-cli",
+    "apps/desktop/src-tauri",
+]
+
+[workspace.package]
+version = "0.1.0"
+edition = "2021"
+rust-version = "1.82"
+license = "LicenseRef-Proprietary"
+publish = false
+
+[workspace.dependencies]
+vpn-types = { path = "crates/vpn-types" }
+vpn-core = { path = "crates/vpn-core" }
+vpn-platform = { path = "crates/vpn-platform" }
+vpn-ipc = { path = "crates/vpn-ipc" }
+
+anyhow = "1"
+async-trait = "0.1"
+base64 = "0.22"
+clap = { version = "4", features = ["derive", "env"] }
+ed25519-dalek = { version = "2", features = ["std"] }
+futures = "0.3"
+ipnet = { version = "2", features = ["serde"] }
+rand = "0.8"
+reqwest = { version = "0.12", default-features = false, features = ["rustls-tls", "json", "http2"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+sha2 = "0.10"
+thiserror = "2"
+tokio = { version = "1", features = ["rt-multi-thread", "macros", "sync", "time", "io-util", "net", "fs", "signal"] }
+tokio-util = { version = "0.7", features = ["codec"] }
+tracing = "0.1"
+tracing-appender = "0.2"
+tracing-subscriber = { version = "0.3", features = ["env-filter", "json", "fmt"] }
+ts-rs = { version = "10", features = ["serde-compat"] }
+x25519-dalek = { version = "2", features = ["static_secrets"] }
+zeroize = { version = "1", features = ["derive"] }
+
+[profile.release]
+lto = "thin"
+codegen-units = 1
+strip = "symbols"
+panic = "abort"
