@@ -1,0 +1,27 @@
+.switcher {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--text-subtle);
+  font-size: 13px;
+}
+
+.switcher select {
+  appearance: none;
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  font: inherit;
+  cursor: pointer;
+  padding: 2px 4px;
+  border-radius: var(--radius-sm);
+}
+
+.switcher select:hover {
+  color: var(--text);
+}
+
+.switcher select option {
+  background: var(--surface-2);
+  color: var(--text);
+}

@@ -1,0 +1,180 @@
+/*
+ * Apexy VPN web: the desktop app's design tokens (apps/desktop/src/design/
+ * tokens.css), dark by default and light when the system asks for it.
+ */
+
+:root {
+  color-scheme: dark;
+  --bg: #0a0c11;
+  --bg-sunken: #07080c;
+  --surface-1: #10131a;
+  --surface-2: #151923;
+  --surface-3: #1b202c;
+  --surface-hover: #202637;
+  --surface-active: #262d40;
+  --overlay: rgba(4, 6, 10, 0.64);
+  --border: rgba(255, 255, 255, 0.07);
+  --border-strong: rgba(255, 255, 255, 0.12);
+  --divider: rgba(255, 255, 255, 0.05);
+  --text: #e9ecf3;
+  --text-muted: #a0a8ba;
+  --text-subtle: #6d7589;
+  --text-inverse: #0a0c11;
+  --accent: #7b93ff;
+  --accent-strong: #97aaff;
+  --accent-soft: rgba(123, 147, 255, 0.14);
+  --accent-contrast: #0b1030;
+  --success: #3ddc97;
+  --success-soft: rgba(61, 220, 151, 0.13);
+  --warning: #f5b454;
+  --warning-soft: rgba(245, 180, 84, 0.14);
+  --error: #ff6b7d;
+  --error-soft: rgba(255, 107, 125, 0.13);
+  --neutral: #8a93a7;
+  --neutral-soft: rgba(138, 147, 167, 0.12);
+
+  --font-sans: "Segoe UI Variable Text", "Segoe UI", -apple-system, BlinkMacSystemFont, "SF Pro Text", "Inter", system-ui, sans-serif;
+  --font-display: "Segoe UI Variable Display", "Segoe UI", -apple-system, "SF Pro Display", "Inter", system-ui, sans-serif;
+  --font-mono: "Cascadia Code", "SF Mono", "JetBrains Mono", Consolas, monospace;
+
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-full: 999px;
+  --shadow-md: 0 6px 18px rgba(0, 0, 0, 0.32), 0 1px 3px rgba(0, 0, 0, 0.3);
+  --shadow-lg: 0 18px 48px rgba(0, 0, 0, 0.45), 0 2px 8px rgba(0, 0, 0, 0.3);
+  --ring: 0 0 0 2px var(--bg), 0 0 0 4px var(--accent);
+  --ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --dur-fast: 120ms;
+  --dur-base: 200ms;
+  --control-height: 38px;
+  --sidebar-width: 232px;
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    color-scheme: light;
+    --bg: #f5f6f9;
+    --bg-sunken: #eceef3;
+    --surface-1: #ffffff;
+    --surface-2: #f8f9fb;
+    --surface-3: #f0f2f6;
+    --surface-hover: #eceff5;
+    --surface-active: #e3e7f0;
+    --overlay: rgba(20, 24, 36, 0.32);
+    --border: rgba(16, 22, 40, 0.09);
+    --border-strong: rgba(16, 22, 40, 0.16);
+    --divider: rgba(16, 22, 40, 0.06);
+    --text: #141824;
+    --text-muted: #525b70;
+    --text-subtle: #7d8599;
+    --text-inverse: #ffffff;
+    --accent: #4a64e8;
+    --accent-strong: #3a52d0;
+    --accent-soft: rgba(74, 100, 232, 0.1);
+    --accent-contrast: #ffffff;
+    --success: #14a86b;
+    --success-soft: rgba(20, 168, 107, 0.1);
+    --warning: #c47f10;
+    --warning-soft: rgba(196, 127, 16, 0.1);
+    --error: #d93650;
+    --error-soft: rgba(217, 54, 80, 0.09);
+    --shadow-md: 0 6px 18px rgba(16, 22, 40, 0.08), 0 1px 3px rgba(16, 22, 40, 0.06);
+    --shadow-lg: 0 18px 48px rgba(16, 22, 40, 0.14), 0 2px 8px rgba(16, 22, 40, 0.06);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --dur-fast: 0ms;
+    --dur-base: 0ms;
+  }
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-size: 14px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--accent-strong);
+  text-decoration: underline;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-display);
+  margin: 0;
+  letter-spacing: -0.015em;
+  line-height: 1.2;
+}
+
+h1 {
+  font-size: 26px;
+  font-weight: 600;
+}
+
+h2 {
+  font-size: 17px;
+  font-weight: 600;
+}
+
+h3 {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+p {
+  margin: 0;
+}
+
+:focus-visible {
+  outline: none;
+  box-shadow: var(--ring);
+  border-radius: var(--radius-sm);
+}
+
+code,
+pre {
+  font-family: var(--font-mono);
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
