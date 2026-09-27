@@ -16,11 +16,19 @@
   margin: var(--space-3) 0 var(--space-4);
 }
 
-.formRow {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: var(--space-3);
-  align-items: end;
+/* Change password: one column, fields share a width, the button sits
+   under them at its natural width. */
+.passwordForm {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: var(--space-4);
+  max-width: 420px;
+}
+
+.passwordSubmit {
+  align-self: flex-start;
+  margin-top: var(--space-1);
 }
 
 .list {

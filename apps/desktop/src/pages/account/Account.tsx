@@ -171,27 +171,30 @@ function SecurityTab() {
   return (
     <>
       <Card title={t("account.security.password")}>
-        {pwError ? <Banner tone="error">{pwError}</Banner> : null}
-        <div className={s.formRow}>
+        <form
+          className={s.passwordForm}
+          noValidate
+          onSubmit={async (e) => {
+            e.preventDefault();
+            if (!pw.current || !pw.next) return;
+            setPwError(null);
+            try {
+              await transport().account.request("POST", "/v1/users/me/password", { currentPassword: pw.current, newPassword: pw.next });
+              setPw({ current: "", next: "" });
+              toast({ tone: "success", title: t("account.security.passwordChanged") });
+              void loadSessions();
+            } catch (err) {
+              setPwError(apiErrorMessage(t, err));
+            }
+          }}
+        >
+          {pwError ? <Banner tone="error">{pwError}</Banner> : null}
           <PasswordField label={t("account.security.currentPassword")} autoComplete="current-password" value={pw.current} onChange={(e) => setPw({ ...pw, current: e.target.value })} />
           <PasswordField label={t("account.security.newPassword")} autoComplete="new-password" hint={t("auth.passwordHint")} value={pw.next} onChange={(e) => setPw({ ...pw, next: e.target.value })} />
-          <Button
-            disabled={!pw.current || !pw.next}
-            onClick={async () => {
-              setPwError(null);
-              try {
-                await transport().account.request("POST", "/v1/users/me/password", { currentPassword: pw.current, newPassword: pw.next });
-                setPw({ current: "", next: "" });
-                toast({ tone: "success", title: t("account.security.passwordChanged") });
-                void loadSessions();
-              } catch (e) {
-                setPwError(apiErrorMessage(t, e));
-              }
-            }}
-          >
+          <Button type="submit" variant="primary" className={s.passwordSubmit} disabled={!pw.current || !pw.next}>
             {t("account.security.changePassword")}
           </Button>
-        </div>
+        </form>
       </Card>
 
       <Card title={t("account.security.twoFactor")} className={s.spaced}>
