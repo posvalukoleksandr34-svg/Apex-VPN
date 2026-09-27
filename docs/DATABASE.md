@@ -10,7 +10,7 @@ The product's four core tables, and where each field lives:
 
 | Concept | Table | Key columns |
 |---|---|---|
-| **users** | `identity.users` | `id` uuid · `email` (unique, case-insensitive) · `password_hash` (argon2id) · `role` (`user` \| `admin`) · `is_banned` · `email_verified_at` · TOTP secret (AES-GCM sealed) · `created_at`, `updated_at` |
+| **users** | `identity.users` | `id` uuid · `email` (unique, case-insensitive) · `password_hash` (argon2id) · `role` (`user` \| `admin`) · `is_banned` · `device_limit_override` (staff-set; NULL: the plan's) · `email_verified_at` · TOTP secret (AES-GCM sealed) · `created_at`, `updated_at` |
 | **subscriptions** | `billing.subscriptions` | `user_id` (one per user, cascade) · `plan_id` → `billing.plans` · `status` (`incomplete`, `trialing`, `active`, `past_due`, `canceled`, `expired`) · `current_period_end` · `cancel_at_period_end` · `provider`, `provider_ref` (the Stripe subscription id, unique) · `provider_synced_at` |
 | | `billing.customers` | `user_id` → the Stripe customer id (`customer_ref`, unique) |
 | | `billing.plans` | `id` · `period` · `price_cents` · `device_limit` · `stripe_price_id` |
@@ -21,7 +21,8 @@ Supporting tables:
 * `identity.sessions`: refresh tokens, stored hashed, with rotation and reuse detection.
 * `identity.email_tokens`: hashed verification and reset codes.
 * `identity.recovery_codes`: hashed 2FA recovery codes.
-* `billing.invoices`, `billing.payment_methods`: display data only (card brand, last 4 digits); card numbers never reach us.
+* `billing.invoices`, `billing.payment_methods`: display data only (card brand, last 4 digits); card numbers never reach us. Invoices record what staff refunded (`refunded_cents`).
+* `ops.admin_actions`: every staff action (who, which account, what). No email addresses; when an account is deleted its rows stay without the link.
 * `billing.webhook_events`: ids of provider events already applied.
 * `support.*`, `diag.reports`: tickets, and diagnostic reports the user chose to send.
 * `notify.notifications`: in-app notices.
@@ -56,7 +57,7 @@ The service never queries the database. Doing so would require a database creden
 
 ### Device limits
 
-`POST /v1/devices` counts the user's active (not revoked) devices against `plans.device_limit`: trial 2, paid 5.
+`POST /v1/devices` counts the user's active (not revoked) devices against the account's limit: `identity.users.device_limit_override` when staff set one, otherwise `plans.device_limit` (trial 2, paid 5).
 
 Registering the same key again is idempotent, and it doesn't count twice. Revoking a device frees its slot, and its address is never reissued.
 
@@ -83,7 +84,27 @@ Set `identity.users.is_banned = true`, from any tool, SQL included. A trigger re
 * access tokens are refused on their next use;
 * the nodes drop the user's peers within about 3 seconds, which ends their tunnels.
 
-`role` (`user` / `admin`) is stored for staff tooling; no endpoint grants anything by role yet.
+Staff can also ban and unban from the web dashboard's admin pages (see below).
+
+## Staff tools
+
+Admins (`identity.users.role = 'admin'`) reach `/v1/admin/*`, and the web dashboard's `/admin` pages built on it:
+* **Accounts:** the table with email, devices in use against the limit, and the subscription's status, plan and provider. Search by email or id; filter by state, bans or staff.
+* **Actions:**
+  * ban and unban (with a reason);
+  * remove all of an account's devices;
+  * set the account's device limit, or go back to the plan's;
+  * end the subscription now;
+  * refund a Stripe invoice, in full or in part, optionally ending the subscription with it.
+* **Staff log:** each action is written to `ops.admin_actions` in the same transaction as the change, and shown on the account's page.
+
+The role is read from the database on every staff request, so a demotion or a ban takes effect at once. No endpoint grants a role. An operator runs:
+
+```bash
+npm run user:role -w server/api -- --email you@example.com --role admin
+```
+
+In production staff also need two-step verification (`ADMIN_REQUIRE_MFA`, on by default there).
 
 ## No-logs
 

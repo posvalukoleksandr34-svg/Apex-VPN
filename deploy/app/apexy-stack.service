@@ -1,0 +1,23 @@
+# /etc/systemd/system/apexy-stack.service: starts the web stack at boot
+# and stops it cleanly. The containers restart themselves on failure.
+#
+#   systemctl enable --now apexy-stack
+#   systemctl reload apexy-stack      # after pulling new images or editing env files
+
+[Unit]
+Description=Apexy VPN web stack (API, dashboard, Caddy, Cloudflare Tunnel)
+Requires=docker.service
+After=docker.service network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+WorkingDirectory=/opt/apexy/deploy/app
+ExecStart=/usr/bin/docker compose --env-file stack.env up -d --remove-orphans
+ExecReload=/usr/bin/docker compose --env-file stack.env up -d --remove-orphans
+ExecStop=/usr/bin/docker compose --env-file stack.env down
+TimeoutStartSec=600
+
+[Install]
+WantedBy=multi-user.target

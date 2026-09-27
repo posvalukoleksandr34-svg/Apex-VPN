@@ -16,6 +16,7 @@ The product rule: **the app never shows a state, a measurement or a protection t
 | `crates/vpn-cli` | `apexy`, a command-line client (status, connect, servers, diagnostics, login). |
 | `crates/vpn-node` | `apexy-node`, the agent on each VPN node: keeps kernel WireGuard's peers in step with the API ([deploy/node](deploy/node/README.md)). |
 | `apps/desktop` | The desktop app: React UI (`src/`) and its Tauri Rust core (`src-tauri/`). |
+| `apps/web` | The web dashboard (Next.js): sign-up, subscription and Stripe billing, devices with WireGuard configs and QR codes, server search. |
 | `server/api` | Account backend: Fastify + PostgreSQL (PGlite in development and tests). |
 | `docs/` | Architecture, product map, security, setup and operations. |
 
@@ -27,12 +28,24 @@ Prerequisites: Rust (stable, MSVC), Visual Studio C++ Build Tools, Node.js 22+, 
 
 ```powershell
 npm install
-npm run dev:keys -w server/api     # dev signing keys and dev/service.json
+npm run dev:keys -w server/api     # dev secrets: server/api/.env.local, apps/web/.env.local, dev/service.json
 npm run dev:seed -w server/api     # the development server list (WireGuard demo server)
-npm run api:dev                    # account API on http://127.0.0.1:8787; register in the app
+powershell -ExecutionPolicy Bypass -File scripts\dev.ps1   # API, service (asks for admin) and the desktop app
+```
+
+`scripts\dev.ps1` runs the same steps you can run by hand:
+
+```powershell
+npm run api:dev                    # account API on http://127.0.0.1:8787
 cargo build -p vpn-daemon -p vpn-cli
 powershell -ExecutionPolicy Bypass -File scripts\dev-service.ps1   # the service, elevated
 npm run tauri dev -w apps/desktop  # the desktop app
+```
+
+The web dashboard, next to the API:
+
+```powershell
+npm run web:dev                    # http://127.0.0.1:3000
 ```
 
 Only the UI, with no service or admin rights (a simulator with a permanent banner; never part of a production build):
@@ -47,7 +60,7 @@ The full walkthrough, including a local WireGuard server, is [docs/SETUP.md](doc
 
 ```powershell
 cargo test --workspace             # Rust: state machine, firewall policy, selection, IPC, platform (unprivileged)
-npm test                           # backend (PGlite) and UI (vitest)
+npm test                           # backend (PGlite), desktop UI and web dashboard (vitest)
 ```
 
 ## Status

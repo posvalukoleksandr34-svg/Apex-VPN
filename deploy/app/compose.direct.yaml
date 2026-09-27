@@ -1,0 +1,17 @@
+# Option B (no tunnel): Caddy takes Cloudflare's connections on port 443
+# with an Origin CA certificate. Use instead of the tunnel:
+#
+#   docker compose -f compose.yaml -f compose.direct.yaml --env-file stack.env up -d
+#
+# certs/origin.pem and certs/origin.key: SSL/TLS → Origin Server → Create
+# certificate in Cloudflare. TUNNEL_TOKEN can be any placeholder here.
+
+services:
+  caddy:
+    ports: ["443:443"]
+    volumes:
+      - ./Caddyfile.direct:/etc/caddy/Caddyfile:ro
+      - ./certs:/certs:ro
+
+  cloudflared:
+    profiles: ["tunnel"]

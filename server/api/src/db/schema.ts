@@ -15,6 +15,8 @@ export interface UsersTable {
   locale: Generated<string>;
   role: Generated<"user" | "admin">;
   is_banned: Generated<boolean>;
+  /** Staff-set device limit for this account; NULL: the plan's. */
+  device_limit_override: number | null;
   totp_secret_enc: string | null;
   totp_enabled_at: NullableTimestamp;
   totp_last_step: ColumnType<string | null, number | string | null | undefined, number | string | null>;
@@ -61,7 +63,7 @@ export interface DevicesTable {
   id: Generated<string>;
   user_id: string;
   name: string;
-  platform: "windows" | "macos" | "linux" | "other";
+  platform: "windows" | "macos" | "linux" | "ios" | "android" | "router" | "other";
   app_version: string | null;
   wg_public_key: string;
   ipv4: string;
@@ -128,6 +130,7 @@ export interface InvoicesTable {
   paid_at: NullableTimestamp;
   provider_ref: string | null;
   hosted_url: string | null;
+  refunded_cents: Generated<number>;
 }
 
 export interface PaymentMethodsTable {
@@ -140,6 +143,17 @@ export interface PaymentMethodsTable {
   exp_month: number;
   exp_year: number;
   is_default: Generated<boolean>;
+}
+
+export type AdminAction = "ban" | "unban" | "reset_devices" | "device_limit" | "refund" | "cancel_subscription";
+
+export interface AdminActionsTable {
+  id: Generated<string>;
+  admin_id: string | null;
+  target_user_id: string | null;
+  action: AdminAction;
+  detail: ColumnType<Record<string, unknown>, string, string>;
+  created_at: Generated<Date>;
 }
 
 export interface WebhookEventsTable {
@@ -265,6 +279,7 @@ export interface DB {
   "identity.recovery_codes": RecoveryCodesTable;
   "identity.sessions": SessionsTable;
   "identity.email_tokens": EmailTokensTable;
+  "ops.admin_actions": AdminActionsTable;
   "ops.devices": DevicesTable;
   "ops.profiles": ProfilesTable;
   "billing.plans": PlansTable;

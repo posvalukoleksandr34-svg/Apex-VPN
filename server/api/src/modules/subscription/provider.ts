@@ -20,6 +20,13 @@ export interface Plan {
 
 export type CheckoutResult = { kind: "redirect"; url: string } | { kind: "activated" };
 
+/** Where a hosted checkout or billing portal sends the browser back to. */
+export interface ReturnUrls {
+  success: string;
+  cancel: string;
+  portal: string;
+}
+
 /** A subscription change a webhook caused, for notifying the user. */
 export interface SubscriptionChange {
   userId: string;
@@ -29,16 +36,42 @@ export interface SubscriptionChange {
 
 export class WebhookSignatureError extends Error {}
 
+/** A billing operation the provider refused for a reason the caller can show. */
+export class BillingError extends Error {
+  constructor(
+    readonly code: string,
+    message: string,
+  ) {
+    super(message);
+  }
+}
+
+/** The invoice fields a refund needs. */
+export interface RefundableInvoice {
+  id: string;
+  provider_ref: string | null;
+  amount_cents: number;
+  refunded_cents: number;
+}
+
 export interface BillingProvider {
   readonly name: "manual" | "stripe";
-  checkout(db: Kysely<DB>, userId: string, plan: Plan, now: Date): Promise<CheckoutResult>;
+  checkout(db: Kysely<DB>, userId: string, plan: Plan, now: Date, back: ReturnUrls): Promise<CheckoutResult>;
   /** Hosted page to manage the payment method, invoices and plan; null when the provider has none. */
-  portal(db: Kysely<DB>, userId: string): Promise<string | null>;
+  portal(db: Kysely<DB>, userId: string, back: ReturnUrls): Promise<string | null>;
   /** Cancels at the end of the paid period (never retroactively). */
   cancelAtPeriodEnd(db: Kysely<DB>, userId: string): Promise<void>;
   resume(db: Kysely<DB>, userId: string): Promise<void>;
   /** Before an account is deleted: stop all future charges. Throws if that can't be confirmed. */
   closeAccount(db: Kysely<DB>, userId: string): Promise<void>;
+  /** Staff: end the subscription now (access ends at once; nothing more is charged). */
+  cancelNow(db: Kysely<DB>, userId: string, now: Date): Promise<void>;
+  /**
+   * Staff: returns `amountCents` of a paid invoice to the payment method.
+   * The same `idempotencyKey` never refunds twice. Resolves to the amount
+   * refunded; throws `BillingError` for invoices that can't be refunded.
+   */
+  refund(invoice: RefundableInvoice, amountCents: number, idempotencyKey: string): Promise<number>;
   /**
    * Verifies and applies one webhook delivery, exactly once per event id.
    * Throws `WebhookSignatureError` for deliveries that don't verify; any
@@ -116,6 +149,18 @@ export class ManualBilling implements BillingProvider {
 
   async closeAccount(): Promise<void> {}
 
+  async cancelNow(db: Kysely<DB>, userId: string, now: Date): Promise<void> {
+    await db
+      .updateTable("billing.subscriptions")
+      .set({ status: "canceled", current_period_end: now, cancel_at_period_end: false, updated_at: now })
+      .where("user_id", "=", userId)
+      .execute();
+  }
+
+  async refund(): Promise<number> {
+    throw new BillingError("not_refundable", "plans granted without payment have nothing to refund");
+  }
+
   async handleWebhook(): Promise<SubscriptionChange | null> {
     throw new WebhookSignatureError("manual billing has no webhooks");
   }
@@ -159,8 +204,6 @@ interface StripeSubscription {
 export interface StripeOptions {
   secretKey: string;
   webhookSecret: string;
-  /** Where Stripe sends the browser back to (this API's /v1/billing/return). */
-  publicBaseUrl: string;
   fetch?: typeof fetch;
   apiBase?: string;
 }
@@ -214,13 +257,13 @@ export class StripeBilling implements BillingProvider {
     return row?.provider_ref ? { ref: row.provider_ref, status: row.status } : null;
   }
 
-  async checkout(db: Kysely<DB>, userId: string, plan: Plan): Promise<CheckoutResult> {
+  async checkout(db: Kysely<DB>, userId: string, plan: Plan, _now: Date, back: ReturnUrls): Promise<CheckoutResult> {
     if (!plan.stripe_price_id) throw new Error(`no Stripe price is configured for plan ${plan.id} (STRIPE_PRICE_${plan.id.toUpperCase()})`);
     // A running subscription changes plan in the portal; a second checkout
     // would start a second subscription and charge twice.
     const current = await this.currentRef(db, userId);
     if (current && ["incomplete", "trialing", "active", "past_due"].includes(current.status)) {
-      const url = await this.portal(db, userId);
+      const url = await this.portal(db, userId, back);
       if (url) return { kind: "redirect", url };
     }
     const customer = await this.customerFor(db, userId);
@@ -234,17 +277,17 @@ export class StripeBilling implements BillingProvider {
       "subscription_data[metadata][plan_id]": plan.id,
       "metadata[user_id]": userId,
       allow_promotion_codes: "true",
-      success_url: `${this.opts.publicBaseUrl}/v1/billing/return?result=success`,
-      cancel_url: `${this.opts.publicBaseUrl}/v1/billing/return?result=cancel`,
+      success_url: back.success,
+      cancel_url: back.cancel,
     });
     return { kind: "redirect", url: session.url };
   }
 
-  async portal(db: Kysely<DB>, userId: string): Promise<string | null> {
+  async portal(db: Kysely<DB>, userId: string, back: ReturnUrls): Promise<string | null> {
     const customer = await this.customerFor(db, userId);
     const session = await this.api<{ url: string }>("POST", "billing_portal/sessions", {
       customer,
-      return_url: `${this.opts.publicBaseUrl}/v1/billing/return?result=portal`,
+      return_url: back.portal,
     });
     return session.url;
   }
@@ -275,6 +318,37 @@ export class StripeBilling implements BillingProvider {
       // Immediate cancellation: nobody is charged for a deleted account.
       await this.api("DELETE", `subscriptions/${current.ref}`);
     }
+  }
+
+  async cancelNow(db: Kysely<DB>, userId: string, now: Date): Promise<void> {
+    const current = await this.currentRef(db, userId);
+    if (!current || current.status === "canceled" || current.status === "expired") {
+      throw new BillingError("no_subscription", "there's no running subscription to cancel");
+    }
+    const sub = await this.api<StripeSubscription>("DELETE", `subscriptions/${current.ref}`);
+    // Apply Stripe's answer now; the webhook that follows finds nothing new.
+    const write = await this.prepareSubscription(db, sub, userId, now);
+    if (write) await db.transaction().execute(write.apply);
+  }
+
+  async refund(invoice: RefundableInvoice, amountCents: number, idempotencyKey: string): Promise<number> {
+    if (!invoice.provider_ref) throw new BillingError("not_refundable", "this invoice wasn't paid through Stripe");
+    // API 2025-03-31.basil: an invoice's payments are listed under `payments`.
+    const inv = await this.api<{ id: string; payments?: { data: { status?: string; payment?: { payment_intent?: string; charge?: string } }[] } }>(
+      "GET",
+      `invoices/${encodeURIComponent(invoice.provider_ref)}?expand[]=payments`,
+    );
+    const paid = inv.payments?.data.find((p) => p.status === "paid" && (p.payment?.payment_intent || p.payment?.charge));
+    if (!paid?.payment) throw new BillingError("not_refundable", "Stripe has no completed payment for this invoice");
+    const target: Record<string, string> = paid.payment.payment_intent ? { payment_intent: paid.payment.payment_intent } : { charge: paid.payment.charge! };
+    const refund = await this.api<{ amount: number; status: string }>(
+      "POST",
+      "refunds",
+      { ...target, amount: String(amountCents), reason: "requested_by_customer", "metadata[invoice]": inv.id },
+      idempotencyKey,
+    );
+    if (refund.status === "failed" || refund.status === "canceled") throw new BillingError("refund_failed", `Stripe reports the refund as ${refund.status}`);
+    return refund.amount;
   }
 
   /** `Stripe-Signature: t=…,v1=…[,v1=…]`: HMAC-SHA256 over `t.body`; any v1 may match (secret rotation). */

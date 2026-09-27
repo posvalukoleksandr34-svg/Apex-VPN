@@ -17,6 +17,7 @@ const UserDtoSchema = z.object({
   emailVerified: z.boolean(),
   locale: z.string(),
   mfaEnabled: z.boolean(),
+  role: z.enum(["user", "admin"]),
   createdAt: z.string(),
 });
 
@@ -88,7 +89,7 @@ export function userRoutes(app: FastifyInstance): void {
       await d.database.db.updateTable("identity.users").set({ password_hash: await hashPassword(body.newPassword), updated_at: d.now() }).where("id", "=", user.id).execute();
       await revokeAllSessions(d, user.id, "password_changed", auth.sessionId);
       await notify(d, user.id, "security", "Password changed", "Your password was changed. Other sessions were signed out.");
-      await d.mailer.send(user.email, { kind: "password_changed" });
+      await d.mailer.send(user.email, { kind: "password_changed" }, user.locale);
     },
   );
 
@@ -167,7 +168,7 @@ export function userRoutes(app: FastifyInstance): void {
           .execute();
       });
       await notify(d, user.id, "security", "Two-factor authentication on", "Sign-ins now need a code from your authenticator app.");
-      await d.mailer.send(user.email, { kind: "mfa_changed", enabled: true });
+      await d.mailer.send(user.email, { kind: "mfa_changed", enabled: true }, user.locale);
       return { recoveryCodes: codes };
     },
   );
@@ -198,7 +199,7 @@ export function userRoutes(app: FastifyInstance): void {
         .execute();
       await d.database.db.deleteFrom("identity.recovery_codes").where("user_id", "=", user.id).execute();
       await notify(d, user.id, "security", "Two-factor authentication off", "Sign-ins no longer need an authenticator code.");
-      await d.mailer.send(user.email, { kind: "mfa_changed", enabled: false });
+      await d.mailer.send(user.email, { kind: "mfa_changed", enabled: false }, user.locale);
     },
   );
 

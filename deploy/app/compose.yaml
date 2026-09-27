@@ -1,0 +1,76 @@
+# The Apexy VPN web stack on one server: the account API, the web dashboard,
+# Caddy in front of both, and a Cloudflare Tunnel as the only way in.
+#
+# No port is published: cloudflared connects out to Cloudflare, so the
+# server's address never appears in DNS and nothing on it answers the
+# internet (see docs/PRODUCTION.md). Run from this folder:
+#
+#   docker compose --env-file stack.env up -d --build
+#
+# Settings: stack.env (domains, tunnel token), api.env, web.env. Copy them
+# from the *.example files; keep them 0600.
+
+name: apexy
+
+x-hardened: &hardened
+  restart: unless-stopped
+  cap_drop: [ALL]
+  security_opt: ["no-new-privileges:true"]
+  networks: [internal]
+  logging:
+    driver: local
+    options: { max-size: "10m", max-file: "3" }
+
+services:
+  api:
+    <<: *hardened
+    image: ${APEXY_REGISTRY:-local}/apexy-api:${APEXY_VERSION:-dev}
+    build: { context: ../.., dockerfile: deploy/app/Dockerfile.api }
+    env_file: api.env
+    read_only: true
+    tmpfs: ["/tmp"]
+    volumes:
+      - uploads:/data/uploads
+      # The database's CA certificate (Supabase: Project Settings → Database → SSL).
+      - ./secrets:/run/secrets:ro
+
+  web:
+    <<: *hardened
+    image: ${APEXY_REGISTRY:-local}/apexy-web:${APEXY_VERSION:-dev}
+    build: { context: ../.., dockerfile: deploy/app/Dockerfile.web }
+    env_file: web.env
+    environment:
+      API_INTERNAL_URL: http://api:8787
+    read_only: true
+    tmpfs: ["/tmp", "/app/apps/web/.next/cache"]
+    depends_on:
+      api: { condition: service_healthy }
+
+  caddy:
+    <<: *hardened
+    image: caddy:2.10-alpine
+    cap_add: [NET_BIND_SERVICE]
+    environment:
+      APP_DOMAIN: ${APP_DOMAIN:?set APP_DOMAIN in stack.env}
+      API_DOMAIN: ${API_DOMAIN:?set API_DOMAIN in stack.env}
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on: [api, web]
+
+  cloudflared:
+    <<: *hardened
+    image: cloudflare/cloudflared:2025.9.1
+    command: ["tunnel", "--no-autoupdate", "run"]
+    environment:
+      TUNNEL_TOKEN: ${TUNNEL_TOKEN:?set TUNNEL_TOKEN in stack.env}
+    depends_on: [caddy]
+
+volumes:
+  uploads:
+  caddy_data:
+  caddy_config:
+
+networks:
+  internal:

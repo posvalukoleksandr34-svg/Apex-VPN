@@ -16,7 +16,7 @@ const Locale = z.enum(["en", "ru", "de", "it"]);
 export const DeviceHint = z
   .object({
     name: z.string().trim().min(1).max(64),
-    platform: z.enum(["windows", "macos", "linux", "other"]),
+    platform: z.enum(["windows", "macos", "linux", "web", "other"]),
   })
   .default({ name: "Unknown device", platform: "other" });
 
@@ -26,6 +26,7 @@ const UserDtoSchema = z.object({
   emailVerified: z.boolean(),
   locale: z.string(),
   mfaEnabled: z.boolean(),
+  role: z.enum(["user", "admin"]),
   createdAt: z.string(),
 });
 export const TokenResponse = z.object({
@@ -61,9 +62,9 @@ export function authRoutes(app: FastifyInstance): void {
       const problem = passwordProblem(body.password, body.email);
       if (problem) throw badRequest(problem);
       const { db } = d.database;
-      const existing = await db.selectFrom("identity.users").select(["id", "email"]).where((eb) => eb(eb.fn("lower", ["email"]), "=", body.email)).executeTakeFirst();
+      const existing = await db.selectFrom("identity.users").select(["id", "email", "locale"]).where((eb) => eb(eb.fn("lower", ["email"]), "=", body.email)).executeTakeFirst();
       if (existing) {
-        await d.mailer.send(existing.email, { kind: "registration_attempt" });
+        await d.mailer.send(existing.email, { kind: "registration_attempt" }, existing.locale);
         return { status: "accepted" as const };
       }
       const now = d.now();
@@ -85,7 +86,7 @@ export function authRoutes(app: FastifyInstance): void {
         })
         .execute();
       const code = await issueCode(d, user.id, "verify_email");
-      await d.mailer.send(body.email, { kind: "verify_email", code });
+      await d.mailer.send(body.email, { kind: "verify_email", code }, body.locale);
       return { status: "accepted" as const };
     },
   );
@@ -129,7 +130,7 @@ export function authRoutes(app: FastifyInstance): void {
       const user = await findByEmail(body.email);
       if (user && !user.email_verified_at) {
         const code = await issueCode(d, user.id, "verify_email");
-        await d.mailer.send(user.email, { kind: "verify_email", code });
+        await d.mailer.send(user.email, { kind: "verify_email", code }, user.locale);
       }
       return { status: "accepted" as const };
     },
@@ -274,7 +275,7 @@ export function authRoutes(app: FastifyInstance): void {
       const user = await findByEmail(body.email);
       if (user) {
         const code = await issueCode(d, user.id, "reset_password");
-        await d.mailer.send(user.email, { kind: "reset_password", code });
+        await d.mailer.send(user.email, { kind: "reset_password", code }, user.locale);
       }
       return { status: "accepted" as const };
     },
@@ -307,7 +308,7 @@ export function authRoutes(app: FastifyInstance): void {
         .execute();
       await revokeAllSessions(d, user.id, "password_reset");
       await notify(d, user.id, "security", "Password changed", "Your password was reset and every session was signed out.");
-      await d.mailer.send(user.email, { kind: "password_changed" });
+      await d.mailer.send(user.email, { kind: "password_changed" }, user.locale);
     },
   );
 

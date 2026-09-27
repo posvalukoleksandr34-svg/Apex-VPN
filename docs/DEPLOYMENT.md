@@ -84,7 +84,12 @@ Add `tauri-plugin-updater` with a signing key held offline and an HTTPS release 
 
   Rotate the relay key by publishing the new public key in a client release before switching.
 * `NODE_PROVISIONING=agent`. The API refuses `wireguard-demo` in production.
-* Behind a TLS-terminating proxy. The IP-check endpoint must see the client's real public address, so set `TRUST_PROXY=true`, and only when the API is reachable exclusively through that proxy.
+* Behind a TLS-terminating proxy. Rate limits and the IP-check endpoint need the client's real address, so list the proxies whose `X-Forwarded-For` the API may believe:
+  * `TRUST_PROXY=loopback,uniquelocal` when the reverse proxy and the web dashboard reach the API over loopback or a private network (the Docker setup);
+  * or explicit addresses and CIDRs: `TRUST_PROXY=10.0.0.5,10.0.1.0/24`.
+
+  `TRUST_PROXY=true` believes anyone; use it only if the proxy overwrites the header and nothing else can reach the API.
+* `WEB_APP_URL=https://app.<your-domain>`: the web dashboard. Checkout and the billing portal send web customers back to `/billing` there.
 * Mail: replace the console mailer with an SMTP/API mailer.
 
 ### Stripe billing
@@ -93,7 +98,7 @@ Add `tauri-plugin-updater` with a signing key held offline and an HTTPS release 
 
 | Variable | Value |
 |---|---|
-| `STRIPE_SECRET_KEY` | `sk_live_…` (or a restricted `rk_live_…` with Customers, Checkout Sessions, Subscriptions and Billing Portal) |
+| `STRIPE_SECRET_KEY` | `sk_live_…`, or better a restricted `rk_live_…`: write access to Customers, Checkout Sessions, Subscriptions, Customer portal and Refunds; read access to Invoices and Prices. `STRIPE_MODE` (default `live`) must match the key; `test` is for staging |
 | `STRIPE_WEBHOOK_SECRET` | The endpoint's `whsec_…` |
 | `STRIPE_PRICE_MONTHLY`, `STRIPE_PRICE_ANNUAL` | Recurring prices (`price_…`) for the two paid plans |
 | `PUBLIC_BASE_URL` | The API's public `https://` address (checkout and portal return to `/v1/billing/return`) |
@@ -125,6 +130,52 @@ How it behaves:
   * **The service:** it refuses to start a connection past the registration's `validUntil`, without engaging the kill switch. If the plan ends mid-session, the kill switch keeps holding traffic. The app refreshes the registration after a renewal.
 
 Tested against a fake Stripe API with real signatures (`server/api/test/billing.test.ts`). Before launch, run the flow once in Stripe **test mode** end to end (`stripe listen --forward-to …`), then in live mode with a real card and a refund.
+
+## Production stack
+
+`deploy/app` has everything for one server:
+* **Images:** the API and the dashboard (`Dockerfile.api`, `Dockerfile.web`).
+* **Compose file:** with Caddy and a Cloudflare Tunnel, so no port is open.
+* **Operations:** a systemd unit, and the env templates.
+
+The walkthrough, including Stripe's switch from test to live and the Cloudflare checklist, is [PRODUCTION.md](PRODUCTION.md). CI (`.github/workflows/images.yml`) builds both images and smoke-tests them against PostgreSQL behind the stack's Caddyfile. On version tags it publishes them to GitHub's registry.
+
+## Web dashboard
+
+`apps/web`: Next.js, built as a self-contained server (`output: "standalone"`). It is where customers sign up, pay, and get WireGuard configs for phones and routers.
+
+```bash
+npm ci
+npm run build -w apps/web
+# Serve apps/web/.next/standalone/apps/web/server.js, with
+# .next/static copied to .next/standalone/apps/web/.next/static
+```
+
+| Variable | Value |
+|---|---|
+| `API_INTERNAL_URL` | The API as the dashboard reaches it, over the private network: `http://api:8787` |
+| `WEB_SESSION_SECRET` | 32 random bytes, base64 (`openssl rand -base64 32`). Encrypts the session cookie; changing it signs everyone out |
+| `DOWNLOAD_URL_WINDOWS` | Optional: the published Windows installer |
+| `PORT`, `HOSTNAME` | Where `server.js` listens (default 3000, all interfaces) |
+
+It needs:
+* **HTTPS.** In production the session cookie is `__Host-`/`Secure`, and sign-in doesn't work over plain HTTP.
+* **One instance, or sticky sessions.** Token refreshes are remembered in the process (see SECURITY.md).
+* **The API configured for it:** `WEB_APP_URL` pointing at the dashboard, and `TRUST_PROXY` covering the dashboard's address.
+* **Stripe's default domains.** Checkout and portal redirects are allowed to `checkout.stripe.com` and `billing.stripe.com` only. A custom Stripe domain needs adding in `apps/web/src/app/actions/billing.ts` and the CSP's `form-action`.
+
+### Staff accounts
+
+The admin pages (`/admin` in the dashboard) are for accounts with the `admin` role. To make one:
+1. Register it like any account.
+2. Turn on two-step verification in the desktop app (Account → Security). Production refuses staff tools without it (`ADMIN_REQUIRE_MFA`, default on in production).
+3. Run, with the API's database configuration:
+
+   ```bash
+   npm run user:role -w server/api -- --email you@example.com --role admin
+   ```
+
+`--role user` takes it away. Refunds go through the Stripe account in `STRIPE_SECRET_KEY`; the "Open in Stripe" link follows test or live mode from the key.
 
 ## Nodes 🔌
 

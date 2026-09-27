@@ -27,6 +27,10 @@ class FakeStripe {
   calls: { method: string; path: string; form: Record<string, string>; idempotencyKey?: string }[] = [];
   customers = new Map<string, string>(); // idempotency key → customer id
   subs = new Map<string, FakeSub>();
+  /** Invoice id → the payment intent that paid it (API 2025-03-31.basil: `invoice.payments`). */
+  invoicePayments = new Map<string, string>();
+  /** Refunds made, by idempotency key: a repeated key returns the first refund. */
+  refunds = new Map<string, { id: string; payment_intent: string; amount: number; status: string }>();
   down = false;
 
   fetch = async (input: string | URL | Request, init?: RequestInit): Promise<Response> => {
@@ -45,6 +49,20 @@ class FakeStripe {
     }
     if (method === "POST" && path === "checkout/sessions") return reply(200, { id: "cs_1", url: "https://checkout.stripe.test/c/cs_1" });
     if (method === "POST" && path === "billing_portal/sessions") return reply(200, { url: "https://billing.stripe.test/p/session_1" });
+    const inv = path.match(/^invoices\/([\w-]+)$/);
+    if (inv && method === "GET") {
+      const pi = this.invoicePayments.get(inv[1]!);
+      if (!pi) return reply(404, { error: { message: "no such invoice" } });
+      expect(url.searchParams.getAll("expand[]")).toContain("payments");
+      return reply(200, { id: inv[1], payments: { data: [{ status: "paid", payment: { type: "payment_intent", payment_intent: pi } }] } });
+    }
+    if (method === "POST" && path === "refunds") {
+      const key = headers.get("idempotency-key") ?? randomBytes(4).toString("hex");
+      if (!this.refunds.has(key)) {
+        this.refunds.set(key, { id: `re_${randomBytes(4).toString("hex")}`, payment_intent: form.payment_intent!, amount: Number(form.amount), status: "succeeded" });
+      }
+      return reply(200, this.refunds.get(key));
+    }
     const m = path.match(/^subscriptions\/([\w-]+)$/);
     if (m) {
       const sub = this.subs.get(m[1]!);
@@ -104,7 +122,8 @@ const enroll = (auth: Record<string, string>) =>
 beforeEach(async () => {
   stripe = new FakeStripe();
   t = await testApp({
-    billing: new StripeBilling({ secretKey: "sk_test_x", webhookSecret: WEBHOOK_SECRET, publicBaseUrl: "https://api.apexy.test", fetch: stripe.fetch as typeof fetch }),
+    billing: new StripeBilling({ secretKey: "sk_test_x", webhookSecret: WEBHOOK_SECRET, fetch: stripe.fetch as typeof fetch }),
+    env: { PUBLIC_BASE_URL: "https://api.apexy.test", WEB_APP_URL: "https://app.apexy.test/" },
   });
   await t.deps.database.db.updateTable("billing.plans").set({ stripe_price_id: PRICE_MONTHLY }).where("id", "=", "monthly").execute();
   await t.deps.database.db.updateTable("billing.plans").set({ stripe_price_id: PRICE_ANNUAL }).where("id", "=", "annual").execute();
@@ -134,6 +153,23 @@ describe("Stripe checkout", () => {
       success_url: "https://api.apexy.test/v1/billing/return?result=success",
     });
     expect(sessions[1]!.form["line_items[0][price]"]).toBe(PRICE_ANNUAL);
+  });
+
+  it("sends web customers back to the dashboard, and app customers to the API's page", async () => {
+    const u = await signedInUser(t);
+    await t.app.inject({ method: "POST", url: "/v1/subscription/checkout", headers: u.auth, payload: { planId: "monthly", returnTo: "web" } });
+    const [web] = stripe.calls.filter((c) => c.path === "checkout/sessions");
+    expect(web!.form).toMatchObject({
+      success_url: "https://app.apexy.test/billing?checkout=success",
+      cancel_url: "https://app.apexy.test/billing?checkout=cancel",
+    });
+    await t.app.inject({ method: "POST", url: "/v1/subscription/portal", headers: u.auth, payload: { returnTo: "web" } });
+    await t.app.inject({ method: "POST", url: "/v1/subscription/portal", headers: u.auth });
+    const portals = stripe.calls.filter((c) => c.path === "billing_portal/sessions");
+    expect(portals.map((c) => c.form.return_url)).toEqual(["https://app.apexy.test/billing", "https://api.apexy.test/v1/billing/return?result=portal"]);
+    // Only the two fixed destinations exist: no caller-supplied URL.
+    const other = await t.app.inject({ method: "POST", url: "/v1/subscription/checkout", headers: u.auth, payload: { planId: "monthly", returnTo: "https://evil.example" } });
+    expect(other.statusCode).toBe(400);
   });
 
   it("sends a subscriber to the billing portal instead of starting a second subscription", async () => {
@@ -299,6 +335,86 @@ describe("Stripe cancellation and account deletion", () => {
     expect(gone.statusCode).toBeLessThan(300);
     expect(stripe.subs.get(sub.id)!.status).toBe("canceled");
     expect(await t.deps.database.db.selectFrom("identity.users").select("id").where("id", "=", u.user.id).executeTakeFirst()).toBeUndefined();
+  });
+});
+
+describe("staff refunds", () => {
+  async function staff() {
+    const a = await signedInUser(t, `staff${randomBytes(3).toString("hex")}@example.com`);
+    await t.deps.database.db.updateTable("identity.users").set({ role: "admin" }).where("id", "=", a.user.id).execute();
+    return a;
+  }
+  async function paidInvoice(userId: string, amount = 999, ref: string | null = `in_${randomBytes(4).toString("hex")}`) {
+    const row = await t.deps.database.db
+      .insertInto("billing.invoices")
+      .values({ user_id: userId, number: `A-${randomBytes(3).toString("hex")}`, description: "Monthly", amount_cents: amount, currency: "eur", status: "paid", provider_ref: ref, paid_at: t.clock.now })
+      .returning(["id", "number"])
+      .executeTakeFirstOrThrow();
+    if (ref) stripe.invoicePayments.set(ref, `pi_${ref}`);
+    return { id: row.id, number: row.number, ref };
+  }
+  const refund = (by: { auth: Record<string, string> }, id: string, body: Record<string, unknown> = {}) =>
+    t.app.inject({ method: "POST", url: `/v1/admin/invoices/${id}/refund`, headers: by.auth, payload: body });
+
+  it("refunds a paid invoice through Stripe, in parts or in full, and records it", async () => {
+    const admin = await staff();
+    const u = await signedInUser(t);
+    const inv = await paidInvoice(u.user.id, 999);
+
+    expect(json(await refund(admin, inv.id, { amountCents: 300 }))).toEqual({ refundedCents: 300, status: "paid" });
+    const call = stripe.calls.find((c) => c.path === "refunds")!;
+    expect(call.form).toMatchObject({ payment_intent: `pi_${inv.ref}`, amount: "300", reason: "requested_by_customer", "metadata[invoice]": inv.ref });
+    expect(call.idempotencyKey).toBe(`refund-${inv.id}-0-300`);
+
+    expect(json(await refund(admin, inv.id, { amountCents: 1000 })).error.code).toBe("refund_too_large");
+    expect(json(await refund(admin, inv.id))).toEqual({ refundedCents: 999, status: "refunded" });
+    expect((await refund(admin, inv.id)).statusCode).toBe(409);
+    expect(stripe.count("POST", "refunds")).toBe(2);
+
+    const detail = json(await t.app.inject({ method: "GET", url: `/v1/admin/users/${u.user.id}`, headers: admin.auth }));
+    expect(detail.invoices[0]).toMatchObject({ refundedCents: 999, status: "refunded", refundable: false });
+    expect(detail.actions.map((a: { detail: unknown }) => a.detail)).toEqual([
+      { invoice: inv.number, amountCents: 699, currency: "eur", cancelSubscription: false },
+      { invoice: inv.number, amountCents: 300, currency: "eur", cancelSubscription: false },
+    ]);
+    expect(json(await t.app.inject({ method: "GET", url: "/v1/subscription/invoices", headers: u.auth }))[0].status).toBe("refunded");
+  });
+
+  it("can end the subscription with the refund", async () => {
+    const admin = await staff();
+    const u = await signedInUser(t);
+    await t.app.inject({ method: "POST", url: "/v1/subscription/checkout", headers: u.auth, payload: { planId: "monthly" } });
+    const sub = stripe.subscribe(await customerOf(u.user.id), u.user.id);
+    await deliver({ type: "customer.subscription.created", object: { id: sub.id } });
+    const inv = await paidInvoice(u.user.id);
+
+    expect((await refund(admin, inv.id, { cancelSubscription: true })).statusCode).toBe(200);
+    expect(stripe.subs.get(sub.id)!.status).toBe("canceled");
+    expect(json(await t.app.inject({ method: "GET", url: "/v1/subscription", headers: u.auth })).status).toBe("canceled");
+    expect(json(await enroll(u.auth)).error.code).toBe("subscription_inactive");
+  });
+
+  it("refuses what Stripe didn't charge, and records nothing when Stripe is down", async () => {
+    const admin = await staff();
+    const u = await signedInUser(t);
+    const free = await paidInvoice(u.user.id, 999, null);
+    expect(json(await refund(admin, free.id)).error.code).toBe("not_refundable");
+
+    const inv = await paidInvoice(u.user.id);
+    stripe.down = true;
+    const res = await refund(admin, inv.id);
+    expect(res.statusCode).toBe(502);
+    expect(json(res).error.code).toBe("billing_unavailable");
+    const row = await t.deps.database.db.selectFrom("billing.invoices").select(["refunded_cents", "status"]).where("id", "=", inv.id).executeTakeFirstOrThrow();
+    expect(row).toEqual({ refunded_cents: 0, status: "paid" });
+    expect(await t.deps.database.db.selectFrom("ops.admin_actions").select("id").where("action", "=", "refund").execute()).toEqual([]);
+  });
+
+  it("is for staff only", async () => {
+    const u = await signedInUser(t);
+    const inv = await paidInvoice(u.user.id);
+    expect((await refund(u, inv.id)).statusCode).toBe(403);
+    expect(stripe.count("POST", "refunds")).toBe(0);
   });
 });
 

@@ -17,7 +17,9 @@ export interface TestApp {
 }
 
 /** A fresh app on an in-memory PostgreSQL (PGlite) with throwaway keys. */
-export async function testApp(overrides: { provisioner?: PeerProvisioner; billing?: BillingProvider; rateLimits?: boolean } = {}): Promise<TestApp> {
+export async function testApp(
+  overrides: { provisioner?: PeerProvisioner; billing?: BillingProvider; rateLimits?: boolean; env?: Record<string, string> } = {},
+): Promise<TestApp> {
   const key = () => randomBytes(32).toString("base64");
   const config = loadConfig({
     NODE_ENV: "test",
@@ -27,6 +29,7 @@ export async function testApp(overrides: { provisioner?: PeerProvisioner; billin
     DATA_ENCRYPTION_KEY: key(),
     UPLOAD_DIR: `.data/test-uploads-${process.pid}`,
     RATE_LIMIT_ENABLED: overrides.rateLimits ? "true" : "false",
+    ...overrides.env,
   });
   const mailer = new ConsoleMailer();
   const clock = {

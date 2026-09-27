@@ -53,6 +53,31 @@ It does **not** promise anonymity from the VPN operator, protection from a compr
   * opening non-`https`/`mailto` links.
 * Page script can still act as the signed-in user within the account API. This is the residual risk of any client UI.
 
+**Attacks on the web dashboard** (`apps/web`).
+* **Tokens stay on the server.**
+  * The API's tokens live in one cookie, encrypted with AES-256-GCM and marked `__Host-`, `Secure`, `HttpOnly` and `SameSite=Lax`.
+  * Page scripts never see a token. The dashboard's server decrypts the cookie and calls the API for the user.
+* **Scripts:** a per-request nonce in the Content-Security-Policy. No script runs unless the server put it on the page. `frame-ancestors 'none'` blocks framing.
+* **Cross-site requests:** every change goes through a server action. Next.js checks the `Origin` of those against the host.
+* **Sign-in redirects** (`?next=`) accept a path on the site only, never another host.
+* **Payment redirects** go to `checkout.stripe.com` or `billing.stripe.com` only. The API picks the return page from a fixed pair (the app's or the dashboard's) and never takes a URL from the caller.
+* **Authorization:** each call carries the user's access token, so the API authorizes every action. The dashboard grants nothing by itself.
+* **Token refresh:** rotation happens on the dashboard's server. Each rotation is remembered for ten minutes, so a browser that missed the new cookie (an aborted request) gets it rather than tripping reuse detection. This needs one web instance, or sticky sessions.
+* **WireGuard configs:** keys for phones and routers are generated in the browser. Only the public key is sent; the private key exists only in the page and the file the user saves.
+* **Rate limits:** the dashboard forwards the browser's address. The API believes it only from the proxies listed in `TRUST_PROXY`, so limits stay per client and can't be dodged by sending the header.
+
+**A stolen or misused staff account.**
+* **Checks:**
+  * Staff endpoints (`/v1/admin`) re-read the caller's role from the database on every request, so a demotion takes effect on the next click.
+  * In production the account also needs two-step verification (`ADMIN_REQUIRE_MFA`).
+  * The dashboard answers 404 for its staff pages to everyone else.
+* **Roles:** no endpoint can grant one. It takes an operator with database access (`npm run user:role`).
+* **Staff log:** every change (ban, device removal, limit, cancellation, refund) is recorded with the staff member, in the same transaction as the change.
+* **Limits:**
+  * An admin can't ban their own account.
+  * Refunds can't exceed what was paid.
+  * A repeated refund request carries the same Stripe idempotency key, so it can't pay out twice.
+
 **Malicious or buggy server data.**
 * The relay list is validated beyond its signature: endpoints must be public unless development allows private ones, gateways must be private, a named resolver can't be loopback/link-local/multicast, keys and ports must be well formed, and metadata is bounded.
 * An IP-check answer that isn't a public address is refused rather than shown as "your IP".

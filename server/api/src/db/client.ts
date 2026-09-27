@@ -16,11 +16,20 @@ export interface Database {
   close(): Promise<void>;
 }
 
+/**
+ * DATE columns stay as their 'YYYY-MM-DD' text. Both drivers would make a
+ * JavaScript Date at midnight (PGlite in UTC, `pg` in local time), which
+ * shifts the day depending on the server's time zone.
+ */
+const DATE_OID = 1082;
+const keepText = (value: string) => value;
+
 export async function openDatabase(url: string): Promise<Database> {
   if (url.startsWith("pglite://")) {
     const location = url.slice("pglite://".length);
     if (location !== "memory") mkdirSync(location, { recursive: true });
-    const lite = location === "memory" ? new PGlite() : new PGlite(location);
+    const options = { parsers: { [DATE_OID]: keepText } };
+    const lite = location === "memory" ? new PGlite(options) : new PGlite(location, options);
     await lite.waitReady;
     const pool = new PGlitePool(lite);
     const db = new Kysely<DB>({ dialect: new PostgresDialect({ pool: pool as unknown as pg.Pool }) });
@@ -35,7 +44,11 @@ export async function openDatabase(url: string): Promise<Database> {
       },
     };
   }
-  const pgPool = new pg.Pool({ connectionString: url, max: 20 });
+  const pgPool = new pg.Pool({
+    connectionString: url,
+    max: 20,
+    types: { getTypeParser: ((oid: number, format?: "text" | "binary") => (oid === DATE_OID ? keepText : pg.types.getTypeParser(oid, format))) as typeof pg.types.getTypeParser },
+  });
   const db = new Kysely<DB>({ dialect: new PostgresDialect({ pool: pgPool }) });
   return {
     db,

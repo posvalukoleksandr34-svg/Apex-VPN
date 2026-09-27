@@ -1,0 +1,22 @@
+# Only what the images build from goes into the Docker build context.
+.git
+.github
+.wt
+**/node_modules
+**/.next
+**/dist
+**/coverage
+target
+vendor
+crates
+docs
+dev
+deploy
+apps/desktop/src
+apps/desktop/src-tauri
+**/.data
+**/.env
+**/.env.*
+!**/.env.example
+**/*.pem
+**/*.key

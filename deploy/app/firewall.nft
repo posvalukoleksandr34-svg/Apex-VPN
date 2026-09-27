@@ -1,0 +1,28 @@
+#!/usr/sbin/nft -f
+# /etc/nftables.d/apexy-app.nft: the web server's host firewall.
+#
+# With the Cloudflare Tunnel nothing needs to reach this server except SSH:
+# the tunnel is an outgoing connection. Include from /etc/nftables.conf:
+#   include "/etc/nftables.d/*.nft"
+#
+# Docker publishes ports through its own chains, which this table doesn't
+# see: in option B (compose.direct.yaml) Caddy itself drops non-Cloudflare
+# connections.
+
+define SSH_PORT = 22
+
+table inet apexy_app
+delete table inet apexy_app
+
+table inet apexy_app {
+	chain input {
+		type filter hook input priority filter; policy drop;
+		ct state established,related accept
+		ct state invalid drop
+		iif lo accept
+		meta l4proto { icmp, ipv6-icmp } accept
+		# Narrow to your admin addresses where you can:
+		#   ip saddr { 198.51.100.7 } tcp dport $SSH_PORT accept
+		tcp dport $SSH_PORT accept
+	}
+}

@@ -1,0 +1,45 @@
+# Option B, without a tunnel: Cloudflare proxies to this server's port 443.
+# TLS uses a Cloudflare Origin CA certificate (SSL/TLS mode Full (strict)),
+# and connections from anywhere but Cloudflare are dropped, so the origin
+# can't be reached around the WAF even if its address leaks.
+#
+# Use with compose.direct.yaml. Cloudflare's ranges change rarely; check
+# https://www.cloudflare.com/ips/ before deploying and after notices.
+
+{
+	admin off
+	auto_https disable_certs
+	servers {
+		trusted_proxies static 173.245.48.0/20 103.21.244.0/22 103.22.200.0/22 103.31.4.0/22 141.101.64.0/18 108.162.192.0/18 190.93.240.0/20 188.114.96.0/20 197.234.240.0/22 198.41.128.0/17 162.158.0.0/15 104.16.0.0/13 104.24.0.0/14 172.64.0.0/13 131.0.72.0/22 2400:cb00::/32 2606:4700::/32 2803:f800::/32 2405:b500::/32 2405:8100::/32 2a06:98c0::/29 2c0f:f248::/32
+		client_ip_headers Cf-Connecting-Ip
+	}
+}
+
+(cloudflare_only) {
+	@outside not remote_ip 173.245.48.0/20 103.21.244.0/22 103.22.200.0/22 103.31.4.0/22 141.101.64.0/18 108.162.192.0/18 190.93.240.0/20 188.114.96.0/20 197.234.240.0/22 198.41.128.0/17 162.158.0.0/15 104.16.0.0/13 104.24.0.0/14 172.64.0.0/13 131.0.72.0/22 2400:cb00::/32 2606:4700::/32 2803:f800::/32 2405:b500::/32 2405:8100::/32 2a06:98c0::/29 2c0f:f248::/32
+	abort @outside
+}
+
+(common) {
+	tls /certs/origin.pem /certs/origin.key
+	import cloudflare_only
+	encode zstd gzip
+	header {
+		Strict-Transport-Security "max-age=31536000; includeSubDomains"
+		-Server
+	}
+}
+
+{$APP_DOMAIN} {
+	import common
+	reverse_proxy web:3000 {
+		header_up X-Forwarded-For {client_ip}
+	}
+}
+
+{$API_DOMAIN} {
+	import common
+	reverse_proxy api:8787 {
+		header_up X-Forwarded-For {client_ip}
+	}
+}

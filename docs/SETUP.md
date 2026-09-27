@@ -98,7 +98,23 @@ npm run dev:sim -w apps/desktop
 
 This opens `http://127.0.0.1:1420` in any browser, backed by a simulator: a permanent banner, fake servers, and a panel to inject failures (handshake errors, network loss, sleep/wake, service stop). The simulator is compiled in only in `--mode simulator`; production bundles don't contain it.
 
-## 6. Building an installer
+## 6. The web dashboard
+
+```powershell
+npm run web:dev
+```
+
+This starts the dashboard on http://127.0.0.1:3000, next to the API on port 8787. `npm run dev:keys -w server/api` writes its settings to `apps/web/.env.local`:
+* `API_INTERNAL_URL`: where the dashboard reaches the API.
+* `WEB_SESSION_SECRET`: encrypts the session cookie.
+
+It also points the API at the dashboard: `WEB_APP_URL` (where billing returns) and `TRUST_PROXY=loopback`.
+
+With the development billing provider (`manual`), choosing a plan activates it at once. To try Stripe test mode, see [DEPLOYMENT.md](DEPLOYMENT.md#stripe-billing).
+
+Emails (verification and reset codes) are printed in the API's console in development.
+
+## 7. Building an installer
 
 ```powershell
 cargo build --release -p vpn-daemon
@@ -107,7 +123,7 @@ npm run tauri build -w apps/desktop
 
 The NSIS installer (per-machine) runs `apexyd.exe install` after copying files and `uninstall` before removing them (`apps/desktop/src-tauri/windows/installer-hooks.nsh`). Before a real release, bundle `apexyd.exe` and `wireguard.dll` as resources and sign every binary; see [DEPLOYMENT.md](DEPLOYMENT.md).
 
-## 7. Tests
+## 8. Tests
 
 ```powershell
 cargo test --workspace

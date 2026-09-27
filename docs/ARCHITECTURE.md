@@ -55,6 +55,7 @@ is only emitted by the service after the WireGuard handshake has completed
 | ③ | HTTPS (rustls, TLS 1.2+, cert validation, optional SPKI pin) | email+password → access JWT (15 min) + rotating refresh token in OS keychain | account, devices, billing |
 | ④ | HTTPS | none (public, **signed** data) | relay list; the service verifies the Ed25519 signature before use |
 | ⑤ | HTTPS + per-node bearer token | node token (hashed at rest) | peer set sync, health reports |
+| ⑥ | Browser → web dashboard (`apps/web`, Next.js) → API over the private network | the API's tokens, sealed in an encrypted `__Host-` httpOnly cookie; the dashboard's server calls the API for the user | sign-up, billing (Stripe Checkout and Portal), devices with WireGuard configs made in the browser |
 
 ### Why a separate privileged service
 Creating adapters, routes, DNS and firewall rules needs admin/root. Putting

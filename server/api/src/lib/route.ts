@@ -1,7 +1,7 @@
 import type { FastifyInstance, FastifyReply, FastifyRequest, HTTPMethods } from "fastify";
 import { z } from "zod";
 import { badRequest } from "./errors.js";
-import { requireNode, requireUser, type NodeAuth, type UserAuth } from "./auth.js";
+import { requireAdmin, requireNode, requireUser, type NodeAuth, type UserAuth } from "./auth.js";
 
 /**
  * Route definitions double as the API contract: each route's Zod schemas
@@ -13,7 +13,7 @@ export interface RouteSpec<B extends z.ZodType, Q extends z.ZodType, P extends z
   url: string;
   tag: string;
   summary: string;
-  auth: "user" | "node" | "none";
+  auth: "user" | "admin" | "node" | "none";
   body?: B;
   query?: Q;
   params?: P;
@@ -34,7 +34,7 @@ interface Ctx<B, Q, P, A> {
   auth: A;
 }
 
-type AuthOf<S> = S extends { auth: "user" } ? UserAuth : S extends { auth: "node" } ? NodeAuth : null;
+type AuthOf<S> = S extends { auth: "user" | "admin" } ? UserAuth : S extends { auth: "node" } ? NodeAuth : null;
 
 export function route<
   B extends z.ZodType = z.ZodUndefined,
@@ -54,7 +54,13 @@ export function route<
     config: spec.rateLimit ? { rateLimit: { max: spec.rateLimit, timeWindow: "1 minute" } } : {},
     handler: async (req, reply) => {
       const auth =
-        spec.auth === "user" ? await requireUser(req) : spec.auth === "node" ? await requireNode(req) : null;
+        spec.auth === "user"
+          ? await requireUser(req)
+          : spec.auth === "admin"
+            ? await requireAdmin(req)
+            : spec.auth === "node"
+              ? await requireNode(req)
+              : null;
       const body = parse(spec.body, req.body, "body");
       const query = parse(spec.query, req.query, "query");
       const params = parse(spec.params, req.params, "params");

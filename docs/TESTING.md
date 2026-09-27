@@ -20,6 +20,9 @@ npm test                 # backend (PGlite, in-process) and UI (vitest + jsdom)
 | Backend: billing | Stripe against a fake Stripe API with real `Stripe-Signature`s: one customer per user; checkout vs portal; access only after the first payment; state read from Stripe, not the payload; user found via customer; bad or stale signatures refused; each event applied once; invoices recorded once; grace on failed payment; cancellation ends access; an older read never overwrites a newer one; 500 then retry; cancel at period end; account deletion cancels billing first (and refuses if it can't); the return page. |
 | Backend: nodes | Nodes long-poll the peer set: an unchanged wait holds, a revocation wakes them at once, a ban in plain SQL is noticed within the re-check. A ban revokes sessions, access tokens and node access together. |
 | Backend | Auth flows (lockout, MFA, recovery codes, refresh rotation and reuse revocation), devices (idempotent and concurrent enrollment, limits, key ownership), relay list signing, subscriptions, support. |
+| Backend: web | X-Forwarded-For believed only from trusted proxies (and never a client's own). Checkout and the portal return to the dashboard or the app, never a caller's URL. Phone and router device types. Dates come back as calendar days on both database drivers. |
+| Backend: staff tools | Admins only (401/403 for others). A demotion applies to the same token at once. Two-step verification is required when configured. Search is literal (`%`, `_`), by email or id, with filters and pages; lapsed periods list as expired. Bans revoke sessions and sign-in, and can be lifted. Removing devices frees slots. Per-account device limits and resetting them. Ending a subscription now. Refunds through Stripe: partial, full, over-limit, repeat, with cancellation; nothing recorded when Stripe is down; staff only. Every action lands in the log. Mutation-checked: without the role check, the escaping or the self-ban guard, a test fails. |
+| Web dashboard | Session cookie: sealed, tamper- and expiry-proof, `__Host-` over HTTPS. Refresh: one rotation for concurrent requests; a rotated token gets its successor; 401 ends and 409/outage keeps. `?next=` accepts site paths only. WireGuard keys match RFC 7748 and are clamped. Configs send IPv4 and IPv6 into the tunnel, with names WireGuard apps accept. Server search: every word, accents folded, localized feature names. Language choice. Locales: same keys and placeholders, nothing left in English. |
 | UI | `describe()` over every tunnel state: "Protected" only when connected, every key exists, blocking states always offer a way out. Locale parity (keys, placeholders, no copies of English) and that every key the code uses exists. Formatting never invents a value. The dashboard hero renders every state in English and Russian. |
 
 ## Live test (elevated, real network)
@@ -55,6 +58,31 @@ That run found and fixed three bugs:
 | Enrollment failed with HTTP 500 | The app enrolled twice at once, and the demo server reused an address still held by a stale device | Single-flight enrollment; concurrent same-key enrollment returns the winner; the demo provisioner retires the stale holder |
 
 It also caught the app presenting the local API's view (127.0.0.1) as "your IP". The service now refuses non-public IP-check answers and says why.
+
+## Web dashboard (checked in a browser against the dev API)
+
+* **Sign-up:** register, the emailed code, then signed in and on Billing with the 7-day trial.
+* **Plans:** choosing Monthly activated it and showed the invoice; switching to Annual worked too (manual billing in development).
+* **Devices:**
+  * Adding an iPhone generated the key pair in the browser. The API registered it with the WireGuard demo server, and the page showed the QR code, the config and the `.conf` download.
+  * Closing the dialog removed the private key from the page.
+* **Errors:** a wrong current password on "Change password" showed an error and kept the session.
+* **Sign-in and pages:** signing out, the `?next=` return after sign-in, server search, and all four languages.
+* **Token refresh under load:** with 60-second access tokens, the proxy refreshes on nearly every request.
+  * 40 seconds of rapid navigation made 16 refreshes, all accepted, with no reuse alarms.
+  * A plan switch (a server action that redirects) kept the session.
+  * Before the fix, that redirect lost the rotated cookie and the session ended about 15 seconds later.
+
+### Admin pages (same setup, a throwaway staff account and target)
+
+* **Accounts list:** search found the target, with its trial, "1 / 2" devices and the join date.
+* **On the target:**
+  * Setting a device limit of 4 showed "4, set by staff".
+  * Removing all devices emptied the list.
+  * A ban with a reason made the target's own session answer `401 session_revoked` at the API immediately.
+  * Lifting the ban and ending the subscription (status "Canceled") both worked.
+  * All five actions appeared in the staff log, newest first, with the staff member.
+* **Own account:** the admin's own page offers no ban button.
 
 ## Packaging and startup (checked on the release build)
 

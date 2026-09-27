@@ -16,7 +16,38 @@ const Env = z.object({
   HOST: z.string().default("127.0.0.1"),
   PORT: z.coerce.number().int().min(1).max(65535).default(8787),
   PUBLIC_BASE_URL: z.string().url().default("http://127.0.0.1:8787"),
-  TRUST_PROXY: z.stringbool().default(false),
+  /**
+   * Whose X-Forwarded-For to believe for the client address (rate limits):
+   * `false`, `true` (anyone: only behind a proxy that overwrites it), or a
+   * comma-separated list of proxy addresses, CIDRs or the names `loopback`,
+   * `linklocal`, `uniquelocal`, e.g. the reverse proxy and the web dashboard.
+   */
+  TRUST_PROXY: z
+    .string()
+    .default("false")
+    .transform((v, ctx): boolean | string[] => {
+      const s = v.trim().toLowerCase();
+      if (["false", "0", "no", "off", ""].includes(s)) return false;
+      if (["true", "1", "yes", "on"].includes(s)) return true;
+      const list = s.split(",").map((p) => p.trim()).filter(Boolean);
+      const bad = list.filter((p) => !["loopback", "linklocal", "uniquelocal"].includes(p) && !/^[0-9a-f:.]+(\/\d{1,3})?$/.test(p));
+      if (bad.length) ctx.addIssue({ code: "custom", message: `not an address, CIDR or known name: ${bad.join(", ")}` });
+      return list;
+    }),
+  /**
+   * The web dashboard's address (https://app.example.com). Checkout and the
+   * billing portal send web customers back there. Unset: no web returns.
+   */
+  WEB_APP_URL: z
+    .string()
+    .url()
+    .transform((v) => v.replace(/\/+$/, ""))
+    .optional(),
+  /**
+   * Staff endpoints (/v1/admin) only for admins with two-step verification
+   * on. Default: required in production, not in development.
+   */
+  ADMIN_REQUIRE_MFA: z.stringbool().optional(),
   /** Per-IP request limits. Only tests turn this off. */
   RATE_LIMIT_ENABLED: z.stringbool().default(true),
 
@@ -37,13 +68,22 @@ const Env = z.object({
   /** How device peers reach nodes: `agent` (production) or the public WireGuard demo server (development only). */
   NODE_PROVISIONING: z.enum(["agent", "wireguard-demo"]).default("agent"),
   BILLING_PROVIDER: z.enum(["manual", "stripe"]).default("manual"),
+  /**
+   * Which Stripe the keys belong to. Production requires live keys unless a
+   * deployment says STRIPE_MODE=test (staging), so a test key can't reach
+   * production by accident, nor a live key a staging server.
+   */
+  STRIPE_MODE: z.enum(["test", "live"]).optional(),
   STRIPE_SECRET_KEY: z.string().optional(),
   STRIPE_WEBHOOK_SECRET: z.string().optional(),
   /** Stripe price ids (price_…) that sell each paid plan. */
   STRIPE_PRICE_MONTHLY: z.string().optional(),
   STRIPE_PRICE_ANNUAL: z.string().optional(),
   MAIL_TRANSPORT: z.enum(["console", "smtp"]).default("console"),
+  /** smtps://user:password@smtp.example.com:465 (or smtp://…:587, STARTTLS). */
   SMTP_URL: z.string().optional(),
+  /** The sender: "Apexy VPN <no-reply@example.com>". */
+  MAIL_FROM: z.string().optional(),
   GEOIP_PROVIDER: z.enum(["none", "maxmind"]).default("none"),
   MAXMIND_DB_PATH: z.string().optional(),
   UPLOAD_DIR: z.string().default(".data/uploads"),
@@ -63,6 +103,11 @@ export function loadConfig(env: NodeJS.ProcessEnv = process.env): Config {
     throw new Error(`Invalid configuration:\n${issues}${hint}`);
   }
   const cfg = parsed.data;
+  if (cfg.MAIL_TRANSPORT === "smtp") {
+    const missing = [!cfg.SMTP_URL && "SMTP_URL", !cfg.MAIL_FROM && "MAIL_FROM"].filter(Boolean);
+    if (missing.length) throw new Error(`Invalid configuration: MAIL_TRANSPORT=smtp needs ${missing.join(" and ")}`);
+    if (!/^smtps?:\/\//.test(cfg.SMTP_URL!)) throw new Error("Invalid configuration: SMTP_URL must start with smtp:// or smtps://");
+  }
   if (cfg.NODE_ENV === "production") {
     const problems: string[] = [];
     if (cfg.DATABASE_URL.startsWith("pglite://")) problems.push("DATABASE_URL must be a PostgreSQL URL");
@@ -70,9 +115,17 @@ export function loadConfig(env: NodeJS.ProcessEnv = process.env): Config {
     if (!cfg.RATE_LIMIT_ENABLED) problems.push("rate limiting can't be disabled in production");
     if (cfg.MAIL_TRANSPORT === "console") problems.push("MAIL_TRANSPORT=console would drop real emails");
     if (!cfg.PUBLIC_BASE_URL.startsWith("https://")) problems.push("PUBLIC_BASE_URL must be https");
+    if (cfg.WEB_APP_URL && !cfg.WEB_APP_URL.startsWith("https://")) problems.push("WEB_APP_URL must be https");
     if (cfg.BILLING_PROVIDER === "stripe") {
       if (!cfg.STRIPE_SECRET_KEY || !cfg.STRIPE_WEBHOOK_SECRET) problems.push("Stripe needs STRIPE_SECRET_KEY and STRIPE_WEBHOOK_SECRET");
-      else if (!/^(sk|rk)_live_/.test(cfg.STRIPE_SECRET_KEY)) problems.push("STRIPE_SECRET_KEY is not a live key (sk_live_… or rk_live_…)");
+      else {
+        const mode = cfg.STRIPE_MODE ?? "live";
+        const keyMode = /^(sk|rk)_live_/.test(cfg.STRIPE_SECRET_KEY) ? "live" : /^(sk|rk)_test_/.test(cfg.STRIPE_SECRET_KEY) ? "test" : null;
+        if (!keyMode) problems.push("STRIPE_SECRET_KEY isn't a Stripe secret (sk_…) or restricted (rk_…) key");
+        else if (keyMode !== mode) {
+          problems.push(`STRIPE_SECRET_KEY is a ${keyMode}-mode key but STRIPE_MODE is ${mode}${mode === "live" ? " (set STRIPE_MODE=test only on a staging deployment)" : ""}`);
+        }
+      }
       if (cfg.STRIPE_WEBHOOK_SECRET && !cfg.STRIPE_WEBHOOK_SECRET.startsWith("whsec_")) problems.push("STRIPE_WEBHOOK_SECRET must be the endpoint's whsec_… secret");
       if (!cfg.STRIPE_PRICE_MONTHLY || !cfg.STRIPE_PRICE_ANNUAL) problems.push("Stripe needs STRIPE_PRICE_MONTHLY and STRIPE_PRICE_ANNUAL");
     }

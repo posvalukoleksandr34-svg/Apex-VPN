@@ -24,11 +24,11 @@ export async function createDeps(config: Config, overrides: Partial<AppDeps> = {
     database,
     keys: overrides.keys ?? { access: ed25519FromSeed(config.ACCESS_TOKEN_SEED), relay: ed25519FromSeed(config.RELAY_SIGNING_SEED) },
     box: overrides.box ?? new SecretBox(config.DATA_ENCRYPTION_KEY),
-    mailer: overrides.mailer ?? (config.MAIL_TRANSPORT === "smtp" ? smtpMailer() : new ConsoleMailer()),
+    mailer: overrides.mailer ?? (config.MAIL_TRANSPORT === "smtp" ? smtpMailer(config.SMTP_URL!, config.MAIL_FROM!) : new ConsoleMailer()),
     billing:
       overrides.billing ??
       (config.BILLING_PROVIDER === "stripe"
-        ? new StripeBilling({ secretKey: config.STRIPE_SECRET_KEY!, webhookSecret: config.STRIPE_WEBHOOK_SECRET!, publicBaseUrl: config.PUBLIC_BASE_URL })
+        ? new StripeBilling({ secretKey: config.STRIPE_SECRET_KEY!, webhookSecret: config.STRIPE_WEBHOOK_SECRET! })
         : new ManualBilling()),
     geoip: overrides.geoip ?? (config.GEOIP_PROVIDER === "maxmind" ? maxmindGeoIp(config.MAXMIND_DB_PATH) : new NoGeoIp()),
     provisioner:

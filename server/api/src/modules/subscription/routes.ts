@@ -3,7 +3,7 @@ import { z } from "zod";
 import { badRequest, notFound } from "../../lib/errors.js";
 import { route } from "../../lib/route.js";
 import { notify } from "../notifications/notify.js";
-import { WebhookSignatureError, type SubscriptionChange } from "./provider.js";
+import { WebhookSignatureError, type ReturnUrls, type SubscriptionChange } from "./provider.js";
 import { billingReturnPage } from "./returnPage.js";
 
 const PlanDto = z.object({
@@ -24,10 +24,26 @@ const SubscriptionDto = z.object({
   provider: z.string().nullable(),
   paymentMethod: z.object({ brand: z.string(), last4: z.string(), expMonth: z.number(), expYear: z.number() }).nullable(),
   devicesUsed: z.number(),
+  /** Devices this account may register: a staff-set limit, else the plan's (null without a plan). */
+  deviceLimit: z.number().nullable(),
 });
+
+/** Which page a hosted checkout or portal returns to: the app's, or the web dashboard's. */
+const ReturnTo = z.enum(["app", "web"]).default("app");
 
 export function subscriptionRoutes(app: FastifyInstance): void {
   const deps = () => app.deps;
+
+  // Fixed destinations only: a caller picks one, never supplies a URL.
+  function returnUrls(to: z.infer<typeof ReturnTo>): ReturnUrls {
+    const { PUBLIC_BASE_URL, WEB_APP_URL } = deps().config;
+    if (to === "web") {
+      if (!WEB_APP_URL) throw badRequest("web_return_unavailable", "the web dashboard address (WEB_APP_URL) isn't configured");
+      return { success: `${WEB_APP_URL}/billing?checkout=success`, cancel: `${WEB_APP_URL}/billing?checkout=cancel`, portal: `${WEB_APP_URL}/billing` };
+    }
+    const page = `${PUBLIC_BASE_URL}/v1/billing/return`;
+    return { success: `${page}?result=success`, cancel: `${page}?result=cancel`, portal: `${page}?result=portal` };
+  }
 
   const planDto = (p: { id: string; name: string; period: "trial" | "month" | "year"; price_cents: number; currency: string; device_limit: number }) => ({
     id: p.id,
@@ -44,6 +60,7 @@ export function subscriptionRoutes(app: FastifyInstance): void {
     const plan = sub ? await db.selectFrom("billing.plans").selectAll().where("id", "=", sub.plan_id).executeTakeFirst() : undefined;
     const pm = await db.selectFrom("billing.payment_methods").selectAll().where("user_id", "=", userId).where("is_default", "=", true).executeTakeFirst();
     const devices = await db.selectFrom("ops.devices").select((eb) => eb.fn.countAll<string>().as("n")).where("user_id", "=", userId).where("revoked_at", "is", null).executeTakeFirstOrThrow();
+    const user = await db.selectFrom("identity.users").select("device_limit_override").where("id", "=", userId).executeTakeFirst();
     const expired = sub && new Date(sub.current_period_end) <= deps().now() && sub.status !== "canceled";
     return {
       status: !sub ? "none" : expired ? "expired" : sub.status,
@@ -54,6 +71,7 @@ export function subscriptionRoutes(app: FastifyInstance): void {
       provider: sub?.provider ?? null,
       paymentMethod: pm ? { brand: pm.brand, last4: pm.last4, expMonth: pm.exp_month, expYear: pm.exp_year } : null,
       devicesUsed: Number(devices.n),
+      deviceLimit: user?.device_limit_override ?? plan?.device_limit ?? null,
     };
   }
 
@@ -75,14 +93,14 @@ export function subscriptionRoutes(app: FastifyInstance): void {
       summary: "Start (or change to) a plan. Returns a hosted checkout URL, or `activated` when the provider needs no payment step.",
       auth: "user",
       rateLimit: 10,
-      body: z.object({ planId: z.string() }),
+      body: z.object({ planId: z.string(), returnTo: ReturnTo }),
       response: z.object({ kind: z.enum(["redirect", "activated"]), url: z.string().optional() }),
     },
     async ({ auth, body }) => {
       const d = deps();
       const plan = await d.database.db.selectFrom("billing.plans").selectAll().where("id", "=", body.planId).where("active", "=", true).executeTakeFirst();
       if (!plan || plan.period === "trial") throw badRequest("unknown_plan");
-      const result = await d.billing.checkout(d.database.db, auth.userId, plan, d.now());
+      const result = await d.billing.checkout(d.database.db, auth.userId, plan, d.now(), returnUrls(body.returnTo));
       if (result.kind === "activated") {
         d.peerSet.changed();
         await notify(d, auth.userId, "subscription", "Plan active", `Your ${plan.name} plan is active.`);
@@ -166,10 +184,11 @@ export function subscriptionRoutes(app: FastifyInstance): void {
       summary: "A hosted billing page for the payment method, invoices and plan changes (Stripe Customer Portal).",
       auth: "user",
       rateLimit: 10,
+      body: z.object({ returnTo: ReturnTo }).default({ returnTo: "app" }),
       response: z.object({ url: z.string() }),
     },
-    async ({ auth }) => {
-      const url = await deps().billing.portal(deps().database.db, auth.userId);
+    async ({ auth, body }) => {
+      const url = await deps().billing.portal(deps().database.db, auth.userId, returnUrls(body.returnTo));
       if (!url) throw notFound("no_billing_portal");
       return { url };
     },

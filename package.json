@@ -4,7 +4,8 @@
   "description": "Apexy VPN — desktop client, service and backend",
   "workspaces": [
     "server/api",
-    "apps/desktop"
+    "apps/desktop",
+    "apps/web"
   ],
   "scripts": {
     "api:dev": "npm run dev -w server/api",
@@ -12,7 +13,9 @@
     "desktop:dev": "npm run dev -w apps/desktop",
     "desktop:test": "npm test -w apps/desktop",
     "typecheck": "npm run typecheck --workspaces --if-present",
-    "test": "npm test --workspaces --if-present"
+    "test": "npm test --workspaces --if-present",
+    "web:dev": "npm run dev -w apps/web",
+    "web:test": "npm test -w apps/web"
   },
   "engines": {
     "node": ">=22"

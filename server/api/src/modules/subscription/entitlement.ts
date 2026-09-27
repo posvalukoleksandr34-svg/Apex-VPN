@@ -12,12 +12,14 @@ export async function entitlement(db: Kysely<DB>, userId: string, now: Date): Pr
   const row = await db
     .selectFrom("billing.subscriptions as s")
     .innerJoin("billing.plans as p", "p.id", "s.plan_id")
-    .select(["s.plan_id", "s.status", "s.current_period_end", "p.device_limit"])
+    .innerJoin("identity.users as u", "u.id", "s.user_id")
+    .select(["s.plan_id", "s.status", "s.current_period_end", "p.device_limit", "u.device_limit_override"])
     .where("s.user_id", "=", userId)
     .executeTakeFirst();
   if (!row) return null;
   if (!["trialing", "active", "past_due"].includes(row.status)) return null;
   const end = new Date(row.current_period_end);
   if (end <= now) return null;
-  return { planId: row.plan_id, deviceLimit: row.device_limit, validUntil: end };
+  // Staff can set a limit for one account; otherwise the plan's applies.
+  return { planId: row.plan_id, deviceLimit: row.device_limit_override ?? row.device_limit, validUntil: end };
 }

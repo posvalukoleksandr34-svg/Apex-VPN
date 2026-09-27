@@ -4,6 +4,7 @@ import multipart from "@fastify/multipart";
 import rateLimit from "@fastify/rate-limit";
 import type { AppDeps } from "./deps.js";
 import { ApiError } from "./lib/errors.js";
+import { adminRoutes } from "./modules/admin/routes.js";
 import { authRoutes } from "./modules/auth/routes.js";
 import { deviceRoutes } from "./modules/devices/routes.js";
 import { nodeRoutes } from "./modules/nodes/routes.js";
@@ -74,5 +75,6 @@ export async function buildApp(deps: AppDeps, options: { logger?: boolean | { st
   notificationRoutes(app);
   profileRoutes(app);
   supportRoutes(app);
+  adminRoutes(app);
   return app;
 }

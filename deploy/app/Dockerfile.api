@@ -1,0 +1,40 @@
+# The account API. Build from the repository root:
+#   docker build -f deploy/app/Dockerfile.api -t apexy/api .
+
+FROM node:22-bookworm-slim AS build
+WORKDIR /src
+COPY package.json package-lock.json ./
+# Every workspace's manifest, so the lockfile resolves; only the API's deps install.
+COPY server/api/package.json server/api/
+COPY apps/desktop/package.json apps/desktop/
+COPY apps/web/package.json apps/web/
+RUN npm ci --workspace server/api --include-workspace-root --no-audit --no-fund
+COPY server/api server/api
+RUN npm run build --workspace server/api
+
+FROM node:22-bookworm-slim AS deps
+WORKDIR /src
+COPY package.json package-lock.json ./
+COPY server/api/package.json server/api/
+COPY apps/desktop/package.json apps/desktop/
+COPY apps/web/package.json apps/web/
+RUN npm ci --workspace server/api --include-workspace-root --omit=dev --no-audit --no-fund \
+ && mkdir -p server/api/node_modules
+
+FROM node:22-bookworm-slim
+ENV NODE_ENV=production HOST=0.0.0.0 PORT=8787 UPLOAD_DIR=/data/uploads
+WORKDIR /app
+COPY --from=deps /src/node_modules ./node_modules
+COPY --from=deps /src/server/api/node_modules ./server/api/node_modules
+COPY --from=build /src/server/api/package.json ./server/api/
+COPY --from=build /src/server/api/dist ./server/api/dist
+COPY --from=build /src/server/api/migrations ./server/api/migrations
+RUN mkdir -p /data/uploads && chown -R node:node /data
+WORKDIR /app/server/api
+USER node
+EXPOSE 8787
+HEALTHCHECK --interval=15s --timeout=5s --start-period=30s --retries=3 \
+  CMD ["node", "-e", "fetch('http://127.0.0.1:8787/v1/health').then(r=>process.exit(r.ok?0:1),()=>process.exit(1))"]
+# Operator commands run in the same image, e.g.:
+#   docker compose exec api node dist/scripts/userRole.js --email you@example.com --role admin
+CMD ["node", "dist/index.js"]

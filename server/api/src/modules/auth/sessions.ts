@@ -41,7 +41,7 @@ export async function startSession(deps: AppDeps, userId: string, device: Device
   await notify(deps, userId, "new_login", "New sign-in", `Signed in on ${device.name} (${device.platform}).`, {
     sessionId: familyId,
   });
-  await deps.mailer.send(user.email, { kind: "new_login", deviceName: device.name, platform: device.platform });
+  await deps.mailer.send(user.email, { kind: "new_login", deviceName: device.name, platform: device.platform }, user.locale);
   return {
     accessToken: await issueAccessToken(deps.keys.access, { sub: userId, sid: familyId, amr }, deps.config.ACCESS_TOKEN_TTL_SECONDS),
     refreshToken,

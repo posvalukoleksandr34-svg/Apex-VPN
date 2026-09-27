@@ -492,6 +492,7 @@
                           "windows",
                           "macos",
                           "linux",
+                          "web",
                           "other"
                         ]
                       }
@@ -551,6 +552,13 @@
                             "mfaEnabled": {
                               "type": "boolean"
                             },
+                            "role": {
+                              "type": "string",
+                              "enum": [
+                                "user",
+                                "admin"
+                              ]
+                            },
                             "createdAt": {
                               "type": "string"
                             }
@@ -561,6 +569,7 @@
                             "emailVerified",
                             "locale",
                             "mfaEnabled",
+                            "role",
                             "createdAt"
                           ]
                         }
@@ -652,6 +661,7 @@
                           "windows",
                           "macos",
                           "linux",
+                          "web",
                           "other"
                         ]
                       }
@@ -708,6 +718,13 @@
                         "mfaEnabled": {
                           "type": "boolean"
                         },
+                        "role": {
+                          "type": "string",
+                          "enum": [
+                            "user",
+                            "admin"
+                          ]
+                        },
                         "createdAt": {
                           "type": "string"
                         }
@@ -718,6 +735,7 @@
                         "emailVerified",
                         "locale",
                         "mfaEnabled",
+                        "role",
                         "createdAt"
                       ]
                     }
@@ -814,6 +832,13 @@
                         "mfaEnabled": {
                           "type": "boolean"
                         },
+                        "role": {
+                          "type": "string",
+                          "enum": [
+                            "user",
+                            "admin"
+                          ]
+                        },
                         "createdAt": {
                           "type": "string"
                         }
@@ -824,6 +849,7 @@
                         "emailVerified",
                         "locale",
                         "mfaEnabled",
+                        "role",
                         "createdAt"
                       ]
                     }
@@ -1052,6 +1078,13 @@
                     "mfaEnabled": {
                       "type": "boolean"
                     },
+                    "role": {
+                      "type": "string",
+                      "enum": [
+                        "user",
+                        "admin"
+                      ]
+                    },
                     "createdAt": {
                       "type": "string"
                     }
@@ -1062,6 +1095,7 @@
                     "emailVerified",
                     "locale",
                     "mfaEnabled",
+                    "role",
                     "createdAt"
                   ]
                 }
@@ -1140,6 +1174,13 @@
                     "mfaEnabled": {
                       "type": "boolean"
                     },
+                    "role": {
+                      "type": "string",
+                      "enum": [
+                        "user",
+                        "admin"
+                      ]
+                    },
                     "createdAt": {
                       "type": "string"
                     }
@@ -1150,6 +1191,7 @@
                     "emailVerified",
                     "locale",
                     "mfaEnabled",
+                    "role",
                     "createdAt"
                   ]
                 }
@@ -1706,6 +1748,9 @@
                       "windows",
                       "macos",
                       "linux",
+                      "ios",
+                      "android",
+                      "router",
                       "other"
                     ]
                   },
@@ -2438,6 +2483,12 @@
                     },
                     "devicesUsed": {
                       "type": "number"
+                    },
+                    "deviceLimit": {
+                      "type": [
+                        "number",
+                        "null"
+                      ]
                     }
                   },
                   "required": [
@@ -2448,7 +2499,8 @@
                     "cancelAtPeriodEnd",
                     "provider",
                     "paymentMethod",
-                    "devicesUsed"
+                    "devicesUsed",
+                    "deviceLimit"
                   ]
                 }
               }
@@ -2558,6 +2610,14 @@
                 "properties": {
                   "planId": {
                     "type": "string"
+                  },
+                  "returnTo": {
+                    "default": "app",
+                    "type": "string",
+                    "enum": [
+                      "app",
+                      "web"
+                    ]
                   }
                 },
                 "required": [
@@ -2736,6 +2796,12 @@
                     },
                     "devicesUsed": {
                       "type": "number"
+                    },
+                    "deviceLimit": {
+                      "type": [
+                        "number",
+                        "null"
+                      ]
                     }
                   },
                   "required": [
@@ -2746,7 +2812,8 @@
                     "cancelAtPeriodEnd",
                     "provider",
                     "paymentMethod",
-                    "devicesUsed"
+                    "devicesUsed",
+                    "deviceLimit"
                   ]
                 }
               }
@@ -2894,6 +2961,12 @@
                     },
                     "devicesUsed": {
                       "type": "number"
+                    },
+                    "deviceLimit": {
+                      "type": [
+                        "number",
+                        "null"
+                      ]
                     }
                   },
                   "required": [
@@ -2904,7 +2977,8 @@
                     "cancelAtPeriodEnd",
                     "provider",
                     "paymentMethod",
-                    "devicesUsed"
+                    "devicesUsed",
+                    "deviceLimit"
                   ]
                 }
               }
@@ -3014,6 +3088,30 @@
           }
         ],
         "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$schema": "https://json-schema.org/draft/2020-12/schema",
+                "default": {
+                  "returnTo": "app"
+                },
+                "type": "object",
+                "properties": {
+                  "returnTo": {
+                    "default": "app",
+                    "type": "string",
+                    "enum": [
+                      "app",
+                      "web"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
             "description": "OK",
@@ -3956,6 +4054,1080 @@
         "responses": {
           "201": {
             "description": "No content"
+          },
+          "default": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/admin/users": {
+      "get": {
+        "tags": [
+          "admin"
+        ],
+        "summary": "Accounts, newest first: search by email or id, filter by subscription state, ban or role.",
+        "security": [],
+        "parameters": [
+          {
+            "name": "q",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filter",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$schema": "https://json-schema.org/draft/2020-12/schema",
+                  "type": "object",
+                  "properties": {
+                    "total": {
+                      "type": "number"
+                    },
+                    "page": {
+                      "type": "number"
+                    },
+                    "pageSize": {
+                      "type": "number"
+                    },
+                    "users": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string"
+                          },
+                          "email": {
+                            "type": "string"
+                          },
+                          "role": {
+                            "type": "string",
+                            "enum": [
+                              "user",
+                              "admin"
+                            ]
+                          },
+                          "isBanned": {
+                            "type": "boolean"
+                          },
+                          "emailVerified": {
+                            "type": "boolean"
+                          },
+                          "mfaEnabled": {
+                            "type": "boolean"
+                          },
+                          "createdAt": {
+                            "type": "string"
+                          },
+                          "devices": {
+                            "type": "number"
+                          },
+                          "deviceLimit": {
+                            "type": [
+                              "number",
+                              "null"
+                            ]
+                          },
+                          "deviceLimitOverride": {
+                            "type": [
+                              "number",
+                              "null"
+                            ]
+                          },
+                          "subscription": {
+                            "anyOf": [
+                              {
+                                "type": "object",
+                                "properties": {
+                                  "status": {
+                                    "type": "string",
+                                    "enum": [
+                                      "incomplete",
+                                      "trialing",
+                                      "active",
+                                      "past_due",
+                                      "canceled",
+                                      "expired"
+                                    ]
+                                  },
+                                  "planId": {
+                                    "type": "string"
+                                  },
+                                  "planName": {
+                                    "type": "string"
+                                  },
+                                  "currentPeriodEnd": {
+                                    "type": "string"
+                                  },
+                                  "cancelAtPeriodEnd": {
+                                    "type": "boolean"
+                                  },
+                                  "provider": {
+                                    "type": "string"
+                                  }
+                                },
+                                "required": [
+                                  "status",
+                                  "planId",
+                                  "planName",
+                                  "currentPeriodEnd",
+                                  "cancelAtPeriodEnd",
+                                  "provider"
+                                ]
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          }
+                        },
+                        "required": [
+                          "id",
+                          "email",
+                          "role",
+                          "isBanned",
+                          "emailVerified",
+                          "mfaEnabled",
+                          "createdAt",
+                          "devices",
+                          "deviceLimit",
+                          "deviceLimitOverride",
+                          "subscription"
+                        ]
+                      }
+                    }
+                  },
+                  "required": [
+                    "total",
+                    "page",
+                    "pageSize",
+                    "users"
+                  ]
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/admin/users/{id}": {
+      "get": {
+        "tags": [
+          "admin"
+        ],
+        "summary": "One account: subscription, devices, invoices (with refunds) and the staff actions taken on it.",
+        "security": [],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$schema": "https://json-schema.org/draft/2020-12/schema",
+                  "type": "object",
+                  "properties": {
+                    "user": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string"
+                        },
+                        "email": {
+                          "type": "string"
+                        },
+                        "role": {
+                          "type": "string",
+                          "enum": [
+                            "user",
+                            "admin"
+                          ]
+                        },
+                        "isBanned": {
+                          "type": "boolean"
+                        },
+                        "emailVerified": {
+                          "type": "boolean"
+                        },
+                        "mfaEnabled": {
+                          "type": "boolean"
+                        },
+                        "createdAt": {
+                          "type": "string"
+                        },
+                        "devices": {
+                          "type": "number"
+                        },
+                        "deviceLimit": {
+                          "type": [
+                            "number",
+                            "null"
+                          ]
+                        },
+                        "deviceLimitOverride": {
+                          "type": [
+                            "number",
+                            "null"
+                          ]
+                        },
+                        "subscription": {
+                          "anyOf": [
+                            {
+                              "type": "object",
+                              "properties": {
+                                "status": {
+                                  "type": "string",
+                                  "enum": [
+                                    "incomplete",
+                                    "trialing",
+                                    "active",
+                                    "past_due",
+                                    "canceled",
+                                    "expired"
+                                  ]
+                                },
+                                "planId": {
+                                  "type": "string"
+                                },
+                                "planName": {
+                                  "type": "string"
+                                },
+                                "currentPeriodEnd": {
+                                  "type": "string"
+                                },
+                                "cancelAtPeriodEnd": {
+                                  "type": "boolean"
+                                },
+                                "provider": {
+                                  "type": "string"
+                                }
+                              },
+                              "required": [
+                                "status",
+                                "planId",
+                                "planName",
+                                "currentPeriodEnd",
+                                "cancelAtPeriodEnd",
+                                "provider"
+                              ]
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        }
+                      },
+                      "required": [
+                        "id",
+                        "email",
+                        "role",
+                        "isBanned",
+                        "emailVerified",
+                        "mfaEnabled",
+                        "createdAt",
+                        "devices",
+                        "deviceLimit",
+                        "deviceLimitOverride",
+                        "subscription"
+                      ]
+                    },
+                    "stripeCustomerUrl": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "devices": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string"
+                          },
+                          "name": {
+                            "type": "string"
+                          },
+                          "platform": {
+                            "type": "string"
+                          },
+                          "createdAt": {
+                            "type": "string"
+                          },
+                          "lastSeenOn": {
+                            "type": "string"
+                          },
+                          "connected": {
+                            "type": "boolean"
+                          }
+                        },
+                        "required": [
+                          "id",
+                          "name",
+                          "platform",
+                          "createdAt",
+                          "lastSeenOn",
+                          "connected"
+                        ]
+                      }
+                    },
+                    "invoices": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string"
+                          },
+                          "number": {
+                            "type": "string"
+                          },
+                          "description": {
+                            "type": "string"
+                          },
+                          "amountCents": {
+                            "type": "number"
+                          },
+                          "refundedCents": {
+                            "type": "number"
+                          },
+                          "currency": {
+                            "type": "string"
+                          },
+                          "status": {
+                            "type": "string"
+                          },
+                          "issuedAt": {
+                            "type": "string"
+                          },
+                          "refundable": {
+                            "type": "boolean"
+                          }
+                        },
+                        "required": [
+                          "id",
+                          "number",
+                          "description",
+                          "amountCents",
+                          "refundedCents",
+                          "currency",
+                          "status",
+                          "issuedAt",
+                          "refundable"
+                        ]
+                      }
+                    },
+                    "actions": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string"
+                          },
+                          "action": {
+                            "type": "string"
+                          },
+                          "detail": {
+                            "type": "object",
+                            "propertyNames": {
+                              "type": "string"
+                            },
+                            "additionalProperties": {}
+                          },
+                          "adminEmail": {
+                            "type": [
+                              "string",
+                              "null"
+                            ]
+                          },
+                          "createdAt": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "id",
+                          "action",
+                          "detail",
+                          "adminEmail",
+                          "createdAt"
+                        ]
+                      }
+                    }
+                  },
+                  "required": [
+                    "user",
+                    "stripeCustomerUrl",
+                    "devices",
+                    "invoices",
+                    "actions"
+                  ]
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/admin/users/{id}/ban": {
+      "post": {
+        "tags": [
+          "admin"
+        ],
+        "summary": "Ban or unban an account. A ban signs it out everywhere and its devices stop working within seconds.",
+        "security": [],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$schema": "https://json-schema.org/draft/2020-12/schema",
+                "type": "object",
+                "properties": {
+                  "banned": {
+                    "type": "boolean"
+                  },
+                  "reason": {
+                    "type": "string",
+                    "maxLength": 200
+                  }
+                },
+                "required": [
+                  "banned"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$schema": "https://json-schema.org/draft/2020-12/schema",
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "email": {
+                      "type": "string"
+                    },
+                    "role": {
+                      "type": "string",
+                      "enum": [
+                        "user",
+                        "admin"
+                      ]
+                    },
+                    "isBanned": {
+                      "type": "boolean"
+                    },
+                    "emailVerified": {
+                      "type": "boolean"
+                    },
+                    "mfaEnabled": {
+                      "type": "boolean"
+                    },
+                    "createdAt": {
+                      "type": "string"
+                    },
+                    "devices": {
+                      "type": "number"
+                    },
+                    "deviceLimit": {
+                      "type": [
+                        "number",
+                        "null"
+                      ]
+                    },
+                    "deviceLimitOverride": {
+                      "type": [
+                        "number",
+                        "null"
+                      ]
+                    },
+                    "subscription": {
+                      "anyOf": [
+                        {
+                          "type": "object",
+                          "properties": {
+                            "status": {
+                              "type": "string",
+                              "enum": [
+                                "incomplete",
+                                "trialing",
+                                "active",
+                                "past_due",
+                                "canceled",
+                                "expired"
+                              ]
+                            },
+                            "planId": {
+                              "type": "string"
+                            },
+                            "planName": {
+                              "type": "string"
+                            },
+                            "currentPeriodEnd": {
+                              "type": "string"
+                            },
+                            "cancelAtPeriodEnd": {
+                              "type": "boolean"
+                            },
+                            "provider": {
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "status",
+                            "planId",
+                            "planName",
+                            "currentPeriodEnd",
+                            "cancelAtPeriodEnd",
+                            "provider"
+                          ]
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "email",
+                    "role",
+                    "isBanned",
+                    "emailVerified",
+                    "mfaEnabled",
+                    "createdAt",
+                    "devices",
+                    "deviceLimit",
+                    "deviceLimitOverride",
+                    "subscription"
+                  ]
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/admin/users/{id}/devices/reset": {
+      "post": {
+        "tags": [
+          "admin"
+        ],
+        "summary": "Remove every device of an account (freeing all its slots). They're disconnected within seconds.",
+        "security": [],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$schema": "https://json-schema.org/draft/2020-12/schema",
+                  "type": "object",
+                  "properties": {
+                    "removed": {
+                      "type": "number"
+                    }
+                  },
+                  "required": [
+                    "removed"
+                  ]
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/admin/users/{id}/device-limit": {
+      "put": {
+        "tags": [
+          "admin"
+        ],
+        "summary": "Set this account's device limit, or null for the plan's. Devices over a lowered limit stay until removed.",
+        "security": [],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$schema": "https://json-schema.org/draft/2020-12/schema",
+                "type": "object",
+                "properties": {
+                  "limit": {
+                    "anyOf": [
+                      {
+                        "type": "integer",
+                        "minimum": 0,
+                        "maximum": 100
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  }
+                },
+                "required": [
+                  "limit"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$schema": "https://json-schema.org/draft/2020-12/schema",
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "email": {
+                      "type": "string"
+                    },
+                    "role": {
+                      "type": "string",
+                      "enum": [
+                        "user",
+                        "admin"
+                      ]
+                    },
+                    "isBanned": {
+                      "type": "boolean"
+                    },
+                    "emailVerified": {
+                      "type": "boolean"
+                    },
+                    "mfaEnabled": {
+                      "type": "boolean"
+                    },
+                    "createdAt": {
+                      "type": "string"
+                    },
+                    "devices": {
+                      "type": "number"
+                    },
+                    "deviceLimit": {
+                      "type": [
+                        "number",
+                        "null"
+                      ]
+                    },
+                    "deviceLimitOverride": {
+                      "type": [
+                        "number",
+                        "null"
+                      ]
+                    },
+                    "subscription": {
+                      "anyOf": [
+                        {
+                          "type": "object",
+                          "properties": {
+                            "status": {
+                              "type": "string",
+                              "enum": [
+                                "incomplete",
+                                "trialing",
+                                "active",
+                                "past_due",
+                                "canceled",
+                                "expired"
+                              ]
+                            },
+                            "planId": {
+                              "type": "string"
+                            },
+                            "planName": {
+                              "type": "string"
+                            },
+                            "currentPeriodEnd": {
+                              "type": "string"
+                            },
+                            "cancelAtPeriodEnd": {
+                              "type": "boolean"
+                            },
+                            "provider": {
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "status",
+                            "planId",
+                            "planName",
+                            "currentPeriodEnd",
+                            "cancelAtPeriodEnd",
+                            "provider"
+                          ]
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "email",
+                    "role",
+                    "isBanned",
+                    "emailVerified",
+                    "mfaEnabled",
+                    "createdAt",
+                    "devices",
+                    "deviceLimit",
+                    "deviceLimitOverride",
+                    "subscription"
+                  ]
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/admin/users/{id}/cancel-subscription": {
+      "post": {
+        "tags": [
+          "admin"
+        ],
+        "summary": "End an account's subscription now: access ends at once and nothing more is charged. Nothing is refunded.",
+        "security": [],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$schema": "https://json-schema.org/draft/2020-12/schema",
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "email": {
+                      "type": "string"
+                    },
+                    "role": {
+                      "type": "string",
+                      "enum": [
+                        "user",
+                        "admin"
+                      ]
+                    },
+                    "isBanned": {
+                      "type": "boolean"
+                    },
+                    "emailVerified": {
+                      "type": "boolean"
+                    },
+                    "mfaEnabled": {
+                      "type": "boolean"
+                    },
+                    "createdAt": {
+                      "type": "string"
+                    },
+                    "devices": {
+                      "type": "number"
+                    },
+                    "deviceLimit": {
+                      "type": [
+                        "number",
+                        "null"
+                      ]
+                    },
+                    "deviceLimitOverride": {
+                      "type": [
+                        "number",
+                        "null"
+                      ]
+                    },
+                    "subscription": {
+                      "anyOf": [
+                        {
+                          "type": "object",
+                          "properties": {
+                            "status": {
+                              "type": "string",
+                              "enum": [
+                                "incomplete",
+                                "trialing",
+                                "active",
+                                "past_due",
+                                "canceled",
+                                "expired"
+                              ]
+                            },
+                            "planId": {
+                              "type": "string"
+                            },
+                            "planName": {
+                              "type": "string"
+                            },
+                            "currentPeriodEnd": {
+                              "type": "string"
+                            },
+                            "cancelAtPeriodEnd": {
+                              "type": "boolean"
+                            },
+                            "provider": {
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "status",
+                            "planId",
+                            "planName",
+                            "currentPeriodEnd",
+                            "cancelAtPeriodEnd",
+                            "provider"
+                          ]
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "email",
+                    "role",
+                    "isBanned",
+                    "emailVerified",
+                    "mfaEnabled",
+                    "createdAt",
+                    "devices",
+                    "deviceLimit",
+                    "deviceLimitOverride",
+                    "subscription"
+                  ]
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/admin/invoices/{id}/refund": {
+      "post": {
+        "tags": [
+          "admin"
+        ],
+        "summary": "Refund a paid invoice through the payment provider (in full by default), optionally ending the subscription too.",
+        "security": [],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$schema": "https://json-schema.org/draft/2020-12/schema",
+                "type": "object",
+                "properties": {
+                  "amountCents": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 9007199254740991
+                  },
+                  "cancelSubscription": {
+                    "default": false,
+                    "type": "boolean"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$schema": "https://json-schema.org/draft/2020-12/schema",
+                  "type": "object",
+                  "properties": {
+                    "refundedCents": {
+                      "type": "number"
+                    },
+                    "status": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "refundedCents",
+                    "status"
+                  ]
+                }
+              }
+            }
           },
           "default": {
             "description": "Error",

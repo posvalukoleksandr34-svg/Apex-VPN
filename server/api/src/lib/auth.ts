@@ -1,7 +1,7 @@
 import type { FastifyRequest } from "fastify";
 import { sql } from "kysely";
 import { verifyAccessToken, sha256 } from "../security/tokens.js";
-import { unauthorized } from "./errors.js";
+import { forbidden, unauthorized } from "./errors.js";
 
 export interface UserAuth {
   userId: string;
@@ -39,6 +39,24 @@ export async function requireUser(req: FastifyRequest): Promise<UserAuth> {
     .executeTakeFirst();
   if (!live) throw unauthorized("session_revoked");
   return { userId: claims.sub, sessionId: claims.sid, amr: claims.amr };
+}
+
+/**
+ * Staff: a signed-in user whose role, read from the database on every
+ * request, is admin. Demoting or banning an admin takes effect at once.
+ */
+export async function requireAdmin(req: FastifyRequest): Promise<UserAuth> {
+  const auth = await requireUser(req);
+  const { deps } = req.server;
+  const user = await deps.database.db
+    .selectFrom("identity.users")
+    .select(["role", "totp_enabled_at"])
+    .where("id", "=", auth.userId)
+    .executeTakeFirstOrThrow();
+  if (user.role !== "admin") throw forbidden("admin_only");
+  const requireMfa = deps.config.ADMIN_REQUIRE_MFA ?? deps.config.NODE_ENV === "production";
+  if (requireMfa && !user.totp_enabled_at) throw forbidden("admin_mfa_required", "turn on two-step verification to use staff tools");
+  return auth;
 }
 
 /** VPN nodes authenticate with a per-node token (stored hashed). */

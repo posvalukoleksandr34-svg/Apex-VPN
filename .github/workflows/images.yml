@@ -1,0 +1,62 @@
+name: images
+
+# The production images of the API and the dashboard: built and smoke-tested
+# on every change (deploy/app/ci/smoke.sh), and published to GitHub's
+# container registry for version tags (v1.2.3).
+on:
+  push:
+    branches: [main]
+    tags: ["v*"]
+    paths:
+      - "server/api/**"
+      - "apps/web/**"
+      - "deploy/app/**"
+      - "package.json"
+      - "package-lock.json"
+      - ".dockerignore"
+      - ".github/workflows/images.yml"
+  pull_request:
+    paths:
+      - "server/api/**"
+      - "apps/web/**"
+      - "deploy/app/**"
+      - "package-lock.json"
+      - ".github/workflows/images.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Scripts
+        run: shellcheck --severity=warning deploy/app/ci/smoke.sh
+
+      - name: Build
+        run: |
+          docker build -f deploy/app/Dockerfile.api -t apexy/api:smoke .
+          docker build -f deploy/app/Dockerfile.web -t apexy/web:smoke .
+
+      - name: Smoke test
+        run: bash deploy/app/ci/smoke.sh
+
+      - name: Publish (version tags)
+        if: startsWith(github.ref, 'refs/tags/v')
+        env:
+          TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          registry="ghcr.io/${GITHUB_REPOSITORY_OWNER,,}"
+          version="${GITHUB_REF_NAME}"
+          echo "$TOKEN" | docker login ghcr.io -u "$GITHUB_ACTOR" --password-stdin
+          for image in api web; do
+            docker tag "apexy/$image:smoke" "$registry/apexy-$image:$version"
+            docker push "$registry/apexy-$image:$version"
+          done

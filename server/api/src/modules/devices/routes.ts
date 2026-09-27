@@ -109,7 +109,7 @@ export function deviceRoutes(app: FastifyInstance): void {
       rateLimit: 20,
       body: z.object({
         name: z.string().trim().min(1).max(64),
-        platform: z.enum(["windows", "macos", "linux", "other"]),
+        platform: z.enum(["windows", "macos", "linux", "ios", "android", "router", "other"]),
         appVersion: z.string().max(32).optional(),
         publicKey: WgPublicKey,
       }),

@@ -30,6 +30,9 @@ reports itself as unavailable, never fakes success), **🗺 planned**.
 | | App lock (Windows Hello / password) | 🔌 setting shown as unavailable |
 | Billing | Plans, renewal, invoices, upgrade/downgrade/cancel via `BillingProvider` | ✅ Stripe (Checkout, Customer Portal, verified webhooks; tested against a fake Stripe API, not yet a live account) · ✅ manual provider |
 | | Connect requires a valid plan; renew prompt | ✅ service refuses past `validUntil` (kill switch not engaged), app prompts to renew, nodes enforce |
+| Web dashboard | Sign-up with email code, sign-in with 2FA, password reset. Plans and Stripe Checkout and Portal, cancel and resume, invoices. Devices with the plan's limit, rename and remove. WireGuard configs and QR codes, with keys made in the browser. Server search. Account security and deletion. 4 languages | ✅ `apps/web`; checked in a browser against the dev API with the manual billing provider |
+| Staff tools | `/admin`: accounts (search, filters, devices, subscription), ban and unban, remove devices, per-account device limit, end subscription, Stripe refunds, staff log | ✅ admins only (role checked per request; 2FA required in production) |
+| Operations | Docker images, Compose stack behind a Cloudflare Tunnel, systemd unit, SMTP email in 4 languages | ✅ images smoke-tested in CI ([PRODUCTION.md](PRODUCTION.md)); not yet on a real server |
 | Notifications | In-app center + OS notifications + preferences | ✅ |
 | Settings | 15 categories, keyboard shortcuts list, global search | ✅ |
 | Support | Help center, FAQ, troubleshooting, ticket with attachments + diagnostics | ✅ |
