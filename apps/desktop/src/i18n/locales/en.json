@@ -1428,7 +1428,7 @@
       "q3": "Is OpenVPN supported?",
       "a3": "Not in this build. WireGuard is used, and Automatic will be able to fall back to OpenVPN once it's added.",
       "q4": "How many devices can I use?",
-      "a4": "The trial allows 2 devices, paid plans 10. Manage them in Account → Devices.",
+      "a4": "The trial allows 2 devices, paid plans 5. Manage them in Account → Devices.",
       "q5": "I have no internet after closing Apexy VPN.",
       "a5": "Your kill switch is probably set to Always on, or the VPN was still meant to be connected. Open Apexy VPN and disconnect, or change the kill switch mode."
     },

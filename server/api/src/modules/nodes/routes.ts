@@ -28,7 +28,7 @@ export function nodeRoutes(app: FastifyInstance): void {
         .innerJoin("identity.users as u", "u.id", "d.user_id")
         .select(["d.wg_public_key", "d.ipv4", "d.ipv6"])
         .where("d.revoked_at", "is", null)
-        .where("u.status", "=", "active")
+        .where("u.is_banned", "=", false)
         .where("s.status", "in", ["trialing", "active", "past_due"])
         .where("s.current_period_end", ">", now)
         .execute();

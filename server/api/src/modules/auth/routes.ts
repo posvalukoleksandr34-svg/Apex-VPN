@@ -169,7 +169,7 @@ export function authRoutes(app: FastifyInstance): void {
           .execute();
         throw unauthorized("invalid_credentials");
       }
-      if (user.status !== "active") throw unauthorized("account_disabled");
+      if (user.is_banned) throw unauthorized("account_disabled");
       await d.database.db.updateTable("identity.users").set({ failed_logins: 0, locked_until: null }).where("id", "=", user.id).execute();
       if (user.totp_enabled_at) {
         return { mfaRequired: true as const, mfaToken: await issueMfaToken(d.keys.access, user.id) };

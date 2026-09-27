@@ -1191,7 +1191,7 @@
       "q3": "Wird OpenVPN unterstützt?",
       "a3": "Nicht in diesem Build. Verwendet wird WireGuard; „Automatisch“ kann auf OpenVPN ausweichen, sobald es hinzugefügt ist.",
       "q4": "Wie viele Geräte kann ich nutzen?",
-      "a4": "In der Testphase 2 Geräte, in bezahlten Tarifen 10. Verwalte sie unter Konto → Geräte.",
+      "a4": "In der Testphase 2 Geräte, in bezahlten Tarifen 5. Verwalte sie unter Konto → Geräte.",
       "q5": "Nach dem Schließen von Apexy VPN habe ich kein Internet mehr.",
       "a5": "Wahrscheinlich steht der Kill Switch auf „Immer an“ oder das VPN sollte noch verbunden sein. Öffne Apexy VPN und trenne die Verbindung oder ändere den Kill-Switch-Modus."
     },

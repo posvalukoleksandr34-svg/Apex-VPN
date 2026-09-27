@@ -13,7 +13,8 @@ export interface UsersTable {
   password_hash: string;
   email_verified_at: NullableTimestamp;
   locale: Generated<string>;
-  status: Generated<"active" | "disabled">;
+  role: Generated<"user" | "admin">;
+  is_banned: Generated<boolean>;
   totp_secret_enc: string | null;
   totp_enabled_at: NullableTimestamp;
   totp_last_step: ColumnType<string | null, number | string | null | undefined, number | string | null>;

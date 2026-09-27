@@ -18,7 +18,7 @@ The product rule: **the app never shows a state, a measurement or a protection t
 | `server/api` | Account backend: Fastify + PostgreSQL (PGlite in development and tests). |
 | `docs/` | Architecture, product map, security, setup and operations. |
 
-Start with [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md). The feature map with what is real and what is an integration point is [docs/PRODUCT.md](docs/PRODUCT.md).
+Start with [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md). The data model, access gating and no-logs guarantees are in [docs/DATABASE.md](docs/DATABASE.md). The feature map with what is real and what is an integration point is [docs/PRODUCT.md](docs/PRODUCT.md).
 
 ## Quick start (Windows)
 

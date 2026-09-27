@@ -3,7 +3,7 @@ import { join } from "node:path";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { verifyDetached } from "../src/security/keys.js";
 import { sha256 } from "../src/security/tokens.js";
-import { json, signedInUser, testApp, wgKey, type TestApp } from "./helpers.js";
+import { json, PASSWORD, signedInUser, testApp, wgKey, type TestApp } from "./helpers.js";
 
 let t: TestApp;
 beforeEach(async () => (t = await testApp()));
@@ -177,6 +177,25 @@ describe("devices", () => {
     await t.app.inject({ method: "POST", url: "/v1/devices", headers: a.auth, payload: { name: "PC", platform: "windows", publicKey: key } });
     const stolen = await t.app.inject({ method: "POST", url: "/v1/devices", headers: b.auth, payload: { name: "PC", platform: "windows", publicKey: key } });
     expect(json(stolen).error.code).toBe("key_in_use");
+  });
+
+  it("a ban ends everything at once, even when made in plain SQL", async () => {
+    await seedFleet();
+    const u = await signedInUser(t);
+    const key = wgKey();
+    await t.app.inject({ method: "POST", url: "/v1/devices", headers: u.auth, payload: { name: "PC", platform: "windows", publicKey: key } });
+    const peers = async () =>
+      json(await t.app.inject({ method: "GET", url: "/v1/nodes/self/peers", headers: { authorization: `Bearer ${NODE_TOKEN}` } })).peers.map((p: { publicKey: string }) => p.publicKey);
+    expect(await peers()).toContain(key);
+
+    await t.deps.database.db.updateTable("identity.users").set({ is_banned: true }).where("id", "=", u.user.id).execute();
+
+    const live = await t.deps.database.db.selectFrom("identity.sessions").select("id").where("user_id", "=", u.user.id).where("revoked_at", "is", null).execute();
+    expect(live).toEqual([]); // the trigger revoked every session
+    expect((await t.app.inject({ method: "GET", url: "/v1/users/me", headers: u.auth })).statusCode).toBe(401); // the access token too
+    expect(json(await t.app.inject({ method: "POST", url: "/v1/auth/refresh", payload: { refreshToken: u.refreshToken } })).error.code).not.toBe(undefined);
+    expect(json(await t.app.inject({ method: "POST", url: "/v1/auth/login", payload: { email: u.email, password: PASSWORD } })).error.code).toBe("account_disabled");
+    expect(await peers()).not.toContain(key); // and the nodes drop the peer
   });
 
   it("expired subscriptions lose node access", async () => {

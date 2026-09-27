@@ -35,7 +35,7 @@ export async function requireUser(req: FastifyRequest): Promise<UserAuth> {
     .where("s.user_id", "=", claims.sub)
     .where("s.revoked_at", "is", null)
     .where("s.expires_at", ">", sql<Date>`now()`)
-    .where("u.status", "=", "active")
+    .where("u.is_banned", "=", false)
     .executeTakeFirst();
   if (!live) throw unauthorized("session_revoked");
   return { userId: claims.sub, sessionId: claims.sid, amr: claims.amr };

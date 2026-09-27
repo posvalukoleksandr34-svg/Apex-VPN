@@ -88,7 +88,7 @@ export async function rotateSession(deps: AppDeps, refreshToken: string): Promis
       })
       .execute();
     const user = await tx.selectFrom("identity.users").selectAll().where("id", "=", row.user_id).executeTakeFirstOrThrow();
-    if (user.status !== "active") throw unauthorized("account_disabled");
+    if (user.is_banned) throw unauthorized("account_disabled");
     const amr = user.totp_enabled_at ? ["pwd", "otp"] : ["pwd"];
     return {
       kind: "ok",

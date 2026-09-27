@@ -14,13 +14,21 @@ import { subscriptionRoutes } from "./modules/subscription/routes.js";
 import { supportRoutes } from "./modules/support/routes.js";
 import { userRoutes } from "./modules/users/routes.js";
 
-export async function buildApp(deps: AppDeps, options: { logger?: boolean } = {}): Promise<FastifyInstance> {
+/**
+ * No-logs: request logs carry the method and path only. Never the client's
+ * address or port, headers, or bodies (credentials and tokens included).
+ */
+const requestLogFields = {
+  req: (req: { method?: string; url?: string }) => ({ method: req.method, url: req.url }),
+};
+
+export async function buildApp(deps: AppDeps, options: { logger?: boolean | { stream: NodeJS.WritableStream } } = {}): Promise<FastifyInstance> {
   const app = Fastify({
     logger: options.logger
       ? {
           level: "info",
-          // Never log credentials or tokens.
-          redact: ["req.headers.authorization", "req.headers.cookie", "req.body.password", "req.body.refreshToken"],
+          serializers: requestLogFields,
+          ...(typeof options.logger === "object" ? { stream: options.logger.stream } : {}),
         }
       : false,
     trustProxy: deps.config.TRUST_PROXY,
