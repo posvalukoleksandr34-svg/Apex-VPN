@@ -7,6 +7,7 @@ members = [
     "crates/vpn-ipc",
     "crates/vpn-daemon",
     "crates/vpn-cli",
+    "crates/vpn-node",
     "apps/desktop/src-tauri",
 ]
 

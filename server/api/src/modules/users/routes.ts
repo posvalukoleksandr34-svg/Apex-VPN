@@ -114,6 +114,7 @@ export function userRoutes(app: FastifyInstance): void {
         throw new ApiError(502, "billing_unavailable", `couldn't cancel the subscription: ${(e as Error).message}`);
       }
       await deps().database.db.deleteFrom("identity.users").where("id", "=", user.id).execute();
+      deps().peerSet.changed();
     },
   );
 

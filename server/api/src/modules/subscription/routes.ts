@@ -84,6 +84,7 @@ export function subscriptionRoutes(app: FastifyInstance): void {
       if (!plan || plan.period === "trial") throw badRequest("unknown_plan");
       const result = await d.billing.checkout(d.database.db, auth.userId, plan, d.now());
       if (result.kind === "activated") {
+        d.peerSet.changed();
         await notify(d, auth.userId, "subscription", "Plan active", `Your ${plan.name} plan is active.`);
       }
       return result;
@@ -200,6 +201,8 @@ export function subscriptionRoutes(app: FastifyInstance): void {
         req.log.error({ err: e }, "billing webhook not applied");
         return reply.status(500).send({ error: { code: "webhook_failed" } });
       }
+      // Any applied event may change who has access (status, period end).
+      d.peerSet.changed();
       if (change) await notifyChange(change);
       return reply.status(200).send({ received: true });
     });

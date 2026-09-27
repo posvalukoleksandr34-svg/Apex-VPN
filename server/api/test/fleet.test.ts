@@ -179,14 +179,56 @@ describe("devices", () => {
     expect(json(stolen).error.code).toBe("key_in_use");
   });
 
+  it("nodes long-poll the peer set and are woken by changes", async () => {
+    await seedFleet();
+    const u = await signedInUser(t);
+    const node = { authorization: `Bearer ${NODE_TOKEN}` };
+    const poll = (since?: string, wait = 0) =>
+      t.app.inject({ method: "GET", url: `/v1/nodes/self/peers?wait=${wait}${since ? `&since=${since}` : ""}`, headers: node });
+    const key = wgKey();
+    const { registration } = json(await t.app.inject({ method: "POST", url: "/v1/devices", headers: u.auth, payload: { name: "PC", platform: "windows", publicKey: key } }));
+    const first = json(await poll());
+    expect(first.version).toMatch(/^[0-9a-f]{24}$/);
+    expect(first.peers.map((p: { publicKey: string }) => p.publicKey)).toContain(key);
+
+    // Nothing changes: the node waits the full window and gets the same set.
+    let started = Date.now();
+    const unchanged = json(await poll(first.version, 1));
+    expect(unchanged.version).toBe(first.version);
+    expect(Date.now() - started).toBeGreaterThanOrEqual(900);
+
+    // A revoke through the API wakes the waiting node at once.
+    started = Date.now();
+    const waiting = poll(first.version, 10);
+    await new Promise((r) => setTimeout(r, 150));
+    await t.app.inject({ method: "DELETE", url: `/v1/devices/${registration.deviceId}`, headers: u.auth });
+    const afterRevoke = json(await waiting);
+    expect(Date.now() - started).toBeLessThan(1_500);
+    expect(afterRevoke.version).not.toBe(first.version);
+    expect(afterRevoke.peers.map((p: { publicKey: string }) => p.publicKey)).not.toContain(key);
+
+    // A change the API didn't make (a ban in plain SQL) is noticed on the next re-check.
+    const key2 = wgKey();
+    const enrolled2 = await t.app.inject({ method: "POST", url: "/v1/devices", headers: u.auth, payload: { name: "Laptop", platform: "windows", publicKey: key2 } });
+    expect(enrolled2.statusCode, enrolled2.body).toBe(201);
+    const withKey2 = json(await poll());
+    expect(withKey2.peers.map((p: { publicKey: string }) => p.publicKey)).toContain(key2);
+    started = Date.now();
+    const waiting2 = poll(withKey2.version, 10);
+    await new Promise((r) => setTimeout(r, 100));
+    await t.deps.database.db.updateTable("identity.users").set({ is_banned: true }).where("id", "=", u.user.id).execute();
+    const afterBan = json(await waiting2);
+    expect(Date.now() - started).toBeLessThan(3_500);
+    expect(afterBan.peers.map((p: { publicKey: string }) => p.publicKey)).not.toContain(key2);
+  });
+
   it("a ban ends everything at once, even when made in plain SQL", async () => {
     await seedFleet();
     const u = await signedInUser(t);
     const key = wgKey();
     await t.app.inject({ method: "POST", url: "/v1/devices", headers: u.auth, payload: { name: "PC", platform: "windows", publicKey: key } });
-    const peers = async () =>
-      json(await t.app.inject({ method: "GET", url: "/v1/nodes/self/peers", headers: { authorization: `Bearer ${NODE_TOKEN}` } })).peers.map((p: { publicKey: string }) => p.publicKey);
-    expect(await peers()).toContain(key);
+    const before = json(await t.app.inject({ method: "GET", url: "/v1/nodes/self/peers", headers: { authorization: `Bearer ${NODE_TOKEN}` } }));
+    expect(before.peers.map((p: { publicKey: string }) => p.publicKey)).toContain(key);
 
     await t.deps.database.db.updateTable("identity.users").set({ is_banned: true }).where("id", "=", u.user.id).execute();
 
@@ -195,7 +237,9 @@ describe("devices", () => {
     expect((await t.app.inject({ method: "GET", url: "/v1/users/me", headers: u.auth })).statusCode).toBe(401); // the access token too
     expect(json(await t.app.inject({ method: "POST", url: "/v1/auth/refresh", payload: { refreshToken: u.refreshToken } })).error.code).not.toBe(undefined);
     expect(json(await t.app.inject({ method: "POST", url: "/v1/auth/login", payload: { email: u.email, password: PASSWORD } })).error.code).toBe("account_disabled");
-    expect(await peers()).not.toContain(key); // and the nodes drop the peer
+    // The API didn't make this change, so waiting nodes see it at their next re-check.
+    const after = json(await t.app.inject({ method: "GET", url: `/v1/nodes/self/peers?since=${before.version}&wait=10`, headers: { authorization: `Bearer ${NODE_TOKEN}` } }));
+    expect(after.peers.map((p: { publicKey: string }) => p.publicKey)).not.toContain(key); // and the nodes drop the peer
   });
 
   it("expired subscriptions lose node access", async () => {

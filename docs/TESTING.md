@@ -14,9 +14,11 @@ npm test                 # backend (PGlite, in-process) and UI (vitest + jsdom)
 | `vpn-core` `api_contract` | The Rust verifier accepts a relay list exactly as the backend signs it (fixture regenerated with `UPDATE_FIXTURES=1 npm test -w server/api`). |
 | `vpn-platform` (Windows, unprivileged) | Driver signature check and DLL load, network snapshot and primary-network choice, ICMP, DPAPI round-trip, installed apps, DNS probe. |
 | `vpn-ipc` | Framing, request/response, event subscription, pipe ACL behaviour. |
+| `vpn-node` (`apexy-node`) | Only single addresses inside the tunnel pools and valid keys are accepted. Diffs remove first. `wg` output parsing. The agent waits on the version it holds, puts right changes made behind its back, keeps the last set through a short outage, removes every peer once the set is too old or the token is refused, and retries a failed apply. Heartbeats report recent handshakes only. It never asks `wg` for endpoints or the private key. |
 | `vpn-daemon` | Store round-trips and corruption recovery, redacted log book, IP observations that aren't public are dropped. |
 | `apexy-app` (app core) | The error shape the WebView receives. Which service requests page script may send. Account passthrough path rules. Attachment types. External link rules. Accepted API addresses. Tray icon rendering. |
 | Backend: billing | Stripe against a fake Stripe API with real `Stripe-Signature`s: one customer per user; checkout vs portal; access only after the first payment; state read from Stripe, not the payload; user found via customer; bad or stale signatures refused; each event applied once; invoices recorded once; grace on failed payment; cancellation ends access; an older read never overwrites a newer one; 500 then retry; cancel at period end; account deletion cancels billing first (and refuses if it can't); the return page. |
+| Backend: nodes | Nodes long-poll the peer set: an unchanged wait holds, a revocation wakes them at once, a ban in plain SQL is noticed within the re-check. A ban revokes sessions, access tokens and node access together. |
 | Backend | Auth flows (lockout, MFA, recovery codes, refresh rotation and reuse revocation), devices (idempotent and concurrent enrollment, limits, key ownership), relay list signing, subscriptions, support. |
 | UI | `describe()` over every tunnel state: "Protected" only when connected, every key exists, blocking states always offer a way out. Locale parity (keys, placeholders, no copies of English) and that every key the code uses exists. Formatting never invents a value. The dashboard hero renders every state in English and Russian. |
 
@@ -89,5 +91,5 @@ The report goes to `dev/killswitch-report.json`.
 * "Always on" across a reboot.
 * Running the installers on a clean machine (install, upgrade over a running service, uninstall).
 * Stripe in test mode and live mode end to end (only the fake API so far).
-* macOS and Linux (integration points).
-* Stripe billing (adapter not built).
+* macOS and Linux clients (integration points).
+* A node on a real VPS with real clients (`deploy/node/ci/e2e.sh` runs the whole node on a CI runner, with a client in a network namespace).

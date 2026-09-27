@@ -131,6 +131,7 @@ export function deviceRoutes(app: FastifyInstance): void {
             throw badRequest("provisioning_failed", (e as Error).message);
           }
         }
+        d.peerSet.changed(); // a refresh may have moved the tunnel address
         return { device: dto(device), registration: registration(device, ent.validUntil) };
       }
       const active = await db
@@ -170,6 +171,7 @@ export function deviceRoutes(app: FastifyInstance): void {
         if (winner.user_id !== auth.userId) throw conflict("key_in_use", "this key belongs to another account");
         device = winner;
       }
+      d.peerSet.changed(); // nodes accept the new key now
       return { device: dto(device), registration: registration(device, ent.validUntil) };
     },
   );
@@ -202,6 +204,7 @@ export function deviceRoutes(app: FastifyInstance): void {
         .where("id", "=", device.id)
         .returningAll()
         .executeTakeFirstOrThrow();
+      d.peerSet.changed(); // the old key stops working on every node now
       return registration(updated, ent.validUntil);
     },
   );
@@ -255,13 +258,14 @@ export function deviceRoutes(app: FastifyInstance): void {
       method: "DELETE",
       url: "/v1/devices/:id",
       tag: "devices",
-      summary: "Revoke a device. Nodes drop its key on their next sync (within a minute).",
+      summary: "Revoke a device. Nodes drop its key within seconds, ending any tunnel it has.",
       auth: "user",
       params: z.object({ id: z.uuid() }),
     },
     async ({ auth, params }) => {
       await owned(auth.userId, params.id);
       await deps().database.db.updateTable("ops.devices").set({ revoked_at: deps().now() }).where("id", "=", params.id).execute();
+      deps().peerSet.changed();
     },
   );
 }

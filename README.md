@@ -14,6 +14,7 @@ The product rule: **the app never shows a state, a measurement or a protection t
 | `crates/vpn-ipc` | JSON-lines IPC over an ACL'd named pipe / Unix socket. |
 | `crates/vpn-daemon` | `apexyd`, the privileged service (Windows service; foreground mode for development). |
 | `crates/vpn-cli` | `apexy`, a command-line client (status, connect, servers, diagnostics, login). |
+| `crates/vpn-node` | `apexy-node`, the agent on each VPN node: keeps kernel WireGuard's peers in step with the API ([deploy/node](deploy/node/README.md)). |
 | `apps/desktop` | The desktop app: React UI (`src/`) and its Tauri Rust core (`src-tauri/`). |
 | `server/api` | Account backend: Fastify + PostgreSQL (PGlite in development and tests). |
 | `docs/` | Architecture, product map, security, setup and operations. |

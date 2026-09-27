@@ -6,6 +6,7 @@ import { maxmindGeoIp, NoGeoIp } from "./lib/geoip.js";
 import { ConsoleMailer, smtpMailer } from "./lib/mailer.js";
 import { AgentProvisioner, WireGuardDemoProvisioner } from "./modules/devices/provisioner.js";
 import { ActivePeers } from "./modules/nodes/activePeers.js";
+import { PeerSetWatch } from "./modules/nodes/peerSet.js";
 import { ManualBilling, StripeBilling } from "./modules/subscription/provider.js";
 import { ed25519FromSeed } from "./security/keys.js";
 import { SecretBox } from "./security/secretbox.js";
@@ -33,6 +34,7 @@ export async function createDeps(config: Config, overrides: Partial<AppDeps> = {
     provisioner:
       overrides.provisioner ?? (config.NODE_PROVISIONING === "wireguard-demo" ? new WireGuardDemoProvisioner() : new AgentProvisioner()),
     activePeers: overrides.activePeers ?? new ActivePeers(),
+    peerSet: overrides.peerSet ?? new PeerSetWatch(),
     now: overrides.now ?? (() => new Date()),
   };
 }

@@ -2072,7 +2072,7 @@
         "tags": [
           "devices"
         ],
-        "summary": "Revoke a device. Nodes drop its key on their next sync (within a minute).",
+        "summary": "Revoke a device. Nodes drop its key within seconds, ending any tunnel it has.",
         "security": [
           {
             "bearer": []
@@ -2166,13 +2166,30 @@
         "tags": [
           "nodes"
         ],
-        "summary": "Peers this node must accept: keys and tunnel addresses of devices with an active entitlement.",
+        "summary": "Peers this node must accept: keys and tunnel addresses of devices whose owner has access and isn't banned. With `since` (the version the node has) and `wait` (seconds, up to 30), answers as soon as the set changes, or with the same set when `wait` runs out.",
         "security": [
           {
             "nodeToken": []
           }
         ],
-        "parameters": [],
+        "parameters": [
+          {
+            "name": "since",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "wait",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -2182,6 +2199,9 @@
                   "$schema": "https://json-schema.org/draft/2020-12/schema",
                   "type": "object",
                   "properties": {
+                    "version": {
+                      "type": "string"
+                    },
                     "peers": {
                       "type": "array",
                       "items": {
@@ -2205,6 +2225,7 @@
                     }
                   },
                   "required": [
+                    "version",
                     "peers"
                   ]
                 }
@@ -2313,6 +2334,7 @@
                       "type": "string",
                       "enum": [
                         "none",
+                        "incomplete",
                         "trialing",
                         "active",
                         "past_due",
@@ -2610,6 +2632,7 @@
                       "type": "string",
                       "enum": [
                         "none",
+                        "incomplete",
                         "trialing",
                         "active",
                         "past_due",
@@ -2767,6 +2790,7 @@
                       "type": "string",
                       "enum": [
                         "none",
+                        "incomplete",
                         "trialing",
                         "active",
                         "past_due",
@@ -2961,6 +2985,51 @@
                       "paidAt"
                     ]
                   }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/subscription/portal": {
+      "post": {
+        "tags": [
+          "subscription"
+        ],
+        "summary": "A hosted billing page for the payment method, invoices and plan changes (Stripe Customer Portal).",
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$schema": "https://json-schema.org/draft/2020-12/schema",
+                  "type": "object",
+                  "properties": {
+                    "url": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "url"
+                  ]
                 }
               }
             }

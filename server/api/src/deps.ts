@@ -7,6 +7,7 @@ import type { Mailer } from "./lib/mailer.js";
 import type { Ed25519Keys } from "./security/keys.js";
 import type { SecretBox } from "./security/secretbox.js";
 import type { ActivePeers } from "./modules/nodes/activePeers.js";
+import type { PeerSetWatch } from "./modules/nodes/peerSet.js";
 
 export interface AppDeps {
   config: Config;
@@ -18,6 +19,8 @@ export interface AppDeps {
   geoip: GeoIp;
   provisioner: PeerProvisioner;
   activePeers: ActivePeers;
+  /** The node peer set; call `changed()` after anything that may alter it. */
+  peerSet: PeerSetWatch;
   now: () => Date;
 }
 

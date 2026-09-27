@@ -14,6 +14,7 @@
     "migrate": "tsx src/scripts/migrate.ts",
     "dev:keys": "tsx src/scripts/devKeys.ts",
     "dev:seed": "tsx src/scripts/seedDev.ts",
+    "node:add": "tsx src/scripts/addNode.ts",
     "openapi": "tsx src/scripts/openapi.ts"
   },
   "dependencies": {

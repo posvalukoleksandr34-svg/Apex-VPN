@@ -5531,6 +5531,25 @@ dependencies = [
 ]
 
 [[package]]
+name = "vpn-node"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "async-trait",
+ "base64 0.22.1",
+ "clap",
+ "ipnet",
+ "rand 0.8.8",
+ "reqwest 0.12.28",
+ "serde",
+ "serde_json",
+ "thiserror 2.0.21",
+ "tokio",
+ "tracing",
+ "tracing-subscriber",
+]
+
+[[package]]
 name = "vpn-platform"
 version = "0.1.0"
 dependencies = [

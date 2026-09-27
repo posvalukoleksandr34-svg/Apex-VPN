@@ -2,12 +2,16 @@
  * Seeds the development fleet. By default that's the public WireGuard demo
  * server (demo.wireguard.com), which gives a real tunnel over the internet
  * without running a node. Pass `--local-node <ip>` to add a local
- * WireGuard node (docker/wireguard-node) as well.
+ * WireGuard node as well (deploy/node); its token goes to dev/node-token,
+ * for `apexy-node --token-file`.
  *
  * Accounts are never seeded: register through the app or `apexy login`.
  */
 import { randomBytes } from "node:crypto";
 import { lookup } from "node:dns/promises";
+import { mkdirSync, writeFileSync } from "node:fs";
+import { dirname, join, resolve } from "node:path";
+import { fileURLToPath } from "node:url";
 import { loadConfig } from "../config.js";
 import { openDatabase } from "../db/client.js";
 import { migrate } from "../db/migrate.js";
@@ -82,7 +86,10 @@ if (localIdx > 0) {
     })
     .onConflict((oc) => oc.column("id").doUpdateSet({ ipv4: ip, node_token_hash: sha256(token), updated_at: new Date() }))
     .execute();
-  console.log(`local node at ${ip}; start it with NODE_TOKEN=${token}`);
+  const tokenFile = join(resolve(dirname(fileURLToPath(import.meta.url)), "..", "..", "..", ".."), "dev", "node-token");
+  mkdirSync(dirname(tokenFile), { recursive: true });
+  writeFileSync(tokenFile, `${token}\n`, { mode: 0o600 });
+  console.log(`local node local-001 at ${ip}; its token is in ${tokenFile}`);
 }
 
 await database.close();

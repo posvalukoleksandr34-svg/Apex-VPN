@@ -1,0 +1,4 @@
+# Files that run or are installed on Linux keep LF endings in every checkout
+# (CRLF breaks bash, nft and systemd units copied from a Windows machine).
+*.sh text eol=lf
+deploy/** text eol=lf

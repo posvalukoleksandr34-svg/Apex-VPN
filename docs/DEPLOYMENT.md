@@ -128,10 +128,9 @@ Tested against a fake Stripe API with real signatures (`server/api/test/billing.
 
 ## Nodes 🔌
 
-A Apexy VPN node:
-* runs WireGuard and a resolver at its tunnel gateway;
-* authenticates with its node token;
-* pulls its peer set from `/v1/nodes/self/peers`;
-* reports health and load to `/v1/nodes/self/heartbeat`.
+An Apexy VPN node runs kernel WireGuard, a firewall, a resolver at its tunnel gateway and `apexy-node` (`crates/vpn-node`):
+* it authenticates with its node token (`npm run node:add -w server/api` issues one);
+* it long-polls its peer set from `/v1/nodes/self/peers`, so access changes reach it within milliseconds;
+* it reports health and connected keys to `/v1/nodes/self/heartbeat`.
 
-The node agent isn't in this repository. The API side (peer sets, health, load, revocation propagation) is, and is tested.
+Setup, operations and failure behaviour: [deploy/node/README.md](../deploy/node/README.md).

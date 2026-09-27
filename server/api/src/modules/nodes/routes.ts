@@ -16,29 +16,19 @@ export function nodeRoutes(app: FastifyInstance): void {
       method: "GET",
       url: "/v1/nodes/self/peers",
       tag: "nodes",
-      summary: "Peers this node must accept: keys and tunnel addresses of devices with an active entitlement.",
+      summary:
+        "Peers this node must accept: keys and tunnel addresses of devices whose owner has access and isn't banned. With `since` (the version the node has) and `wait` (seconds, up to 30), answers as soon as the set changes, or with the same set when `wait` runs out.",
       auth: "node",
-      response: z.object({ peers: z.array(z.object({ publicKey: z.string(), allowedIps: z.array(z.string()) })) }),
+      query: z.object({
+        since: z.string().regex(/^[0-9a-f]{24}$/).optional(),
+        wait: z.coerce.number().int().min(0).max(30).default(0),
+      }),
+      response: z.object({
+        version: z.string(),
+        peers: z.array(z.object({ publicKey: z.string(), allowedIps: z.array(z.string()) })),
+      }),
     },
-    async () => {
-      const now = app.deps.now();
-      const rows = await app.deps.database.db
-        .selectFrom("ops.devices as d")
-        .innerJoin("billing.subscriptions as s", "s.user_id", "d.user_id")
-        .innerJoin("identity.users as u", "u.id", "d.user_id")
-        .select(["d.wg_public_key", "d.ipv4", "d.ipv6"])
-        .where("d.revoked_at", "is", null)
-        .where("u.is_banned", "=", false)
-        .where("s.status", "in", ["trialing", "active", "past_due"])
-        .where("s.current_period_end", ">", now)
-        .execute();
-      return {
-        peers: rows.map((r) => ({
-          publicKey: r.wg_public_key,
-          allowedIps: [withMask(r.ipv4, 32), ...(r.ipv6 ? [withMask(r.ipv6, 128)] : [])],
-        })),
-      };
-    },
+    async ({ query }) => app.deps.peerSet.next(app.deps, query.since, query.wait * 1000),
   );
 
   route(
@@ -82,8 +72,4 @@ export function nodeRoutes(app: FastifyInstance): void {
       app.deps.activePeers.report(auth.serverId, body.activeKeys);
     },
   );
-}
-
-function withMask(ip: string, bits: number): string {
-  return ip.includes("/") ? ip : `${ip}/${bits}`;
 }

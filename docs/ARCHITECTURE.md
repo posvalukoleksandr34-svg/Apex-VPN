@@ -43,7 +43,7 @@ is only emitted by the service after the WireGuard handshake has completed
                                      ▼          │  RelayList (signature-verified)      │
                               ┌──────────────┐  │  Device key (DPAPI / keychain)       │
                               │ VPN nodes    │◄═╡  WireGuard UDP tunnel                │
-                              │ node-agent + │  └──────────────────────────────────────┘
+                              │ apexy-node + │  └──────────────────────────────────────┘
                               │ WireGuard    │
                               └──────────────┘
 ```
@@ -305,7 +305,8 @@ errors with one `ErrorState` component, so no error is a bare string.
   and `wireguard.dll` are Authenticode-signed; the service verifies
   `wireguard.dll`'s signature before loading it.
 * Backend: a container image, PostgreSQL (managed), migrations at deploy, and
-  secrets from the platform's secret store. Nodes run WireGuard + `node-agent`
-  (systemd).
+  secrets from the platform's secret store. Nodes run kernel WireGuard and
+  `apexy-node` (systemd), which keeps their peers in step with the API
+  (`deploy/node`).
 
 See `docs/DEPLOYMENT.md`.

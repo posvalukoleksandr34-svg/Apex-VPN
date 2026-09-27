@@ -1,0 +1,61 @@
+name: node
+
+# The VPN node on Linux: apexy-node's tests, then an end-to-end run with
+# kernel WireGuard, the firewall and the systemd unit (deploy/node/ci/e2e.sh).
+on:
+  push:
+    paths:
+      - "crates/vpn-node/**"
+      - "deploy/node/**"
+      - "server/api/**"
+      - "Cargo.lock"
+      - ".github/workflows/node.yml"
+  pull_request:
+    paths:
+      - "crates/vpn-node/**"
+      - "deploy/node/**"
+      - "server/api/**"
+      - "Cargo.lock"
+      - ".github/workflows/node.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  linux:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          components: clippy
+
+      - uses: Swatinem/rust-cache@v2
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Packages
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq --no-install-recommends wireguard-tools nftables shellcheck
+
+      - name: apexy-node tests
+        run: |
+          cargo clippy -p vpn-node --all-targets --locked -- -D warnings
+          cargo test -p vpn-node --locked
+
+      - name: Build apexy-node
+        run: cargo build -p vpn-node --release --locked
+
+      - name: Scripts
+        run: shellcheck --severity=warning deploy/node/setup.sh deploy/node/ci/e2e.sh
+
+      - name: API dependencies
+        run: npm ci
+
+      - name: End to end (kernel WireGuard)
+        run: bash deploy/node/ci/e2e.sh

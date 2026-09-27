@@ -1,0 +1,65 @@
+#!/usr/sbin/nft -f
+# /etc/nftables.d/apexy.nft: the Apexy VPN node firewall.
+#
+# Clients get the internet (NAT) and the node's resolver, and nothing else:
+# not each other, not the node, not the provider's private networks.
+# Nothing here logs.
+#
+# Only this table is replaced on reload; other tables are left alone.
+
+define WG = "wg0"
+define WG_PORT = 51820
+define POOL4 = 10.64.0.0/10
+define POOL6 = fc00:bbbb:bbbb:bb01::/64
+define GW4 = 10.64.0.1
+define GW6 = fc00:bbbb:bbbb:bb01::1
+
+table inet apexy
+delete table inet apexy
+
+table inet apexy {
+	chain input {
+		type filter hook input priority filter; policy drop;
+		ct state established,related accept
+		ct state invalid drop
+		iif lo accept
+		meta l4proto { icmp, ipv6-icmp } accept
+
+		udp dport $WG_PORT accept
+		# Operators' SSH, from outside the tunnel only. Narrow it to your admin
+		# addresses where you can: ip saddr { 198.51.100.7 } tcp dport 22 accept
+		iifname != $WG tcp dport 22 accept
+
+		# From the tunnel: the resolver, and nothing else on the node.
+		iifname $WG ip daddr $GW4 meta l4proto { udp, tcp } th dport 53 accept
+		iifname $WG ip6 daddr $GW6 meta l4proto { udp, tcp } th dport 53 accept
+	}
+
+	chain forward {
+		type filter hook forward priority filter; policy drop;
+		ct state established,related accept
+		ct state invalid drop
+
+		# Clients can't reach each other.
+		iifname $WG oifname $WG drop
+		# Nor private, link-local (cloud metadata) or reserved networks.
+		iifname $WG ip daddr { 0.0.0.0/8, 10.0.0.0/8, 100.64.0.0/10, 127.0.0.0/8, 169.254.0.0/16, 172.16.0.0/12, 192.168.0.0/16, 224.0.0.0/4, 240.0.0.0/4 } drop
+		iifname $WG ip6 daddr { ::/128, ::1/128, fc00::/7, fe80::/10, ff00::/8 } drop
+		# Outbound mail is how VPN nodes land on blocklists.
+		iifname $WG tcp dport { 25, 465, 587 } drop
+
+		iifname $WG accept
+	}
+
+	chain mangle_forward {
+		type filter hook forward priority mangle; policy accept;
+		# Clamp TCP MSS to the path MTU: the tunnel is smaller than most links.
+		tcp flags syn tcp option maxseg size set rt mtu
+	}
+
+	chain postrouting {
+		type nat hook postrouting priority srcnat; policy accept;
+		ip saddr $POOL4 ip daddr != $POOL4 masquerade
+		ip6 saddr $POOL6 ip6 daddr != $POOL6 masquerade
+	}
+}

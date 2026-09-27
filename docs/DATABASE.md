@@ -50,7 +50,7 @@ It's enforced in three places, so no single layer has to be trusted:
 
 1. **Device registration** (`POST /v1/devices`). The API refuses without access. It signs the period end into the registration it returns (`validUntil`).
 2. **The service** (`apexyd`) refuses to start a tunnel after `validUntil`, allowing 10 minutes of skew for a fast clock. It does so without engaging the kill switch. The app refreshes the registration at start and after a renewal.
-3. **The VPN nodes** fetch their peer set from `GET /v1/nodes/self/peers`. It contains only devices whose owner has access and isn't banned, so a lapsed or banned user's key stops working at the node, whatever the client does.
+3. **The VPN nodes** long-poll their peer set from `GET /v1/nodes/self/peers`. It contains only devices whose owner has access and isn't banned, so a lapsed or banned user's key stops working at the node, whatever the client does. A change made through the API (a Stripe event, a revoked device, a deleted account) reaches every node within milliseconds; one made in plain SQL, or a period running out, within about 3 seconds. See [deploy/node/README.md](../deploy/node/README.md).
 
 The service never queries the database. Doing so would require a database credential inside every installed client.
 
@@ -81,7 +81,7 @@ Checkout for a user who already has a subscription opens the Customer Portal ins
 Set `identity.users.is_banned = true`, from any tool, SQL included. A trigger revokes all of the user's sessions in the same statement. From then on:
 * sign-in answers `account_disabled`;
 * access tokens are refused on their next use;
-* the nodes drop the user's peers at their next sync.
+* the nodes drop the user's peers within about 3 seconds, which ends their tunnels.
 
 `role` (`user` / `admin`) is stored for staff tooling; no endpoint grants anything by role yet.
 
