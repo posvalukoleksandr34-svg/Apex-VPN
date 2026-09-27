@@ -25,7 +25,7 @@ export async function verifyPassword(stored: string, password: string): Promise<
  */
 let dummyHash: Promise<string> | undefined;
 export async function burnPasswordCheck(password: string): Promise<void> {
-  dummyHash ??= hashPassword("meridian-timing-equaliser");
+  dummyHash ??= hashPassword("apexy-timing-equaliser");
   await verifyPassword(await dummyHash, password);
 }
 

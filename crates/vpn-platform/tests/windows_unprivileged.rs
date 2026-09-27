@@ -40,7 +40,7 @@ fn network_snapshot_describes_this_machine() {
         let primary = snap.primary.clone().expect("primary when online");
         assert!(primary.has_ipv4 || primary.has_ipv6);
         println!("primary: {} ({:?})", primary.interface_name, primary.medium);
-        assert!(snap.networks.iter().all(|n| n.interface_name != "Meridian"));
+        assert!(snap.networks.iter().all(|n| n.interface_name != "Apexy VPN"));
     }
     println!("{snap:#?}");
 }

@@ -94,7 +94,7 @@ impl WfpFirewall {
     /// Opens the filtering engine and registers our provider and sublayer.
     /// Needs administrator/SYSTEM.
     pub fn open() -> Result<Self, PlatformError> {
-        let name = wide("Meridian VPN");
+        let name = wide("Apexy VPN");
         let mut session: FWPM_SESSION0 = unsafe { std::mem::zeroed() };
         session.displayData.name = name.as_ptr() as *mut u16;
         session.txnWaitTimeoutInMSec = 5_000;
@@ -110,7 +110,7 @@ impl WfpFirewall {
     }
 
     /// Removes every filter, the sublayer and the provider. Used by the
-    /// uninstaller (`meridiand --reset-firewall`).
+    /// uninstaller (`apexyd --reset-firewall`).
     pub fn remove_all(&self) -> PlatformResult<()> {
         let st = self.state.lock().expect("wfp state");
         let h = st.engine.0;
@@ -180,7 +180,7 @@ fn transaction(h: HANDLE, body: impl FnOnce() -> PlatformResult<()>) -> Platform
 }
 
 fn ensure_provider_and_sublayer(h: HANDLE) -> PlatformResult<()> {
-    let name = wide("Meridian VPN");
+    let name = wide("Apexy VPN");
     let desc = wide("Kill switch and leak protection");
     transaction(h, || {
         let mut provider: FWPM_PROVIDER0 = unsafe { std::mem::zeroed() };

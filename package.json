@@ -1,7 +1,7 @@
 {
-  "name": "meridian",
+  "name": "apexy",
   "private": true,
-  "description": "Meridian VPN — desktop client, service and backend",
+  "description": "Apexy VPN — desktop client, service and backend",
   "workspaces": [
     "server/api",
     "apps/desktop"

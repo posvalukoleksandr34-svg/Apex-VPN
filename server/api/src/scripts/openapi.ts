@@ -50,8 +50,8 @@ for (const r of registry) {
 
 const doc = {
   openapi: "3.1.0",
-  info: { title: "Meridian API", version: "1", description: "Generated from server/api route definitions. See docs/BACKEND_API.md." },
-  servers: [{ url: "https://api.meridianvpn.example" }],
+  info: { title: "Apexy VPN API", version: "1", description: "Generated from server/api route definitions. See docs/BACKEND_API.md." },
+  servers: [{ url: "https://api.apexyvpn.example" }],
   components: {
     securitySchemes: {
       bearer: { type: "http", scheme: "bearer", bearerFormat: "JWT (EdDSA, 15 min)" },

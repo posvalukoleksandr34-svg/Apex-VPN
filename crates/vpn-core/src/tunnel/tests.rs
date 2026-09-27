@@ -95,7 +95,7 @@ impl FakeTunnel {
 #[async_trait]
 impl Tunnel for FakeTunnel {
     fn interface(&self) -> InterfaceInfo {
-        InterfaceInfo { name: "Meridian".into(), index: Some(40 + self.index), luid: Some(1000 + self.index as u64) }
+        InterfaceInfo { name: "Apexy VPN".into(), index: Some(40 + self.index), luid: Some(1000 + self.index as u64) }
     }
 
     async fn stats(&self) -> PlatformResult<TunnelStats> {

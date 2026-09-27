@@ -1,6 +1,6 @@
 # Security and threat model
 
-What Meridian protects, from whom, how, and what it deliberately does not claim.
+What Apexy VPN protects, from whom, how, and what it deliberately does not claim.
 
 ## 1. What the product promises
 
@@ -17,7 +17,7 @@ It does **not** promise anonymity from the VPN operator, protection from a compr
 
 | Asset | Where | Protection |
 |---|---|---|
-| Device WireGuard private key | Service data dir (`%ProgramData%\Meridian`) | DPAPI machine scope; directory ACL SYSTEM + Administrators; never leaves the service, never logged |
+| Device WireGuard private key | Service data dir (`%ProgramData%\Apexy VPN`) | DPAPI machine scope; directory ACL SYSTEM + Administrators; never leaves the service, never logged |
 | Account refresh token | OS credential store (user) | Only the app's Rust core reads it; the WebView never sees any token |
 | Access token (15 min) | App core memory | Never persisted |
 | Relay list integrity | Fetched from the API | Ed25519 signature over the exact payload bytes, pinned keys, version rollback and expiry checks |
@@ -58,8 +58,8 @@ It does **not** promise anonymity from the VPN operator, protection from a compr
 * An IP-check answer that isn't a public address is refused rather than shown as "your IP".
 
 **The service dying (crash, killed, update gone wrong).**
-* WFP filters don't belong to the process: the engine session isn't dynamic, and while blocking the filters are persistent. When `meridiand` dies, the tunnel adapter disappears with it, and the block-all filters remain, so nothing leaves the device outside the tunnel.
-* Windows restarts the installed service (recovery actions: 1 s, 5 s, 30 s). The new instance removes every filter under Meridian's provider, including the crashed instance's, applies its own atomically, and resumes the connection the user asked for.
+* WFP filters don't belong to the process: the engine session isn't dynamic, and while blocking the filters are persistent. When `apexyd` dies, the tunnel adapter disappears with it, and the block-all filters remain, so nothing leaves the device outside the tunnel.
+* Windows restarts the installed service (recovery actions: 1 s, 5 s, 30 s). The new instance removes every filter under Apexy VPN's provider, including the crashed instance's, applies its own atomically, and resumes the connection the user asked for.
 * `scripts/validate-killswitch.ps1` checks this end to end: hard kill, leak probes, filters present, recovery, release.
 
 **Expired or unpaid plans.**
@@ -78,7 +78,7 @@ It does **not** promise anonymity from the VPN operator, protection from a compr
 
 ## 4. Privileged surface
 
-`meridiand` runs as SYSTEM because creating adapters, routes, DNS settings and WFP filters requires it. To keep that surface small:
+`apexyd` runs as SYSTEM because creating adapters, routes, DNS settings and WFP filters requires it. To keep that surface small:
 
 * It accepts only the typed protocol over the ACL'd pipe, with bounded frame sizes.
 * It performs no parsing of untrusted formats beyond JSON from the signed relay list and the account API.
@@ -97,5 +97,5 @@ It does **not** promise anonymity from the VPN operator, protection from a compr
 * **Split tunnelling** isn't enforced: the driver doesn't exist yet, and the UI says so.
 * **App lock** (Windows Hello) isn't built; the setting shows as unavailable.
 * **Updates, installer bundling and code signing** need release infrastructure (DEPLOYMENT.md).
-* **Always on before first sign-in** blocks all traffic, except to the account API for the service and the desktop app installed next to it (`meridian-app.exe` in the admin-only install directory), until the device is enrolled. This is by design, and the confirmation dialog explains it.
+* **Always on before first sign-in** blocks all traffic, except to the account API for the service and the desktop app installed next to it (`apexy-app.exe` in the admin-only install directory), until the device is enrolled. This is by design, and the confirmation dialog explains it.
 * **The development configuration** (`allowPrivateRelays`, `allowInsecureApi`, the WireGuard demo provisioner) must never ship. The API refuses to start in production with the demo provisioner; the service config is generated for development only.

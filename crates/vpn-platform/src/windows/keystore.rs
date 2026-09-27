@@ -12,7 +12,7 @@ use zeroize::Zeroizing;
 use super::util::{last_error, platform_error};
 use crate::SecretStore;
 
-const ENTROPY: &[u8] = b"meridian/device-key/v1";
+const ENTROPY: &[u8] = b"apexy/device-key/v1";
 
 pub struct DpapiStore;
 

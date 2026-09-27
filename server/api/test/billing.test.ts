@@ -104,7 +104,7 @@ const enroll = (auth: Record<string, string>) =>
 beforeEach(async () => {
   stripe = new FakeStripe();
   t = await testApp({
-    billing: new StripeBilling({ secretKey: "sk_test_x", webhookSecret: WEBHOOK_SECRET, publicBaseUrl: "https://api.meridian.test", fetch: stripe.fetch as typeof fetch }),
+    billing: new StripeBilling({ secretKey: "sk_test_x", webhookSecret: WEBHOOK_SECRET, publicBaseUrl: "https://api.apexy.test", fetch: stripe.fetch as typeof fetch }),
   });
   await t.deps.database.db.updateTable("billing.plans").set({ stripe_price_id: PRICE_MONTHLY }).where("id", "=", "monthly").execute();
   await t.deps.database.db.updateTable("billing.plans").set({ stripe_price_id: PRICE_ANNUAL }).where("id", "=", "annual").execute();
@@ -131,7 +131,7 @@ describe("Stripe checkout", () => {
       client_reference_id: u.user.id,
       "line_items[0][price]": PRICE_MONTHLY,
       "subscription_data[metadata][user_id]": u.user.id,
-      success_url: "https://api.meridian.test/v1/billing/return?result=success",
+      success_url: "https://api.apexy.test/v1/billing/return?result=success",
     });
     expect(sessions[1]!.form["line_items[0][price]"]).toBe(PRICE_ANNUAL);
   });
@@ -221,12 +221,12 @@ describe("Stripe webhooks", () => {
       created: 1_788_000_000,
       status_transitions: { paid_at: 1_788_000_100 },
       hosted_invoice_url: "https://invoice.stripe.test/i/in_1",
-      lines: { data: [{ description: "Meridian Monthly" }] },
+      lines: { data: [{ description: "Apexy VPN Monthly" }] },
     };
     await deliver({ type: "invoice.paid", object: invoice });
     await deliver({ type: "invoice.paid", object: invoice }); // different event id, same invoice
     const invoices = json(await t.app.inject({ method: "GET", url: "/v1/subscription/invoices", headers: u.auth })).filter((i: { number: string }) => i.number === "MER-0001");
-    expect(invoices).toEqual([expect.objectContaining({ amountCents: 999, currency: "EUR", status: "paid", description: "Meridian Monthly" })]);
+    expect(invoices).toEqual([expect.objectContaining({ amountCents: 999, currency: "EUR", status: "paid", description: "Apexy VPN Monthly" })]);
   });
 
   it("keep access through a failed payment (grace), and end it when Stripe cancels", async () => {

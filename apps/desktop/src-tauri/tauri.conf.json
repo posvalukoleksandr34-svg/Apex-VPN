@@ -1,8 +1,8 @@
 {
   "$schema": "https://schema.tauri.app/config/2",
-  "productName": "Meridian",
+  "productName": "Apexy VPN",
   "version": "0.1.0",
-  "identifier": "com.meridian.desktop",
+  "identifier": "com.apexy.desktop",
   "build": {
     "beforeDevCommand": "npm run dev",
     "devUrl": "http://127.0.0.1:1420",
@@ -14,7 +14,7 @@
     "windows": [
       {
         "label": "main",
-        "title": "Meridian",
+        "title": "Apexy VPN",
         "width": 1180,
         "height": 780,
         "minWidth": 900,
@@ -47,9 +47,9 @@
     "active": true,
     "targets": ["nsis"],
     "icon": ["icons/32x32.png", "icons/128x128.png", "icons/128x128@2x.png", "icons/icon.icns", "icons/icon.ico"],
-    "publisher": "Meridian",
-    "shortDescription": "Meridian VPN",
-    "longDescription": "Meridian VPN for desktop: WireGuard tunnel, kill switch and DNS leak protection.",
+    "publisher": "Apexy VPN",
+    "shortDescription": "Apexy VPN",
+    "longDescription": "Apexy VPN for desktop: WireGuard tunnel, kill switch and DNS leak protection.",
     "copyright": "",
     "category": "Utility",
     "windows": {

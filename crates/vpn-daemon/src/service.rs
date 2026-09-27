@@ -109,7 +109,7 @@ pub fn install() -> anyhow::Result<()> {
         }
         Err(_) => manager.create_service(&info, access)?,
     };
-    service.set_description("Keeps the Meridian VPN tunnel, kill switch and DNS protection running.")?;
+    service.set_description("Keeps the Apexy VPN tunnel, kill switch and DNS protection running.")?;
     // If the service dies, Windows brings it back. While it's down the kill
     // switch's persistent filters keep traffic blocked (no leak), so a fast
     // restart is what gives the user their connection back.

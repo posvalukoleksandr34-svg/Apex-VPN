@@ -136,7 +136,7 @@ fn external_url_allowed(url: &str) -> bool {
 pub async fn app_save_text_file(app: AppHandle, default_name: String, contents: String) -> CoreResult<bool> {
     let (tx, rx) = oneshot::channel();
     let name: String = default_name.chars().filter(|c| !r#"\/:*?"<>|"#.contains(*c)).take(120).collect();
-    app.dialog().file().set_file_name(if name.is_empty() { "meridian.txt".into() } else { name }).save_file(move |path| {
+    app.dialog().file().set_file_name(if name.is_empty() { "apexy.txt".into() } else { name }).save_file(move |path| {
         let _ = tx.send(path);
     });
     let Some(path) = rx.await.ok().flatten() else { return Ok(false) };
@@ -242,9 +242,9 @@ mod tests {
 
     #[test]
     fn external_links() {
-        assert!(external_url_allowed("https://meridian.example/help"));
-        assert!(external_url_allowed("mailto:support@meridian.example"));
-        for bad in ["http://meridian.example", "file:///C:/Windows/system32/calc.exe", "javascript:alert(1)", "ms-settings:network", "https://", "not a url"] {
+        assert!(external_url_allowed("https://apexy.example/help"));
+        assert!(external_url_allowed("mailto:support@apexy.example"));
+        for bad in ["http://apexy.example", "file:///C:/Windows/system32/calc.exe", "javascript:alert(1)", "ms-settings:network", "https://", "not a url"] {
             assert!(!external_url_allowed(bad), "{bad}");
         }
     }

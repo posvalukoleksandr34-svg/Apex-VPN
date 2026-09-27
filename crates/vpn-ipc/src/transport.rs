@@ -1,13 +1,13 @@
 //! OS transports.
 //!
-//! **Windows:** named pipe `\\.\pipe\meridian` with an explicit DACL: full
+//! **Windows:** named pipe `\\.\pipe\apexy` with an explicit DACL: full
 //! access for SYSTEM and Administrators, read/write for interactively
 //! signed-in users, nothing for network logons or services. Remote clients
 //! are rejected, and the first instance is created with
 //! `FILE_FLAG_FIRST_PIPE_INSTANCE`, so a process that squatted the name
 //! first makes the service fail loudly instead of talking to an impostor.
 //!
-//! **Unix:** a socket in a root-owned directory, mode 0660, group `meridian`.
+//! **Unix:** a socket in a root-owned directory, mode 0660, group `apexy`.
 
 use std::io;
 

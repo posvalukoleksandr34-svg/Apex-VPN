@@ -1,32 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  MSI: registers the Meridian VPN service after the files are in place and
+  MSI: registers the Apexy VPN service after the files are in place and
   removes it before they're deleted. Linked into Tauri's installer through
-  the `MeridianService` component (tauri.release.conf.json, componentRefs).
+  the `ApexyService` component (tauri.release.conf.json, componentRefs).
 
   * StopServices (ServiceControl) stops a running service before files are
-    replaced, so an upgrade never meets a locked meridiand.exe.
-  * The install action runs `meridiand install`, which creates or updates the
+    replaced, so an upgrade never meets a locked apexyd.exe.
+  * The install action runs `apexyd install`, which creates or updates the
     service, sets its restart-on-failure actions and starts it.
-  * The uninstall action runs `meridiand uninstall`, which also removes every
+  * The uninstall action runs `apexyd uninstall`, which also removes every
     firewall filter so nothing keeps blocking the network afterwards.
   Both run deferred as LocalSystem (the MSI is per-machine and elevated).
 -->
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
   <Fragment>
     <DirectoryRef Id="INSTALLDIR">
-      <Component Id="MeridianService" Guid="{6B1D6E4C-3F2A-4E7B-9C1D-5A8E2F4B7C90}">
-        <RegistryValue Root="HKLM" Key="Software\Meridian\Installer" Name="Service" Type="integer" Value="1" KeyPath="yes" />
-        <ServiceControl Id="StopMeridianService" Name="MeridianVPN" Stop="both" Wait="yes" />
+      <Component Id="ApexyService" Guid="{6B1D6E4C-3F2A-4E7B-9C1D-5A8E2F4B7C90}">
+        <RegistryValue Root="HKLM" Key="Software\Apexy VPN\Installer" Name="Service" Type="integer" Value="1" KeyPath="yes" />
+        <ServiceControl Id="StopApexyService" Name="ApexyVPN" Stop="both" Wait="yes" />
       </Component>
     </DirectoryRef>
 
-    <CustomAction Id="MeridianServiceInstall" Directory="INSTALLDIR" ExeCommand="&quot;[INSTALLDIR]meridiand.exe&quot; install" Execute="deferred" Impersonate="no" Return="check" />
-    <CustomAction Id="MeridianServiceUninstall" Directory="INSTALLDIR" ExeCommand="&quot;[INSTALLDIR]meridiand.exe&quot; uninstall" Execute="deferred" Impersonate="no" Return="ignore" />
+    <CustomAction Id="ApexyServiceInstall" Directory="INSTALLDIR" ExeCommand="&quot;[INSTALLDIR]apexyd.exe&quot; install" Execute="deferred" Impersonate="no" Return="check" />
+    <CustomAction Id="ApexyServiceUninstall" Directory="INSTALLDIR" ExeCommand="&quot;[INSTALLDIR]apexyd.exe&quot; uninstall" Execute="deferred" Impersonate="no" Return="ignore" />
 
     <InstallExecuteSequence>
-      <Custom Action="MeridianServiceUninstall" Before="RemoveFiles">REMOVE="ALL"</Custom>
-      <Custom Action="MeridianServiceInstall" After="InstallFiles">NOT REMOVE="ALL"</Custom>
+      <Custom Action="ApexyServiceUninstall" Before="RemoveFiles">REMOVE="ALL"</Custom>
+      <Custom Action="ApexyServiceInstall" After="InstallFiles">NOT REMOVE="ALL"</Custom>
     </InstallExecuteSequence>
   </Fragment>
 </Wix>

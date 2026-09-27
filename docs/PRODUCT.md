@@ -1,4 +1,4 @@
-# Meridian — Product Definition
+# Apexy VPN — Product Definition
 
 Covers the feature map, navigation tree, and every page, modal and state.
 Status of each feature in this build: **✅ implemented**, **🔌 integration
@@ -37,7 +37,7 @@ reports itself as unavailable, never fakes success), **🗺 planned**.
 | Desktop shell | Tray with live status, close to tray, start with Windows (minimized), global show/hide shortcut, OS notifications, single instance | ✅ Windows |
 | Installer | Per-machine NSIS `.exe` and MSI that install, upgrade and remove the service (auto-restart on failure) | ✅ built and inspected; signing via environment ([DEPLOYMENT.md](DEPLOYMENT.md)); not yet run on a clean machine |
 | Updates | Signed updates, rollback | 🔌 not configured: needs the updater plugin, a signing key and a release feed |
-| CLI | `meridian connect|disconnect|status|servers|diagnostics|logs|login` | ✅ |
+| CLI | `apexy connect|disconnect|status|servers|diagnostics|logs|login` | ✅ |
 | Dev mode | Simulator transport: states, errors, slow network, reconnects, subscription states | ✅ dev builds only |
 | i18n | en, ru, de, it | ✅ |
 

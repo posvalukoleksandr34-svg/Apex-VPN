@@ -52,7 +52,7 @@ pub fn state(s: &TunnelState) -> String {
             "✕ Error: {}{}{}",
             error.kind,
             error.detail.as_ref().map(|d| format!(" — {d}")).unwrap_or_default(),
-            if *blocking { "\n  Traffic is blocked to protect you. Retry with `meridian reconnect`, or `meridian disconnect` to unblock." } else { "" }
+            if *blocking { "\n  Traffic is blocked to protect you. Retry with `apexy reconnect`, or `apexy disconnect` to unblock." } else { "" }
         ),
     }
 }

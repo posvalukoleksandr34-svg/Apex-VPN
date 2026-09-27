@@ -1,4 +1,4 @@
-//! `meridian` — the CLI. It talks to the same service over the same IPC as
+//! `apexy` — the CLI. It talks to the same service over the same IPC as
 //! the desktop app; there is no second VPN implementation.
 
 mod account;
@@ -14,7 +14,7 @@ use vpn_types::ipc::{ClientKind, ConnectionReport, Event, IpObservations, RelayL
 use vpn_types::*;
 
 #[derive(Parser)]
-#[command(name = "meridian", version, about = "Meridian VPN command-line client")]
+#[command(name = "apexy", version, about = "Apexy VPN command-line client")]
 struct Cli {
     #[command(subcommand)]
     command: Cmd,
@@ -29,7 +29,7 @@ enum Cmd {
     Status,
     /// Connect to a server id, a country, or with a Smart Connect mode.
     Connect {
-        /// Server id (see `meridian servers`).
+        /// Server id (see `apexy servers`).
         server: Option<String>,
         #[arg(long)]
         country: Option<String>,
@@ -82,7 +82,7 @@ enum Cmd {
     },
     /// Show this device's WireGuard public key and registration.
     Device,
-    /// Show settings, or change one: `meridian set kill-switch always-on`.
+    /// Show settings, or change one: `apexy set kill-switch always-on`.
     Settings,
     Set {
         #[arg(value_enum)]
@@ -138,7 +138,7 @@ async fn main() {
 async fn run(cli: Cli) -> anyhow::Result<()> {
     let client = IpcClient::connect(IPC_PATH, ClientKind::Cli)
         .await
-        .context("the Meridian service isn't running (start it, or run `meridiand foreground` as administrator)")?;
+        .context("the Apexy VPN service isn't running (start it, or run `apexyd foreground` as administrator)")?;
     let json = cli.json;
     match cli.command {
         Cmd::Status => {
@@ -245,7 +245,7 @@ async fn run(cli: Cli) -> anyhow::Result<()> {
                 Some(r) => format!("public key {}
 registered as device {} with address {}", d.public_key, r.device_id, r.ipv4_address),
                 None => format!("public key {}
-not registered — run `meridian login --email you@example.com`", d.public_key),
+not registered — run `apexy login --email you@example.com`", d.public_key),
             });
         }
         Cmd::Settings => {

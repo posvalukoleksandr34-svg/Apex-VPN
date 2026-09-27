@@ -5,7 +5,7 @@
   },
   "bundle": {
     "targets": ["nsis", "msi"],
-    "externalBin": ["binaries/meridiand", "binaries/meridian"],
+    "externalBin": ["binaries/apexyd", "binaries/apexy"],
     "resources": {
       "../../../vendor/wireguard-nt/bin/amd64/wireguard.dll": "wireguard.dll"
     },
@@ -20,7 +20,7 @@
       },
       "wix": {
         "fragmentPaths": ["./windows/service.wxs"],
-        "componentRefs": ["MeridianService"]
+        "componentRefs": ["ApexyService"]
       }
     }
   }

@@ -131,7 +131,7 @@ impl ApiClient {
 
 fn build_client(host: &str, pinned: &[SocketAddr]) -> anyhow::Result<reqwest::Client> {
     let mut b = reqwest::Client::builder()
-        .user_agent(concat!("meridiand/", env!("CARGO_PKG_VERSION")))
+        .user_agent(concat!("apexyd/", env!("CARGO_PKG_VERSION")))
         .https_only(false)
         .connect_timeout(Duration::from_secs(5))
         .redirect(reqwest::redirect::Policy::none());

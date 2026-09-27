@@ -45,10 +45,10 @@ struct TrayItems {
 }
 
 pub fn create(app: &AppHandle) -> tauri::Result<()> {
-    let show = MenuItem::with_id(app, "show", "Show Meridian", true, None::<&str>)?;
+    let show = MenuItem::with_id(app, "show", "Show Apexy VPN", true, None::<&str>)?;
     let connect = MenuItem::with_id(app, "connect", "Connect", false, None::<&str>)?;
     let disconnect = MenuItem::with_id(app, "disconnect", "Disconnect", false, None::<&str>)?;
-    let quit = MenuItem::with_id(app, "quit", "Quit Meridian", true, None::<&str>)?;
+    let quit = MenuItem::with_id(app, "quit", "Quit Apexy VPN", true, None::<&str>)?;
     let menu = Menu::with_items(
         app,
         &[&show, &PredefinedMenuItem::separator(app)?, &connect, &disconnect, &PredefinedMenuItem::separator(app)?, &quit],
@@ -59,7 +59,7 @@ pub fn create(app: &AppHandle) -> tauri::Result<()> {
 
     TrayIconBuilder::with_id(TRAY_ID)
         .icon(grey.clone())
-        .tooltip("Meridian")
+        .tooltip("Apexy VPN")
         .menu(&menu)
         .show_menu_on_left_click(false)
         .on_menu_event(on_menu)
@@ -98,7 +98,7 @@ pub fn update(app: &AppHandle, view: &TrayView) -> tauri::Result<()> {
     items.disconnect.set_enabled(view.can_disconnect)?;
 
     if let Some(tray) = app.tray_by_id(TRAY_ID) {
-        tray.set_tooltip(Some(format!("Meridian: {}", view.label)))?;
+        tray.set_tooltip(Some(format!("Apexy VPN: {}", view.label)))?;
         // "success" is the one tone describe() gives a verified tunnel.
         let protected = view.tone == "success";
         let mut last = items.protected.lock().expect("tray");

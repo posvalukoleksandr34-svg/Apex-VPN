@@ -4,7 +4,7 @@
  * without running a node. Pass `--local-node <ip>` to add a local
  * WireGuard node (docker/wireguard-node) as well.
  *
- * Accounts are never seeded: register through the app or `meridian login`.
+ * Accounts are never seeded: register through the app or `apexy login`.
  */
 import { randomBytes } from "node:crypto";
 import { lookup } from "node:dns/promises";

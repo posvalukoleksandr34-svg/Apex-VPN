@@ -1,6 +1,6 @@
 [package]
 name = "vpn-ipc"
-description = "Local IPC between meridiand and its clients: framing, server and client"
+description = "Local IPC between apexyd and its clients: framing, server and client"
 version.workspace = true
 edition.workspace = true
 rust-version.workspace = true

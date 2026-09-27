@@ -1,5 +1,5 @@
-//! The service's private directory: `%ProgramData%\Meridian` on Windows,
-//! `/var/lib/meridian` elsewhere. On Windows its ACL is reset to SYSTEM and
+//! The service's private directory: `%ProgramData%\Apexy VPN` on Windows,
+//! `/var/lib/apexy` elsewhere. On Windows its ACL is reset to SYSTEM and
 //! Administrators only, so the sealed device key, the settings and the
 //! logs can't be read or planted by other users.
 
@@ -9,11 +9,11 @@ pub fn default_data_dir() -> PathBuf {
     #[cfg(windows)]
     {
         let base = std::env::var_os("ProgramData").map(PathBuf::from).unwrap_or_else(|| PathBuf::from(r"C:\ProgramData"));
-        base.join("Meridian")
+        base.join("Apexy VPN")
     }
     #[cfg(not(windows))]
     {
-        PathBuf::from("/var/lib/meridian")
+        PathBuf::from("/var/lib/apexy")
     }
 }
 

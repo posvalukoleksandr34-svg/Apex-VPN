@@ -1,4 +1,4 @@
-//! The bridge to `meridiand`. One IPC connection, kept alive for the life of
+//! The bridge to `apexyd`. One IPC connection, kept alive for the life of
 //! the app: service events are forwarded to the WebView as they arrive, and
 //! the WebView's requests are checked against the protocol before they are
 //! passed on.
@@ -20,9 +20,9 @@ use crate::error::{CoreError, CoreResult};
 pub const EVENT: &str = "service://event";
 pub const STATUS: &str = "service://status";
 
-/// Account API address baked in at build time (`MERIDIAN_API_URL`), used
+/// Account API address baked in at build time (`APEXY_API_URL`), used
 /// only until the service has told the app its configured address.
-const BUILD_API_URL: Option<&str> = option_env!("MERIDIAN_API_URL");
+const BUILD_API_URL: Option<&str> = option_env!("APEXY_API_URL");
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize)]
 #[serde(rename_all = "snake_case")]

@@ -7,22 +7,22 @@ What a production release needs beyond the development setup. Items marked 🔌 
 ### Build
 
 ```powershell
-$env:MERIDIAN_RELEASE = "1"                                   # strict: everything below is required
-$env:MERIDIAN_API_URL = "https://api.<your-domain>"           # baked into the service and the app
-$env:MERIDIAN_RELAY_KEYS = "fleet-1:<base64 Ed25519 public key>"  # keys that may sign the server list
-$env:MERIDIAN_SIGN_THUMBPRINT = "<SHA-1 of the code-signing certificate>"  # or MERIDIAN_SIGN_PFX + _PASSWORD
+$env:APEXY_RELEASE = "1"                                   # strict: everything below is required
+$env:APEXY_API_URL = "https://api.<your-domain>"           # baked into the service and the app
+$env:APEXY_RELAY_KEYS = "fleet-1:<base64 Ed25519 public key>"  # keys that may sign the server list
+$env:APEXY_SIGN_THUMBPRINT = "<SHA-1 of the code-signing certificate>"  # or APEXY_SIGN_PFX + _PASSWORD
 npm run release -w apps/desktop
 ```
 
 The output lands in `target/release/bundle/`:
-* `nsis/Meridian_<version>_x64-setup.exe`
-* `msi/Meridian_<version>_x64_en-US.msi`
+* `nsis/Apexy VPN_<version>_x64-setup.exe`
+* `msi/Apexy VPN_<version>_x64_en-US.msi`
 
 `npm run release` uses `src-tauri/tauri.release.conf.json` on top of the base config, in this order:
 
-1. **Prepare.** `scripts/prepare-bundle.ps1` builds `meridiand` (the service) and `meridian` (the CLI) in release mode, signs them, and stages them as Tauri sidecars.
+1. **Prepare.** `scripts/prepare-bundle.ps1` builds `apexyd` (the service) and `apexy` (the CLI) in release mode, signs them, and stages them as Tauri sidecars.
 2. **Build.** Tauri builds the app and bundles:
-   * the sidecars and the signed `wireguard.dll` (from `vendor/wireguard-nt`, never rebuilt), all placed next to `meridian-app.exe`;
+   * the sidecars and the signed `wireguard.dll` (from `vendor/wireguard-nt`, never rebuilt), all placed next to `apexy-app.exe`;
    * an NSIS and an MSI installer.
 3. **Sign.** Tauri signs the app and both installers through `scripts/sign.ps1`.
 
@@ -34,11 +34,11 @@ Development builds (`npm run tauri dev`, `cargo build`) don't use the release co
 
 | Variable | Purpose |
 |---|---|
-| `MERIDIAN_SIGN_PFX`, `MERIDIAN_SIGN_PFX_PASSWORD` | A `.pfx` certificate and its password (CI secrets) |
-| `MERIDIAN_SIGN_THUMBPRINT` | A certificate in the Windows store: EV certificates on a hardware token or HSM work this way |
-| `MERIDIAN_SIGN_TIMESTAMP_URL` | RFC 3161 timestamp server (default DigiCert) |
-| `MERIDIAN_SIGNTOOL` | Path to `signtool.exe` (default: newest Windows SDK) |
-| `MERIDIAN_RELEASE=1` | Fail the build when no certificate, API URL or relay key is configured |
+| `APEXY_SIGN_PFX`, `APEXY_SIGN_PFX_PASSWORD` | A `.pfx` certificate and its password (CI secrets) |
+| `APEXY_SIGN_THUMBPRINT` | A certificate in the Windows store: EV certificates on a hardware token or HSM work this way |
+| `APEXY_SIGN_TIMESTAMP_URL` | RFC 3161 timestamp server (default DigiCert) |
+| `APEXY_SIGNTOOL` | Path to `signtool.exe` (default: newest Windows SDK) |
+| `APEXY_RELEASE=1` | Fail the build when no certificate, API URL or relay key is configured |
 
 Every signature uses SHA-256 and a timestamp, and is verified (`signtool verify /pa`) before the build continues. Without a certificate in a non-release build, it prints `not signing …` and continues.
 
@@ -50,14 +50,14 @@ Both installers are per-machine, so they elevate through UAC.
 
 | | NSIS (`installer-hooks.nsh`) | MSI (`service.wxs`) |
 |---|---|---|
-| Before files are replaced | `Stop-Service MeridianVPN` (upgrade: releases the locked `meridiand.exe`) | `ServiceControl Stop="both"` |
-| After files are in place | `meridiand install` | deferred custom action `meridiand install` as LocalSystem |
-| Before removal | `meridiand uninstall` | deferred custom action `meridiand uninstall` |
+| Before files are replaced | `Stop-Service ApexyVPN` (upgrade: releases the locked `apexyd.exe`) | `ServiceControl Stop="both"` |
+| After files are in place | `apexyd install` | deferred custom action `apexyd install` as LocalSystem |
+| Before removal | `apexyd uninstall` | deferred custom action `apexyd uninstall` |
 
 What the service commands do:
 
-* **`meridiand install`** creates the service, or updates an existing one on upgrade. It is set to start automatically as LocalSystem, with restart-on-failure recovery (1 s, 5 s, 30 s; the count resets after a day), and then started.
-* **`meridiand uninstall`** stops and deletes the service, then removes every Meridian firewall filter.
+* **`apexyd install`** creates the service, or updates an existing one on upgrade. It is set to start automatically as LocalSystem, with restart-on-failure recovery (1 s, 5 s, 30 s; the count resets after a day), and then started.
+* **`apexyd uninstall`** stops and deletes the service, then removes every Apexy VPN firewall filter.
 
 **Drivers.** No separate driver installation is needed:
 * The WireGuardNT driver ships inside the signed `wireguard.dll`, and installs itself the first time the service creates a tunnel adapter.
@@ -67,7 +67,7 @@ The service checks the DLL's WireGuard LLC signature before loading it.
 
 **Service configuration.**
 * The API address and relay keys are baked in at build time.
-* `%ProgramData%\Meridian\service.json`, writable only by SYSTEM and Administrators, can override them.
+* `%ProgramData%\Apexy VPN\service.json`, writable only by SYSTEM and Administrators, can override them.
 * Development options (`allowPrivateRelays`, `allowInsecureApi`) are refused by release builds.
 
 ### Updates 🔌
@@ -128,7 +128,7 @@ Tested against a fake Stripe API with real signatures (`server/api/test/billing.
 
 ## Nodes 🔌
 
-A Meridian node:
+A Apexy VPN node:
 * runs WireGuard and a resolver at its tunnel gateway;
 * authenticates with its node token;
 * pulls its peer set from `/v1/nodes/self/peers`;

@@ -434,7 +434,7 @@ export class StripeBilling implements BillingProvider {
             user_id: customer.user_id,
             subscription_id: sub?.id ?? null,
             number: String(inv.number ?? inv.id),
-            description: String(line ?? "Meridian subscription"),
+            description: String(line ?? "Apexy VPN subscription"),
             amount_cents: Number(inv.amount_paid ?? 0),
             currency: String(inv.currency ?? "eur").toUpperCase(),
             status: "paid",

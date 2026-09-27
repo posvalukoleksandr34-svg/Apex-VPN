@@ -1,4 +1,4 @@
-//! Wire types shared by the privileged service (`meridiand`), the desktop app
+//! Wire types shared by the privileged service (`apexyd`), the desktop app
 //! and the CLI.
 //!
 //! Everything here is plain data: no I/O, no platform code. Types derive

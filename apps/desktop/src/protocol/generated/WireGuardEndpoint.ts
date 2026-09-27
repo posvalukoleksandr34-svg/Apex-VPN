@@ -12,7 +12,7 @@ publicKey: string, ports: Array<number>,
 gatewayIpv4: string, gatewayIpv6: string | null, 
 /**
  * The resolver "VPN DNS" uses, reached through the tunnel. Absent means
- * the gateway (every Meridian node runs one there); third-party nodes
+ * the gateway (every Apexy VPN node runs one there); third-party nodes
  * without a resolver name one explicitly.
  */
 dnsIpv4: string | null, };

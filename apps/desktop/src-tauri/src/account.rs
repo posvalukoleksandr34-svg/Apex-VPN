@@ -84,7 +84,7 @@ pub struct AccountManager {
 impl AccountManager {
     pub fn new(app: AppHandle, bridge: Arc<ServiceBridge>) -> Self {
         let http = reqwest::Client::builder()
-            .user_agent(format!("Meridian/{}", app.package_info().version))
+            .user_agent(format!("ApexyVPN/{}", app.package_info().version))
             .connect_timeout(Duration::from_secs(10))
             .timeout(Duration::from_secs(30))
             .build()
@@ -467,7 +467,7 @@ mod keychain {
     //! One credential-store entry holds the refresh token and the cached user.
     use super::Stored;
 
-    const SERVICE: &str = "Meridian";
+    const SERVICE: &str = "Apexy VPN";
     const ENTRY: &str = "account-session";
 
     fn entry() -> keyring::Result<keyring::Entry> {
@@ -587,7 +587,7 @@ mod tests {
     #[test]
     fn attachment_types() {
         assert_eq!(attachment_type(std::path::Path::new("C:/x/Shot.PNG")), Some("image/png"));
-        assert_eq!(attachment_type(std::path::Path::new("meridian.log")), Some("text/plain"));
+        assert_eq!(attachment_type(std::path::Path::new("apexy.log")), Some("text/plain"));
         assert_eq!(attachment_type(std::path::Path::new("run.exe")), None);
         assert_eq!(attachment_type(std::path::Path::new("noext")), None);
     }

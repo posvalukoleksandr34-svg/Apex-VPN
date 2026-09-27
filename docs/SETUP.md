@@ -48,30 +48,30 @@ cargo build -p vpn-daemon -p vpn-cli
 powershell -ExecutionPolicy Bypass -File scripts\dev-service.ps1
 ```
 
-The script asks for elevation and runs `meridiand foreground --config dev\service.json` in a window you can watch. Stop it with Ctrl+C, after disconnecting so the kill switch releases.
+The script asks for elevation and runs `apexyd foreground --config dev\service.json` in a window you can watch. Stop it with Ctrl+C, after disconnecting so the kill switch releases.
 
 Check it from an ordinary (unelevated) prompt:
 
 ```powershell
-target\debug\meridian.exe status
-target\debug\meridian.exe login you@example.com   # enrolls this device without the app
-target\debug\meridian.exe connect
-target\debug\meridian.exe diagnostics
+target\debug\apexy.exe status
+target\debug\apexy.exe login you@example.com   # enrolls this device without the app
+target\debug\apexy.exe connect
+target\debug\apexy.exe diagnostics
 ```
 
 **If the network is ever left blocked** (a crash while the kill switch held traffic), run as administrator:
 
 ```powershell
-target\debug\meridiand.exe reset-firewall
+target\debug\apexyd.exe reset-firewall
 ```
 
-It removes every Meridian filter, including the persistent ones.
+It removes every Apexy VPN filter, including the persistent ones.
 
 To install it as a real Windows service (starts at boot; needed for "Always on"):
 
 ```powershell
-target\debug\meridiand.exe install      # elevated
-target\debug\meridiand.exe uninstall    # elevated; also removes firewall filters
+target\debug\apexyd.exe install      # elevated
+target\debug\apexyd.exe uninstall    # elevated; also removes firewall filters
 ```
 
 ## 5. The desktop app
@@ -80,15 +80,15 @@ target\debug\meridiand.exe uninstall    # elevated; also removes firewall filter
 npm run tauri dev -w apps/desktop
 ```
 
-This starts Vite on 127.0.0.1:1420 and the Tauri shell. The app finds the service over `\\.\pipe\meridian`. It shows "VPN service isn't running" with a retry button until the service is up.
+This starts Vite on 127.0.0.1:1420 and the Tauri shell. The app finds the service over `\\.\pipe\apexy`. It shows "VPN service isn't running" with a retry button until the service is up.
 
-The app learns the account API's address from the service. To sign in before the service has ever run, build the app with a fallback: `$env:MERIDIAN_API_URL = "http://127.0.0.1:8787"` before `npm run tauri dev`. Plain `http` is accepted only for loopback addresses.
+The app learns the account API's address from the service. To sign in before the service has ever run, build the app with a fallback: `$env:APEXY_API_URL = "http://127.0.0.1:8787"` before `npm run tauri dev`. Plain `http` is accepted only for loopback addresses.
 
 Where things live:
 
-* Account session: Windows Credential Manager, entry `Meridian / account-session`. It holds the refresh token and cached profile; the access token is kept only in memory.
+* Account session: Windows Credential Manager, entry `Apexy VPN / account-session`. It holds the refresh token and cached profile; the access token is kept only in memory.
 * UI preferences: the WebView's local storage.
-* Service settings, device key, logs: `%ProgramData%\Meridian`, readable by SYSTEM and Administrators only. The device key is DPAPI-sealed.
+* Service settings, device key, logs: `%ProgramData%\Apexy VPN`, readable by SYSTEM and Administrators only. The device key is DPAPI-sealed.
 
 ### UI without the service
 
@@ -105,7 +105,7 @@ cargo build --release -p vpn-daemon
 npm run tauri build -w apps/desktop
 ```
 
-The NSIS installer (per-machine) runs `meridiand.exe install` after copying files and `uninstall` before removing them (`apps/desktop/src-tauri/windows/installer-hooks.nsh`). Before a real release, bundle `meridiand.exe` and `wireguard.dll` as resources and sign every binary; see [DEPLOYMENT.md](DEPLOYMENT.md).
+The NSIS installer (per-machine) runs `apexyd.exe install` after copying files and `uninstall` before removing them (`apps/desktop/src-tauri/windows/installer-hooks.nsh`). Before a real release, bundle `apexyd.exe` and `wireguard.dll` as resources and sign every binary; see [DEPLOYMENT.md](DEPLOYMENT.md).
 
 ## 7. Tests
 

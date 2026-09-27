@@ -145,7 +145,7 @@ export const useApp = create<AppState>()(
         set({ notifications: [{ ...n, read: false }, ...get().notifications.filter((x) => x.id !== n.id)].slice(0, 200) }),
     }),
     {
-      name: "meridian.prefs.v1",
+      name: "apexy.prefs.v1",
       storage: safeStorage,
       partialize: (s) => ({ prefs: s.prefs }),
       merge: (persisted, current) => {

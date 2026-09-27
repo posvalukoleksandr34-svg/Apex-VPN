@@ -32,9 +32,9 @@ impl Handler for Echo {
 
 fn pipe_name(tag: &str) -> String {
     if cfg!(windows) {
-        format!(r"\\.\pipe\meridian-test-{}-{tag}", std::process::id())
+        format!(r"\\.\pipe\apexy-test-{}-{tag}", std::process::id())
     } else {
-        std::env::temp_dir().join(format!("meridian-test-{}-{tag}.sock", std::process::id())).to_string_lossy().into_owned()
+        std::env::temp_dir().join(format!("apexy-test-{}-{tag}.sock", std::process::id())).to_string_lossy().into_owned()
     }
 }
 

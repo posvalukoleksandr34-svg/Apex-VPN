@@ -15,7 +15,7 @@ use windows_sys::Win32::Networking::WinSock::{AF_INET6, SOCKADDR_IN6, SOCKADDR_I
 
 use super::util::in6_addr;
 
-const PAYLOAD: &[u8; 16] = b"meridian-probe..";
+const PAYLOAD: &[u8; 16] = b"apexy-probe.....";
 
 #[derive(Debug)]
 pub struct EchoError(pub String);

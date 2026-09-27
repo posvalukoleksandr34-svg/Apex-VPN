@@ -1,6 +1,6 @@
 {
   "app": {
-    "name": "Meridian",
+    "name": "Apexy VPN",
     "tagline": "Privato, veloce e onesto."
   },
   "nav": {
@@ -100,7 +100,7 @@
   "status": {
     "serviceUnavailable": {
       "title": "Il servizio VPN non è in esecuzione",
-      "detail": "Impossibile raggiungere il servizio in background di Meridian. È lui a gestire le connessioni, quindi non puoi connetterti finché non torna disponibile."
+      "detail": "Impossibile raggiungere il servizio in background di Apexy VPN. È lui a gestire le connessioni, quindi non puoi connetterti finché non torna disponibile."
     },
     "serviceStarting": { "title": "Avvio…", "detail": "Connessione al servizio VPN." },
     "unknown": { "title": "Verifica…", "detail": "Richiesta dello stato attuale al servizio." },
@@ -114,7 +114,7 @@
     "reconnecting": { "title": "Riconnessione…" },
     "offline": {
       "title": "Nessuna connessione a Internet",
-      "detail": "Meridian si riconnetterà quando la rete tornerà disponibile.",
+      "detail": "Apexy VPN si riconnetterà quando la rete tornerà disponibile.",
       "detailBlocked": "Il traffico è bloccato finché la VPN non si riconnette."
     },
     "disconnecting": { "title": "Disconnessione…", "detail": "Chiusura del tunnel." },
@@ -174,7 +174,7 @@
     "relay_list_unavailable": {
       "title": "Elenco server non disponibile",
       "explanation": "L'app non è riuscita a scaricare l'elenco dei server.",
-      "cause": "Sei offline oppure il servizio Meridian non è raggiungibile.",
+      "cause": "Sei offline oppure il servizio Apexy VPN non è raggiungibile.",
       "action": "Controlla la connessione e riprova."
     },
     "relay_list_invalid": {
@@ -193,13 +193,13 @@
       "title": "Permessi insufficienti",
       "explanation": "Il servizio VPN non ha i permessi necessari.",
       "cause": "Il servizio è in esecuzione senza privilegi di sistema.",
-      "action": "Reinstalla Meridian o riavvia il servizio come amministratore."
+      "action": "Reinstalla Apexy VPN o riavvia il servizio come amministratore."
     },
     "driver_unavailable": {
       "title": "Driver del tunnel mancante",
       "explanation": "Impossibile caricare il driver WireGuard.",
       "cause": "Il file del driver manca o non ha superato la verifica della firma.",
-      "action": "Reinstalla Meridian."
+      "action": "Reinstalla Apexy VPN."
     },
     "handshake_timeout": {
       "title": "Il server non ha risposto",
@@ -233,7 +233,7 @@
     },
     "firewall_failure": {
       "title": "Impossibile attivare il Kill Switch",
-      "explanation": "Le regole del firewall non si sono installate e Meridian ha rifiutato di connettersi senza di esse.",
+      "explanation": "Le regole del firewall non si sono installate e Apexy VPN ha rifiutato di connettersi senza di esse.",
       "cause": "Il servizio non ha i permessi oppure il firewall è occupato da un altro programma.",
       "action": "Esegui la diagnostica. Disattivando il Kill Switch potrai connetterti senza questa protezione."
     },
@@ -251,9 +251,9 @@
     },
     "unsupported_platform": {
       "title": "Non ancora supportato",
-      "explanation": "Questa parte di Meridian non è ancora disponibile per il tuo sistema operativo.",
+      "explanation": "Questa parte di Apexy VPN non è ancora disponibile per il tuo sistema operativo.",
       "cause": "Il supporto per macOS e Linux è in lavorazione.",
-      "action": "Per ora usa Meridian su Windows."
+      "action": "Per ora usa Apexy VPN su Windows."
     },
     "internal": {
       "title": "Qualcosa è andato storto",
@@ -385,7 +385,7 @@
       "features": "Funzioni",
       "protocols": "Protocolli",
       "health": "Stato",
-      "healthMeasured": "Misurato dal monitoraggio di Meridian {{time}}",
+      "healthMeasured": "Misurato dal monitoraggio di Apexy VPN {{time}}",
       "noHealth": "Nessuna misurazione recente"
     }
   },
@@ -410,7 +410,7 @@
       "splitTunnel": "Split tunneling",
       "allowLan": "Accesso alla rete locale",
       "keep": "Mantieni il valore attuale",
-      "connectOnLaunch": "Connetti con questo profilo all'avvio di Meridian"
+      "connectOnLaunch": "Connetti con questo profilo all'avvio di Apexy VPN"
     },
     "applyWhileConnected": "Scegliendo questo profilo la VPN si riconnetterà con le sue impostazioni.",
     "deleteConfirm": "Eliminare il profilo «{{name}}»?"
@@ -419,7 +419,7 @@
     "title": "Sicurezza",
     "tabs": { "overview": "Riepilogo", "ip": "IP e rete", "leaks": "Test delle fughe", "details": "Dettagli della connessione" },
     "overview": {
-      "intro": "Cosa Meridian ha verificato su questa connessione in questo momento. Non c'è un punteggio: ogni voce è verificata, non protetta o non verificabile, con il motivo.",
+      "intro": "Cosa Apexy VPN ha verificato su questa connessione in questo momento. Non c'è un punteggio: ogni voce è verificata, non protetta o non verificabile, con il motivo.",
       "facts": {
         "vpn": "Tunnel VPN",
         "ip": "Protezione dell'indirizzo IP",
@@ -530,7 +530,7 @@
       "webrtc_exposes_own_ip": "WebRTC ha rivelato il tuo indirizzo pubblico.",
       "webrtc_no_candidates": "WebRTC non ha raggiunto alcun server STUN, quindi la fuga non è verificabile.",
       "webrtc_unavailable": "WebRTC non è disponibile nel motore browser integrato.",
-      "webrtc_note": "Verificato nel motore browser integrato di Meridian tramite un server STUN pubblico (stun.l.google.com). Il tuo browser potrebbe comportarsi diversamente."
+      "webrtc_note": "Verificato nel motore browser integrato di Apexy VPN tramite un server STUN pubblico (stun.l.google.com). Il tuo browser potrebbe comportarsi diversamente."
     }
   },
   "diagnostics": {
@@ -555,7 +555,7 @@
     },
     "labels": { "what": "Cosa è successo", "causes": "Cause probabili", "actions": "Cosa fare", "evidence": "Dettagli" },
     "findings": {
-      "online": { "summary": "Sei connesso a Internet e al servizio Meridian." },
+      "online": { "summary": "Sei connesso a Internet e al servizio Apexy VPN." },
       "no_network": {
         "summary": "Nessuna connessione di rete.",
         "causes": "Il Wi-Fi è spento, il cavo è scollegato o è attiva la modalità aereo.",
@@ -567,8 +567,8 @@
         "actions": "Connettiti o disconnettiti per rimuovere il blocco."
       },
       "network_up_service_unreachable": {
-        "summary": "La rete funziona, ma il servizio Meridian non è raggiungibile.",
-        "causes": "Una pagina di accesso della rete (hotel, aeroporto), un firewall o un guasto di Meridian.",
+        "summary": "La rete funziona, ma il servizio Apexy VPN non è raggiungibile.",
+        "causes": "Una pagina di accesso della rete (hotel, aeroporto), un firewall o un guasto di Apexy VPN.",
         "actions": "Apri un browser, completa l'eventuale pagina di accesso ed esegui di nuovo i controlli."
       },
       "resolving": { "summary": "I nomi di dominio vengono risolti normalmente." },
@@ -591,17 +591,17 @@
       "tunnel_driver_missing": {
         "summary": "Il driver WireGuard non è disponibile.",
         "causes": "Il file del driver manca o non ha superato la verifica della firma.",
-        "actions": "Reinstalla Meridian."
+        "actions": "Reinstalla Apexy VPN."
       },
       "firewall_unavailable": {
         "summary": "Il servizio non può usare il firewall, quindi il Kill Switch non funziona.",
         "causes": "Il servizio è in esecuzione senza privilegi di sistema.",
-        "actions": "Reinstalla Meridian o avvia il servizio come amministratore."
+        "actions": "Reinstalla Apexy VPN o avvia il servizio come amministratore."
       },
       "service_unreachable": {
         "summary": "Il servizio VPN non è in esecuzione o non è raggiungibile.",
         "causes": "È stato arrestato, si è bloccato o è installato in modo errato.",
-        "actions": "Riavvia il computer. Se non basta, reinstalla Meridian."
+        "actions": "Riavvia il computer. Se non basta, reinstalla Apexy VPN."
       },
       "reachable": { "summary": "I server sono raggiungibili da questo dispositivo." },
       "no_server_list": {
@@ -648,7 +648,7 @@
         "actions": "Attivalo in Impostazioni → Kill Switch per non esporre il traffico durante le riconnessioni."
       },
       "rules_not_as_expected": {
-        "summary": "Le regole del firewall non corrispondono a quelle installate da Meridian.",
+        "summary": "Le regole del firewall non corrispondono a quelle installate da Apexy VPN.",
         "causes": "Un altro programma ha modificato il firewall o le regole non sono state applicate.",
         "actions": "Riconnettiti. Se non basta, riavvia il computer."
       },
@@ -678,7 +678,7 @@
         "actions": "Scegli un piano in Account → Abbonamento."
       },
       "api_unreachable": {
-        "summary": "Il servizio account di Meridian non è raggiungibile.",
+        "summary": "Il servizio account di Apexy VPN non è raggiungibile.",
         "causes": "Sei offline o la tua rete lo blocca.",
         "actions": "Controlla la connessione e riprova."
       }
@@ -736,7 +736,7 @@
     "general": {
       "language": "Lingua",
       "languageSystem": "Lingua di sistema",
-      "launchOnStartup": "Apri Meridian all'accesso a Windows",
+      "launchOnStartup": "Apri Apexy VPN all'accesso a Windows",
       "closeToTray": "Chiudendo la finestra, continua a funzionare nell'area di notifica",
       "confirmDisconnect": "Chiedi conferma prima di disconnettere",
       "autoUpdates": "Aggiornamenti automatici",
@@ -804,7 +804,7 @@
         "always_on": { "name": "Sempre attivo", "desc": "Nulla aggira mai il tunnel, anche senza connessione e fin dall'avvio del sistema. Senza connessione non avrai Internet." }
       },
       "blocked": "Cosa viene bloccato: qualsiasi connessione che non passi dal tunnel.",
-      "allowed": "Cosa resta consentito: la comunicazione interna al computer, l'ottenimento di un indirizzo di rete (DHCP), il collegamento al server VPN stesso, l'accesso a Meridian e la rete locale, se la consenti qui sotto.",
+      "allowed": "Cosa resta consentito: la comunicazione interna al computer, l'ottenimento di un indirizzo di rete (DHCP), il collegamento al server VPN stesso, l'accesso ad Apexy VPN e la rete locale, se la consenti qui sotto.",
       "allowLan": "Consenti la rete locale durante il blocco",
       "allowLanDesc": "Stampanti, trasmissione alla TV e cartelle condivise sulla rete di casa continuano a funzionare.",
       "unavailable": "Kill Switch non disponibile: {{reason}}",
@@ -817,7 +817,7 @@
       "intro": "Il DNS trasforma nomi come example.com in indirizzi. Chi risponde a queste richieste vede quali siti visiti.",
       "mode": "Server DNS",
       "modes": {
-        "vpn": { "name": "DNS della VPN", "desc": "Il server DNS di Meridian sul server VPN, raggiunto attraverso il tunnel. Consigliato." },
+        "vpn": { "name": "DNS della VPN", "desc": "Il server DNS di Apexy VPN sul server VPN, raggiunto attraverso il tunnel. Consigliato." },
         "custom": { "name": "DNS personalizzato", "desc": "Server DNS scelti da te, raggiunti attraverso il tunnel." },
         "system": { "name": "Automatico (DNS della tua rete)", "desc": "Il DNS resta invariato. Il tuo provider può vedere i siti che visiti." }
       },
@@ -826,7 +826,7 @@
       "addServer": "Aggiungi server",
       "invalidIp": "Non è un indirizzo IP.",
       "blockLeaks": "Protezione dalle fughe DNS",
-      "blockLeaksDesc": "Durante la connessione blocca le richieste DNS verso qualsiasi server diverso da quello usato da Meridian.",
+      "blockLeaksDesc": "Durante la connessione blocca le richieste DNS verso qualsiasi server diverso da quello usato da Apexy VPN.",
       "dohNote": "Il DNS cifrato nei browser (DNS over HTTPS) sembra normale traffico web e non può essere bloccato per porta. Viaggia comunque dentro il tunnel.",
       "status": "In uso ora",
       "statusConnected": "{{servers}} attraverso il tunnel",
@@ -871,14 +871,14 @@
       "reconnect": "Riconnessione"
     },
     "autoConnect": {
-      "intro": "Lascia che Meridian si connetta da solo, in base a dove ti trovi.",
+      "intro": "Lascia che Apexy VPN si connetta da solo, in base a dove ti trovi.",
       "onAppStart": "Connetti all'avvio dell'app",
       "onSystemStart": "Connetti all'avvio del computer (prima dell'accesso)",
       "onUntrusted": "Connetti sulle reti non presenti nell'elenco delle reti attendibili",
       "onOpenWifi": "Connetti sempre sulle reti Wi-Fi aperte (senza password)",
       "reconnectOnline": "Riconnetti quando torna Internet",
       "trustedTitle": "Reti attendibili",
-      "trustedIntro": "Stabilisci come si comporta Meridian sulle reti che conosci.",
+      "trustedIntro": "Stabilisci come si comporta Apexy VPN sulle reti che conosci.",
       "trustedWarning": "«Non usare la VPN» significa che su quella rete il tuo traffico non è protetto. Non annulla mai la modalità Kill Switch «Sempre attivo».",
       "addCurrent": "Aggiungi la rete attuale",
       "addNetwork": "Aggiungi rete",
@@ -889,7 +889,7 @@
       "kinds": { "home": "Casa", "work": "Lavoro", "public": "Pubblica", "travel": "Viaggio", "other": "Altro" },
       "policy": "Su questa rete",
       "policies": { "require_vpn": "Usa sempre la VPN", "optional": "Decido io", "bypass": "Non usare la VPN" },
-      "noTrusted": { "title": "Nessuna rete attendibile", "body": "Aggiungi la rete di casa o del lavoro per decidere come si comporta Meridian." },
+      "noTrusted": { "title": "Nessuna rete attendibile", "body": "Aggiungi la rete di casa o del lavoro per decidere come si comporta Apexy VPN." },
       "wifiUnavailable": "Windows non ha consentito di leggere i nomi delle reti Wi-Fi (autorizzazione alla posizione). Le reti cablate e l'inserimento manuale funzionano.",
       "current": "Rete attuale: {{name}}"
     },
@@ -903,14 +903,14 @@
       "updates": "Aggiornamenti disponibili"
     },
     "shortcuts": {
-      "intro": "Le scorciatoie funzionano quando la finestra di Meridian è attiva; «Mostra/nascondi» funziona ovunque.",
+      "intro": "Le scorciatoie funzionano quando la finestra di Apexy VPN è attiva; «Mostra/nascondi» funziona ovunque.",
       "items": {
         "toggleConnection": "Connetti / disconnetti",
         "disconnect": "Disconnetti",
         "openServers": "Scelta del server",
         "search": "Cerca",
         "openSettings": "Apri le impostazioni",
-        "toggleWindow": "Mostra / nascondi Meridian (globale)"
+        "toggleWindow": "Mostra / nascondi Apexy VPN (globale)"
       },
       "press": "Premi una combinazione di tasti…",
       "taken": "Questa combinazione è già usata da un'altra app."
@@ -926,7 +926,7 @@
       "resetAll": "Ripristina le impostazioni VPN",
       "resetConfirm": "Riportare tutte le impostazioni del servizio VPN ai valori predefiniti? Account, profili e preferenze dell'app restano invariati.",
       "rotateKey": "Genera una nuova chiave del dispositivo",
-      "rotateKeyDesc": "Sostituisce la chiave WireGuard di questo dispositivo. Meridian registrerà la nuova chiave nel tuo account.",
+      "rotateKeyDesc": "Sostituisce la chiave WireGuard di questo dispositivo. Apexy VPN registrerà la nuova chiave nel tuo account.",
       "rotateConfirm": "Generare una nuova chiave? La VPN si riconnetterà.",
       "interface": "Interfaccia del tunnel"
     },
@@ -944,13 +944,13 @@
       "trustedDevices": "Dispositivi attendibili",
       "trustedDevicesDesc": "Dispositivi che possono connettersi con il tuo account. Rimuovi quelli che non riconosci.",
       "appLock": "Blocco dell'app (Windows Hello / password)",
-      "appLockDesc": "Richiedi Windows Hello o una password all'apertura di Meridian. Non ancora disponibile in questa build."
+      "appLockDesc": "Richiedi Windows Hello o una password all'apertura di Apexy VPN. Non ancora disponibile in questa build."
     },
     "groups": { "app": "App", "vpn": "VPN", "you": "Account e privacy", "more": "Altro" }
   },
   "privacy": {
     "title": "Privacy",
-    "intro": "Cosa raccoglie esattamente Meridian, perché, dove lo conserva e come disattivarlo. Nulla viene inviato senza una tua azione, a meno che una voce non sia indicata come attiva.",
+    "intro": "Cosa raccoglie esattamente Apexy VPN, perché, dove lo conserva e come disattivarlo. Nulla viene inviato senza una tua azione, a meno che una voce non sia indicata come attiva.",
     "state": { "on": "Attivo", "off": "Disattivo", "always": "Sempre", "never": "Mai raccolto" },
     "labels": { "what": "Cosa", "why": "Perché", "where": "Dove è conservato", "control": "Come disattivarlo" },
     "items": {
@@ -972,7 +972,7 @@
         "name": "Rapporti di diagnostica",
         "what": "Risultati dei controlli e versione del servizio. Vengono inviati solo se scegli «Invia all'assistenza» e solo dopo averli visti.",
         "why": "Perché l'assistenza veda cosa non funziona.",
-        "where": "Il sistema di assistenza di Meridian; eliminati dopo 90 giorni.",
+        "where": "Il sistema di assistenza di Apexy VPN; eliminati dopo 90 giorni.",
         "control": "Non inviarli. Altrimenti non viene inviato nulla."
       },
       "logs": {
@@ -986,7 +986,7 @@
         "name": "Dati dell'account",
         "what": "La tua email, un hash della password, il piano, i dispositivi (nome, sistema operativo, chiave pubblica) e le sessioni attive.",
         "why": "Per gestire il tuo account e dare accesso a ciascun dispositivo.",
-        "where": "Server di Meridian.",
+        "where": "Server di Apexy VPN.",
         "control": "Elimina il tuo account in Account → Profilo."
       },
       "connection": {
@@ -1095,8 +1095,8 @@
     }
   },
   "auth": {
-    "signInTitle": "Accedi a Meridian",
-    "signInSubtitle": "Accedi con il tuo account Meridian per connettere questo dispositivo.",
+    "signInTitle": "Accedi ad Apexy VPN",
+    "signInSubtitle": "Accedi con il tuo account Apexy VPN per connettere questo dispositivo.",
     "registerTitle": "Crea il tuo account",
     "registerSubtitle": "Inizia con 7 giorni gratuiti. Nessuna carta richiesta.",
     "email": "Email",
@@ -1104,7 +1104,7 @@
     "passwordHint": "Almeno 10 caratteri. Alcune parole casuali vanno benissimo.",
     "signIn": "Accedi",
     "register": "Crea account",
-    "noAccount": "Nuovo su Meridian?",
+    "noAccount": "Nuovo su Apexy VPN?",
     "haveAccount": "Hai già un account?",
     "forgot": "Password dimenticata?",
     "verifyTitle": "Controlla la tua email",
@@ -1147,7 +1147,7 @@
     "session_revoked": "Sei stato disconnesso dall'account.",
     "token_reused": "Per sicurezza questa sessione è stata chiusa. Accedi di nuovo.",
     "account_disabled": "Questo account è disattivato.",
-    "network": "Impossibile raggiungere Meridian. Controlla la connessione a Internet.",
+    "network": "Impossibile raggiungere Apexy VPN. Controlla la connessione a Internet.",
     "invalid_request": "Alcuni dati non sono validi.",
     "unknown_plan": "Questo piano non è disponibile.",
     "generic": "Qualcosa è andato storto. Riprova."
@@ -1160,7 +1160,7 @@
     "articles": {
       "getting-started": {
         "title": "Per iniziare",
-        "body": "Premi «Connetti» nella panoramica e Meridian sceglierà il server migliore (Smart Connect). Per scegliere tu il luogo, apri «Server» e seleziona un paese o una città. «Protetto» compare solo quando il tunnel è attivo e verificato."
+        "body": "Premi «Connetti» nella panoramica e Apexy VPN sceglierà il server migliore (Smart Connect). Per scegliere tu il luogo, apri «Server» e seleziona un paese o una città. «Protetto» compare solo quando il tunnel è attivo e verificato."
       },
       "kill-switch": {
         "title": "Cosa fa il Kill Switch",
@@ -1168,7 +1168,7 @@
       },
       "dns-leaks": {
         "title": "Le fughe DNS spiegate in breve",
-        "body": "Ogni visita a un sito inizia con una richiesta DNS. Se queste richieste vanno al tuo provider invece che attraverso la VPN, rivelano dove stai andando. Meridian invia le richieste nel tunnel e blocca ogni tentativo di aggirarlo."
+        "body": "Ogni visita a un sito inizia con una richiesta DNS. Se queste richieste vanno al tuo provider invece che attraverso la VPN, rivelano dove stai andando. Apexy VPN invia le richieste nel tunnel e blocca ogni tentativo di aggirarlo."
       },
       "split-tunneling": {
         "title": "Split tunneling",
@@ -1176,7 +1176,7 @@
       },
       "trusted-networks": {
         "title": "Reti attendibili e connessione automatica",
-        "body": "Aggiungi le reti che conosci (casa, lavoro) e scegli cosa deve fare Meridian su di esse. Su qualsiasi altra rete può connettersi automaticamente. Le reti Wi-Fi aperte sono sempre considerate non attendibili."
+        "body": "Aggiungi le reti che conosci (casa, lavoro) e scegli cosa deve fare Apexy VPN su di esse. Su qualsiasi altra rete può connettersi automaticamente. Le reti Wi-Fi aperte sono sempre considerate non attendibili."
       },
       "privacy": {
         "title": "Cosa registriamo (e cosa no)",
@@ -1185,15 +1185,15 @@
     },
     "faq": {
       "q1": "Perché l'app mostra «Non verificabile»?",
-      "a1": "Alcuni controlli richiedono dati che non sono disponibili, ad esempio un server esterno di verifica IPv6. Meridian lo dice apertamente invece di tirare a indovinare.",
+      "a1": "Alcuni controlli richiedono dati che non sono disponibili, ad esempio un server esterno di verifica IPv6. Apexy VPN lo dice apertamente invece di tirare a indovinare.",
       "q2": "Perché alcuni server mostrano «—» come latenza?",
       "a2": "La latenza è misurata dal tuo dispositivo. I server non ancora misurati o che non hanno risposto mostrano «—» invece di un valore stimato.",
       "q3": "OpenVPN è supportato?",
       "a3": "Non in questa build. Viene usato WireGuard; «Automatico» potrà passare a OpenVPN quando sarà aggiunto.",
       "q4": "Quanti dispositivi posso usare?",
       "a4": "Durante la prova gratuita 2 dispositivi, con i piani a pagamento 10. Gestiscili in Account → Dispositivi.",
-      "q5": "Dopo aver chiuso Meridian non ho più Internet.",
-      "a5": "Probabilmente il Kill Switch è su «Sempre attivo» oppure la VPN doveva ancora essere connessa. Apri Meridian e disconnettiti oppure cambia la modalità del Kill Switch."
+      "q5": "Dopo aver chiuso Apexy VPN non ho più Internet.",
+      "a5": "Probabilmente il Kill Switch è su «Sempre attivo» oppure la VPN doveva ancora essere connessa. Apri Apexy VPN e disconnettiti oppure cambia la modalità del Kill Switch."
     },
     "troubleshooting": {
       "intro": "Scegli cosa sta succedendo; ogni guida esegue i controlli pertinenti.",
@@ -1224,7 +1224,7 @@
   "onboarding": {
     "step": "Passo {{current}} di {{total}}",
     "welcome": {
-      "title": "Benvenuto in Meridian",
+      "title": "Benvenuto in Apexy VPN",
       "body": "Una VPN che cifra la tua connessione e nasconde il tuo indirizzo IP, e ti dice con onestà da cosa ti protegge."
     },
     "privacy": {
@@ -1244,7 +1244,7 @@
     },
     "autoConnect": {
       "title": "Connettersi automaticamente?",
-      "body": "Meridian può connettersi da solo sulle reti non attendibili, come bar e aeroporti."
+      "body": "Apexy VPN può connettersi da solo sulle reti non attendibili, come bar e aeroporti."
     },
     "account": {
       "title": "Accedi",
@@ -1263,8 +1263,8 @@
     "preferences": "Preferenze di notifica"
   },
   "tray": {
-    "show": "Mostra Meridian",
-    "quit": "Esci da Meridian"
+    "show": "Mostra Apexy VPN",
+    "quit": "Esci da Apexy VPN"
   },
   "osNotify": {
     "connected": "Protetto: connesso a {{city}}, {{country}}",

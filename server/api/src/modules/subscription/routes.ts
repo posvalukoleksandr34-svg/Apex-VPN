@@ -207,8 +207,8 @@ export function subscriptionRoutes(app: FastifyInstance): void {
 
   async function notifyChange({ userId, to }: SubscriptionChange) {
     const d = deps();
-    if (to === "active" || to === "trialing") await notify(d, userId, "subscription", "Plan active", "Your Meridian plan is active. You can connect.");
+    if (to === "active" || to === "trialing") await notify(d, userId, "subscription", "Plan active", "Your Apexy VPN plan is active. You can connect.");
     else if (to === "past_due") await notify(d, userId, "subscription", "Payment failed", "We couldn't take this period's payment. Update your payment method to keep your plan.");
-    else if (to === "canceled" || to === "expired") await notify(d, userId, "subscription", "Plan ended", "Your Meridian plan has ended. Choose a plan to connect again.");
+    else if (to === "canceled" || to === "expired") await notify(d, userId, "subscription", "Plan ended", "Your Apexy VPN plan has ended. Choose a plan to connect again.");
   }
 }

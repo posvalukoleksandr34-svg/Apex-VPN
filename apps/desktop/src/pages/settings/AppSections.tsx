@@ -7,6 +7,7 @@ import { LANGUAGES } from "@/i18n";
 import { useApp } from "@/state/store";
 import { DEFAULT_SHORTCUTS, type Language, type ShortcutId } from "@/state/types";
 import s from "./Settings.module.css";
+import { Logo } from "@/shell/Logo";
 
 export function GeneralSection() {
   const { t } = useTranslation();
@@ -234,6 +235,13 @@ export function AboutSection() {
   const wg = caps?.protocols.find((p) => p.protocol === "wireguard");
   return (
     <div className={s.card}>
+      <div className={s.aboutBrand}>
+        <Logo size={64} />
+        <div>
+          <div className={s.aboutName}>{t("app.name")}</div>
+          <div className={s.aboutVersion}>{transport().app.version}</div>
+        </div>
+      </div>
       <SettingRow label={t("settings.about.version")}>
         <span className="mono">{transport().app.version}</span>
       </SettingRow>

@@ -20,7 +20,7 @@ pub fn init(log_dir: &Path, foreground: bool) -> anyhow::Result<Guard> {
         .max_log_files(7)
         .build(log_dir)?;
     let (writer, guard) = tracing_appender::non_blocking(appender);
-    let filter = EnvFilter::try_from_env("MERIDIAN_LOG").unwrap_or_else(|_| EnvFilter::new("info,wireguard_nt=info"));
+    let filter = EnvFilter::try_from_env("APEXY_LOG").unwrap_or_else(|_| EnvFilter::new("info,wireguard_nt=info"));
     let file_layer = tracing_subscriber::fmt::layer().with_ansi(false).with_writer(Redacting(writer));
     let console = foreground.then(|| tracing_subscriber::fmt::layer().with_writer(Redacting(std::io::stderr)));
     tracing_subscriber::registry().with(filter).with(file_layer).with(console).init();

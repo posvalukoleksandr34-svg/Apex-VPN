@@ -17,21 +17,21 @@ export interface Mailer {
 export function render(t: MailTemplate): { subject: string; text: string } {
   switch (t.kind) {
     case "verify_email":
-      return { subject: "Your Meridian verification code", text: `Your verification code is ${t.code}. It expires in 15 minutes.` };
+      return { subject: "Your Apexy VPN verification code", text: `Your verification code is ${t.code}. It expires in 15 minutes.` };
     case "reset_password":
       return {
-        subject: "Reset your Meridian password",
+        subject: "Reset your Apexy VPN password",
         text: `Your password reset code is ${t.code}. It expires in 15 minutes. If you didn't ask for this, ignore this email.`,
       };
     case "registration_attempt":
       return {
-        subject: "Someone tried to create a Meridian account with your email",
+        subject: "Someone tried to create an Apexy VPN account with your email",
         text: "You already have an account. If this was you, sign in or reset your password.",
       };
     case "new_login":
-      return { subject: "New sign-in to your Meridian account", text: `New sign-in from ${t.deviceName} (${t.platform}).` };
+      return { subject: "New sign-in to your Apexy VPN account", text: `New sign-in from ${t.deviceName} (${t.platform}).` };
     case "password_changed":
-      return { subject: "Your Meridian password was changed", text: "All other sessions were signed out." };
+      return { subject: "Your Apexy VPN password was changed", text: "All other sessions were signed out." };
     case "mfa_changed":
       return {
         subject: `Two-factor authentication ${t.enabled ? "enabled" : "disabled"}`,

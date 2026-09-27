@@ -70,7 +70,7 @@ export const details: ConnectedDetails = {
   dnsServers: ["10.64.0.1"],
   dnsMode: "vpn",
   mtu: 1420,
-  interface: { name: "Meridian", index: 42, luid: null },
+  interface: { name: "Apexy VPN", index: 42, luid: null },
   cipher: { handshake: "Noise_IKpsk2_25519_ChaChaPoly_BLAKE2s", data: "ChaCha20-Poly1305", keyExchange: "Curve25519" },
   connectedAt: 1_700_000_000_000,
   lastHandshake: 1_700_000_000_000,

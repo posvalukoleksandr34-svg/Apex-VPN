@@ -181,7 +181,7 @@ mod tests {
     }
 
     fn iface() -> InterfaceInfo {
-        InterfaceInfo { name: "Meridian".into(), index: Some(42), luid: Some(7) }
+        InterfaceInfo { name: "Apexy VPN".into(), index: Some(42), luid: Some(7) }
     }
 
     fn peer() -> PeerEndpoint {
@@ -293,7 +293,7 @@ mod tests {
 
     #[test]
     fn exceptions_only_apply_while_blocking() {
-        let ex = vec![AppException { app: "C:/meridiand.exe".into(), remote: "203.0.113.5:443".parse().unwrap() }];
+        let ex = vec![AppException { app: "C:/apexyd.exe".into(), remote: "203.0.113.5:443".parse().unwrap() }];
         assert_eq!(compute(Phase::Holding, &settings(WhileConnected), &ex).exceptions, ex);
         assert!(compute(Phase::Idle, &settings(WhileConnected), &ex).exceptions.is_empty());
     }

@@ -1,4 +1,4 @@
-//! Local IPC between `meridiand` and its clients.
+//! Local IPC between `apexyd` and its clients.
 //!
 //! One JSON document per line (`vpn_types::ipc`). The transport is a named
 //! pipe on Windows and a Unix socket elsewhere, both restricted by OS

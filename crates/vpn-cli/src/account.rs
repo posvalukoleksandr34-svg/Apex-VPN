@@ -1,4 +1,4 @@
-//! `meridian login`: enrolls this device without the desktop app (headless
+//! `apexy login`: enrolls this device without the desktop app (headless
 //! machines, servers). It signs in, registers the service's public key, hands
 //! the registration to the service, and signs out again. The CLI keeps no
 //! session or password.
@@ -61,7 +61,7 @@ pub async fn login(client: &IpcClient, email: &str, password_stdin: bool, device
         .json(&json!({ "email": email, "password": password, "device": { "name": name, "platform": platform } }))
         .send()
         .await
-        .context("could not reach the Meridian API")?;
+        .context("could not reach the Apexy VPN API")?;
     let body: serde_json::Value = decode(res).await?;
     let tokens: Tokens = if body.get("mfaRequired").is_some() {
         let challenge: MfaChallenge = serde_json::from_value(body)?;
@@ -91,7 +91,7 @@ pub async fn login(client: &IpcClient, email: &str, password_stdin: bool, device
     let _ = http.post(format!("{api}/v1/auth/logout")).json(&json!({ "refreshToken": tokens.refresh_token })).send().await;
 
     println!(
-        "This device is enrolled as \"{name}\" (tunnel address {}). You can connect with `meridian connect`.",
+        "This device is enrolled as \"{name}\" (tunnel address {}). You can connect with `apexy connect`.",
         registration.ipv4_address
     );
     Ok(())

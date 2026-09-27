@@ -30,7 +30,7 @@ export async function authenticationCheck(state: AppState): Promise<CheckResult>
 /** Plain-text report for copying or attaching to a ticket (already redacted by the service). */
 export function reportText(checks: CheckResult[], state: AppState, t: (k: string) => string): string {
   const lines = [
-    `Meridian diagnostics — ${new Date().toISOString()}`,
+    `Apexy VPN diagnostics — ${new Date().toISOString()}`,
     `App ${transport().app.version} · service ${state.capabilities?.serviceVersion ?? "unavailable"} · ${state.capabilities ? `${state.capabilities.os.family} ${state.capabilities.os.version}` : ""}`,
     `Tunnel: ${state.tunnel?.state ?? "unknown"}`,
     "",

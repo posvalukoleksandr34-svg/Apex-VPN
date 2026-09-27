@@ -139,7 +139,7 @@ pub struct WireGuardEndpoint {
     #[ts(type = "string | null")]
     pub gateway_ipv6: Option<Ipv6Addr>,
     /// The resolver "VPN DNS" uses, reached through the tunnel. Absent means
-    /// the gateway (every Meridian node runs one there); third-party nodes
+    /// the gateway (every Apexy VPN node runs one there); third-party nodes
     /// without a resolver name one explicitly.
     #[serde(default)]
     #[ts(type = "string | null")]

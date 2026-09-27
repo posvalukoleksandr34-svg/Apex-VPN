@@ -1,16 +1,16 @@
-# Meridian VPN — Architecture
+# Apexy VPN — Architecture
 
-Meridian is a desktop VPN client (Windows, macOS, Linux) plus the backend that
+Apexy VPN is a desktop VPN client (Windows, macOS, Linux) plus the backend that
 issues accounts, devices and the server list. This document is the blueprint;
 every other doc drills into one box on this page.
 
-> Working name: **Meridian**. Binaries: `meridian-desktop` (UI), `meridiand`
-> (privileged service), `meridian` (CLI). Brand strings live in one place
+> Working name: **Apexy VPN**. Binaries: `apexy-desktop` (UI), `apexyd`
+> (privileged service), `apexy` (CLI). Brand strings live in one place
 > (`crates/vpn-types/src/brand.rs`, `apps/desktop/src/brand.ts`).
 
 ## 1. The one rule everything follows
 
-**The privileged service (`meridiand`) is the single source of truth for the
+**The privileged service (`apexyd`) is the single source of truth for the
 tunnel.** The UI, the tray icon and the CLI are views of the service state.
 They never infer, predict, or optimistically render a connection. "Connected"
 is only emitted by the service after the WireGuard handshake has completed
@@ -21,7 +21,7 @@ is only emitted by the service after the WireGuard handshake has completed
 ```
 ┌──────────────────────────── user session (unprivileged) ─────────────────────────────┐
 │                                                                                        │
-│  meridian-desktop (Tauri)                                  meridian (CLI)              │
+│  apexy-desktop (Tauri)                                  apexy (CLI)              │
 │  ┌──────────────────────────┐   ┌──────────────────────┐   ┌──────────────────────┐   │
 │  │ WebView: React UI        │◄─►│ Tauri core (Rust)    │   │ clap commands        │   │
 │  │  - renders state only    │ ① │  - daemon bridge     │   │  (same IPC client)   │   │
@@ -35,7 +35,7 @@ is only emitted by the service after the WireGuard handshake has completed
                               HTTPS ③ │              │ ② local IPC      │
                                       ▼              ▼ (named pipe /    ▼
                               ┌──────────────┐  ┌──────────────────────────────────────┐
-                              │ Backend API  │  │ meridiand  (SYSTEM / root)           │
+                              │ Backend API  │  │ apexyd  (SYSTEM / root)           │
                               │ (Fastify/PG) │◄─┤  TunnelStateMachine  ← single truth  │
                               └──────┬───────┘ ④│  ProtocolManager → WireGuard-NT/...  │
                                      │          │  Firewall (kill switch, leak block)  │
@@ -51,7 +51,7 @@ is only emitted by the service after the WireGuard handshake has completed
 | Link | Transport | Authentication | Carries |
 |---|---|---|---|
 | ① | Tauri IPC (in-process) | Tauri capability allow-list | commands, state events |
-| ② | Named pipe `\\.\pipe\meridian` (Win) / Unix socket `/var/run/meridian.sock` (0660, group `meridian`) | OS ACL: SYSTEM, Administrators, interactive users | JSON-lines RPC + event stream |
+| ② | Named pipe `\\.\pipe\apexy` (Win) / Unix socket `/var/run/apexy.sock` (0660, group `apexy`) | OS ACL: SYSTEM, Administrators, interactive users | JSON-lines RPC + event stream |
 | ③ | HTTPS (rustls, TLS 1.2+, cert validation, optional SPKI pin) | email+password → access JWT (15 min) + rotating refresh token in OS keychain | account, devices, billing |
 | ④ | HTTPS | none (public, **signed** data) | relay list; the service verifies the Ed25519 signature before use |
 | ⑤ | HTTPS + per-node bearer token | node token (hashed at rest) | peer set sync, health reports |
@@ -102,8 +102,8 @@ crates/
                  InstalledApps. windows/ is real; linux/ and macos/ are marked
                  integration points
   vpn-ipc/       JSON-lines protocol, framing, client + server
-  vpn-daemon/    meridiand: service host, IPC server, persistence, logging
-  vpn-cli/       meridian: CLI over vpn-ipc (same core, no second implementation)
+  vpn-daemon/    apexyd: service host, IPC server, persistence, logging
+  vpn-cli/       apexy: CLI over vpn-ipc (same core, no second implementation)
 apps/desktop/src-tauri/   Tauri core: daemon bridge, account, tray, updater
 ```
 
@@ -172,7 +172,7 @@ tunnel DNS over the tunnel interface. DNS-over-HTTPS in browsers can't be told
 apart from HTTPS, so it can't be blocked by port. The DNS page states this
 rather than claiming otherwise.
 "VPN DNS" is the node's resolver: the relay list's `dnsIpv4` if the node names
-one, otherwise its tunnel gateway (every Meridian node runs a resolver there).
+one, otherwise its tunnel gateway (every Apexy VPN node runs a resolver there).
 Third-party nodes that only route, like the WireGuard demo server used in
 development, name a public resolver, which is then reached through the tunnel
 like all other traffic.
@@ -200,7 +200,7 @@ timeouts, fall back to the next available TCP-capable protocol.
 * **Two halves.** A React UI in a WebView, and a Rust core
   (`apps/desktop/src-tauri`) that is the only part talking to the outside
   world:
-  * `service.rs` keeps one IPC connection to `meridiand`, reconnecting with
+  * `service.rs` keeps one IPC connection to `apexyd`, reconnecting with
     backoff. It forwards service events to the UI (`service://event`) and
     passes the UI's requests on, after decoding them into the typed protocol.
     Requests that manage the connection or set the device registration are
@@ -286,7 +286,7 @@ errors with one `ErrorState` component, so no error is a bare string.
 
 ## 9. Logging and telemetry
 
-* Service: `tracing` to a rotating file under `%ProgramData%\Meridian\logs`
+* Service: `tracing` to a rotating file under `%ProgramData%\Apexy VPN\logs`
   (7 files × 5 MB). The levels are error/warn/info/debug, set in Advanced. A
   redaction layer masks IPv4/IPv6 addresses and WireGuard keys unless
   diagnostic mode is on.
@@ -299,7 +299,7 @@ errors with one `ErrorState` component, so no error is a bare string.
 ## 10. Deployment
 
 * Desktop: Tauri bundles MSI/NSIS (Windows), DMG (macOS), deb/AppImage (Linux).
-  The installer registers `meridiand` as a service (Windows: `LocalSystem`,
+  The installer registers `apexyd` as a service (Windows: `LocalSystem`,
   auto-start; Linux: systemd unit; macOS: launchd daemon plus the system
   extension). Updates ship as signed Tauri update packages. The service binary
   and `wireguard.dll` are Authenticode-signed; the service verifies

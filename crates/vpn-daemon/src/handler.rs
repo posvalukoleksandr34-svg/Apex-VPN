@@ -67,7 +67,7 @@ impl Handler for IpcHandler {
             Request::ExportLogs => {
                 let caps = d.capabilities();
                 let header = format!(
-                    "Meridian connection log\nservice {} on {:?} {} ({})\nexported {} — IP addresses {}\n",
+                    "Apexy VPN connection log\nservice {} on {:?} {} ({})\nexported {} — IP addresses {}\n",
                     caps.service_version,
                     caps.os.family,
                     caps.os.version,

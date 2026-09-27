@@ -67,6 +67,6 @@ export function verifyTotp(secretBase32: string, code: string, nowMs = Date.now(
 }
 
 export function otpauthUrl(secretBase32: string, account: string): string {
-  const label = encodeURIComponent(`Meridian:${account}`);
-  return `otpauth://totp/${label}?secret=${secretBase32}&issuer=Meridian&algorithm=SHA1&digits=6&period=30`;
+  const label = encodeURIComponent(`Apexy VPN:${account}`);
+  return `otpauth://totp/${label}?secret=${secretBase32}&issuer=Apexy VPN&algorithm=SHA1&digits=6&period=30`;
 }

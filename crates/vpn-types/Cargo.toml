@@ -1,6 +1,6 @@
 [package]
 name = "vpn-types"
-description = "Wire types shared by meridiand, the desktop app and the CLI"
+description = "Wire types shared by apexyd, the desktop app and the CLI"
 version.workspace = true
 edition.workspace = true
 rust-version.workspace = true

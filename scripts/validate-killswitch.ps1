@@ -1,5 +1,5 @@
 # Kill switch under unexpected service termination: does any traffic leave
-# the device outside the tunnel when meridiand dies without cleaning up?
+# the device outside the tunnel when apexyd dies without cleaning up?
 #
 #   powershell -ExecutionPolicy Bypass -File scripts\validate-killswitch.ps1
 #
@@ -10,12 +10,12 @@
 # "always on").
 #
 # Steps: note the real exit IP → connect, note the VPN exit IP → hard-kill
-# meridiand (TerminateProcess, no cleanup) → probe for 12 s: HTTPS, DNS to a
+# apexyd (TerminateProcess, no cleanup) → probe for 12 s: HTTPS, DNS to a
 # resolver outside the tunnel, raw TCP; check the persistent WFP filters →
 # let the service come back and check it reconnects → disconnect and check
 # the internet is back. Writes dev\killswitch-report.json.
 #
-# Safety: if anything is left blocking at the end, it runs `meridiand reset-firewall`.
+# Safety: if anything is left blocking at the end, it runs `apexyd reset-firewall`.
 
 $ErrorActionPreference = 'Stop'
 $principal = [Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()
@@ -25,15 +25,15 @@ if (-not $principal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administra
 }
 
 $root = Split-Path -Parent $PSScriptRoot
-$installed = [bool](Get-Service -Name MeridianVPN -ErrorAction SilentlyContinue)
+$installed = [bool](Get-Service -Name ApexyVPN -ErrorAction SilentlyContinue)
 if ($installed) {
-    $svcPath = (Get-CimInstance Win32_Service -Filter "Name='MeridianVPN'").PathName -replace '^"([^"]+)".*$', '$1' -replace ' run-service$', ''
+    $svcPath = (Get-CimInstance Win32_Service -Filter "Name='ApexyVPN'").PathName -replace '^"([^"]+)".*$', '$1' -replace ' run-service$', ''
     $dir = Split-Path -Parent $svcPath
-    $cli = Join-Path $dir 'meridian.exe'
+    $cli = Join-Path $dir 'apexy.exe'
     $daemon = $svcPath
 } else {
-    $cli = Join-Path $root 'target\debug\meridian.exe'
-    $daemon = Join-Path $root 'target\debug\meridiand.exe'
+    $cli = Join-Path $root 'target\debug\apexy.exe'
+    $daemon = Join-Path $root 'target\debug\apexyd.exe'
 }
 $providerKey = '{6d657269-6469-616e-7766-700000000001}'
 $report = [ordered]@{ started = (Get-Date).ToString('o'); mode = $(if ($installed) { 'installed service' } else { 'development build' }); steps = @(); leaks = @(); result = 'incomplete' }
@@ -72,7 +72,7 @@ function DnsOutside {
 }
 
 function OurFilters {
-    $file = Join-Path $env:TEMP "meridian-wfp-$PID.xml"
+    $file = Join-Path $env:TEMP "apexy-wfp-$PID.xml"
     & netsh wfp show filters file=$file | Out-Null
     $count = ([regex]::Matches((Get-Content -Raw $file), [regex]::Escape($providerKey), 'IgnoreCase')).Count
     Remove-Item $file -ErrorAction SilentlyContinue
@@ -88,7 +88,7 @@ function WaitFor($seconds, [scriptblock]$cond) {
 try {
     if (-not (Test-Path $cli)) { throw "CLI not found at $cli" }
     $s = State
-    if (-not $s) { throw 'The Meridian service is not running. Start it first (scripts\dev-service.ps1 or the installed service).' }
+    if (-not $s) { throw 'The Apexy VPN service is not running. Start it first (scripts\dev-service.ps1 or the installed service).' }
     if ($s -ne 'disconnected') { & $cli disconnect | Out-Null; $null = WaitFor 15 { (State) -eq 'disconnected' } }
 
     $realIp = ExitIp
@@ -102,14 +102,14 @@ try {
     $report.vpnIp = $vpnIp
     if (-not $connected) { throw 'could not connect; nothing to test' }
 
-    $proc = Get-Process -Name meridiand -ErrorAction Stop | Select-Object -First 1
+    $proc = Get-Process -Name apexyd -ErrorAction Stop | Select-Object -First 1
     Stop-Process -Id $proc.Id -Force
     $killedAt = Get-Date
-    Step 'terminate' $true "killed meridiand (pid $($proc.Id)) without cleanup"
+    Step 'terminate' $true "killed apexyd (pid $($proc.Id)) without cleanup"
 
     Start-Sleep -Milliseconds 300
     $filters = OurFilters
-    Step 'filters survive' ($filters -gt 0) "$filters Meridian WFP filters present right after the crash"
+    Step 'filters survive' ($filters -gt 0) "$filters Apexy VPN WFP filters present right after the crash"
 
     # Probe for a fixed window (short timeouts, so the network isn't held
     # longer than needed), then let the service come back.
@@ -130,7 +130,7 @@ try {
     $leaked = @($report.leaks | Where-Object { $_.leak }).Count
     Step 'no leak while down' ($leaked -eq 0) "$leaked of $($report.leaks.Count) probes reached the internet outside the tunnel"
 
-    if (-not $installed -and -not (Get-Process -Name meridiand -ErrorAction SilentlyContinue)) {
+    if (-not $installed -and -not (Get-Process -Name apexyd -ErrorAction SilentlyContinue)) {
         Start-Process -FilePath $daemon -ArgumentList @('foreground', '--config', (Join-Path $root 'dev\service.json')) -WorkingDirectory $root
     }
     $back = WaitFor 45 { (State) -eq 'connected' }
@@ -148,7 +148,7 @@ try {
     $report.result = 'FAIL'
 } finally {
     if (-not (ExitIp)) {
-        Write-Host 'Network still blocked: clearing Meridian firewall filters.' -ForegroundColor Yellow
+        Write-Host 'Network still blocked: clearing Apexy VPN firewall filters.' -ForegroundColor Yellow
         & $daemon reset-firewall | Out-Null
         $report.resetFirewall = $true
     }

@@ -11,8 +11,8 @@ export interface AccessClaims {
   amr: string[];
 }
 
-const ISSUER = "meridian";
-const AUDIENCE = "meridian-app";
+const ISSUER = "apexy";
+const AUDIENCE = "apexy-app";
 
 export async function issueAccessToken(keys: Ed25519Keys, claims: AccessClaims, ttlSeconds: number): Promise<string> {
   return new SignJWT({ sid: claims.sid, amr: claims.amr })
@@ -54,7 +54,7 @@ export async function issueMfaToken(keys: Ed25519Keys, userId: string): Promise<
     .setProtectedHeader({ alg: "EdDSA", typ: "JWT" })
     .setSubject(userId)
     .setIssuer(ISSUER)
-    .setAudience("meridian-mfa")
+    .setAudience("apexy-mfa")
     .setIssuedAt()
     .setExpirationTime("5m")
     .sign(keys.privateKey);
@@ -64,7 +64,7 @@ export async function verifyMfaToken(keys: Ed25519Keys, token: string): Promise<
   try {
     const { payload } = await jwtVerify(token, keys.publicKey, {
       issuer: ISSUER,
-      audience: "meridian-mfa",
+      audience: "apexy-mfa",
       algorithms: ["EdDSA"],
     });
     return payload.purpose === "mfa" && typeof payload.sub === "string" ? payload.sub : null;

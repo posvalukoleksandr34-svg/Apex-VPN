@@ -91,7 +91,7 @@ async function handle<M extends Method>(method: M, params: ParamsOf<M>): Promise
         stats: null,
         firewall: { policy: engine.state.state === "connected" ? "block-all,allow-peer,allow-tunnel,dns-via-tunnel(1)" : "open", verified: true, filterCount: engine.state.state === "connected" ? 22 : 0 },
         effectiveDns: engine.state.state === "connected" ? engine.state.details.dnsServers : [],
-        routes: engine.state.state === "connected" ? [{ destination: "0.0.0.0/0", interface: "Meridian", metric: 0 }] : [],
+        routes: engine.state.state === "connected" ? [{ destination: "0.0.0.0/0", interface: "Apexy VPN", metric: 0 }] : [],
       });
     case "get_network":
       return r<"get_network">(engine.network);
@@ -200,7 +200,7 @@ export function createSimulatorTransport(): ClientTransport {
         if (path === "/v1/users/me/sessions") return [{ id: "sim-session", deviceName: "This PC (simulated)", platform: "windows", createdAt: new Date().toISOString(), lastUsedOn: new Date().toISOString().slice(0, 10), current: true }] as T;
         if (path === "/v1/notifications") return [] as T;
         if (path === "/v1/notifications/preferences") return { connected: true, disconnected: true, connectionFailed: true, killSwitch: true, newLogin: true, subscription: true, security: true, updates: true } as T;
-        if (path === "/v1/users/me/mfa/totp/setup") return { secret: "SIMULATEDSECRETNOTREAL", otpauthUrl: "otpauth://totp/Meridian:sim?secret=SIMULATEDSECRETNOTREAL" } as T;
+        if (path === "/v1/users/me/mfa/totp/setup") return { secret: "SIMULATEDSECRETNOTREAL", otpauthUrl: "otpauth://totp/Apexy VPN:sim?secret=SIMULATEDSECRETNOTREAL" } as T;
         if (path === "/v1/users/me/mfa/totp/enable") return { recoveryCodes: Array.from({ length: 10 }, (_, i) => `sim${i}-code`) } as T;
         if (path === "/v1/subscription/checkout") {
           simAccount.subscription = "active";

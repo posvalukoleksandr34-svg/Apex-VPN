@@ -197,7 +197,7 @@ function Logs() {
             onClick={async () => {
               const text = await transport().call("export_logs").catch(() => null);
               if (text === null) return;
-              const saved = await transport().app.saveTextFile(`meridian-log-${new Date().toISOString().slice(0, 10)}.txt`, text);
+              const saved = await transport().app.saveTextFile(`apexy-log-${new Date().toISOString().slice(0, 10)}.txt`, text);
               if (saved) toast({ tone: "success", title: t("diagnostics.logs.exported") });
             }}
           >

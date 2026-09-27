@@ -1,13 +1,13 @@
 {
   "openapi": "3.1.0",
   "info": {
-    "title": "Meridian API",
+    "title": "Apexy VPN API",
     "version": "1",
     "description": "Generated from server/api route definitions. See docs/BACKEND_API.md."
   },
   "servers": [
     {
-      "url": "https://api.meridianvpn.example"
+      "url": "https://api.apexyvpn.example"
     }
   ],
   "components": {

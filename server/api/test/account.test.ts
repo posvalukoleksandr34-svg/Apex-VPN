@@ -68,7 +68,7 @@ describe("support", () => {
       headers: u.auth,
       payload: { appVersion: "0.1.0", os: "windows 10.0.26200", report: { checks: [{ id: "tunnel", status: "failed" }] } },
     }));
-    const boundary = "----meridian";
+    const boundary = "----apexy";
     const part = (name: string, value: string) => `--${boundary}\r\nContent-Disposition: form-data; name="${name}"\r\n\r\n${value}\r\n`;
     const body =
       part("subject", "Can't connect on hotel Wi-Fi") +

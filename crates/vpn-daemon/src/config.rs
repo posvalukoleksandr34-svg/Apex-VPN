@@ -12,7 +12,7 @@ use serde::Deserialize;
 #[derive(Debug, Clone, Deserialize)]
 #[serde(rename_all = "camelCase", default)]
 pub struct ServiceConfig {
-    /// e.g. `https://api.meridianvpn.example`
+    /// e.g. `https://api.apexyvpn.example`
     pub api_base_url: String,
     /// Relay-list signing keys: `(key id, base64 Ed25519 public key)`.
     pub relay_keys: Vec<RelayKey>,
@@ -41,7 +41,7 @@ pub struct RelayKey {
 impl Default for ServiceConfig {
     fn default() -> Self {
         Self {
-            api_base_url: option_env!("MERIDIAN_API_URL").unwrap_or("https://api.meridianvpn.example").to_string(),
+            api_base_url: option_env!("APEXY_API_URL").unwrap_or("https://api.apexyvpn.example").to_string(),
             relay_keys: build_time_relay_keys(),
             allow_private_relays: false,
             allow_insecure_api: false,
@@ -52,9 +52,9 @@ impl Default for ServiceConfig {
     }
 }
 
-/// `MERIDIAN_RELAY_KEYS="fleet-1:BASE64,fleet-2:BASE64"` at build time.
+/// `APEXY_RELAY_KEYS="fleet-1:BASE64,fleet-2:BASE64"` at build time.
 fn build_time_relay_keys() -> Vec<RelayKey> {
-    option_env!("MERIDIAN_RELAY_KEYS")
+    option_env!("APEXY_RELAY_KEYS")
         .unwrap_or("")
         .split(',')
         .filter_map(|pair| {

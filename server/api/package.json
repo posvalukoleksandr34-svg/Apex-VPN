@@ -1,9 +1,9 @@
 {
-  "name": "@meridian/api",
+  "name": "@apexy/api",
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "description": "Meridian backend: accounts, devices, fleet, billing, support",
+  "description": "Apexy VPN backend: accounts, devices, fleet, billing, support",
   "main": "dist/index.js",
   "scripts": {
     "dev": "tsx watch src/index.ts",

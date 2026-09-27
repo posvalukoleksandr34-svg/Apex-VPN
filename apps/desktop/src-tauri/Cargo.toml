@@ -1,15 +1,15 @@
 [package]
-name = "meridian-app"
-description = "Meridian desktop app: the Rust core behind the WebView UI (service bridge, account session, OS integration)"
+name = "apexy-app"
+description = "Apexy VPN desktop app: the Rust core behind the WebView UI (service bridge, account session, OS integration)"
 version.workspace = true
 edition.workspace = true
 rust-version.workspace = true
 license.workspace = true
 publish.workspace = true
-default-run = "meridian-app"
+default-run = "apexy-app"
 
 [[bin]]
-name = "meridian-app"
+name = "apexy-app"
 path = "src/main.rs"
 
 [build-dependencies]

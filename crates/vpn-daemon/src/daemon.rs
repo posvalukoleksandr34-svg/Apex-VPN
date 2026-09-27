@@ -71,7 +71,7 @@ impl Daemon {
         let cfg = ServiceConfig::load(&opts.config_path)?;
         let (events, _) = broadcast::channel(512);
         let log = Arc::new(LogBook::new(opts.data_dir.join("logs"), events.clone()));
-        log.record(LogLevel::Info, LogCategory::Service, "service.start", format!("Meridian service {} starting", env!("CARGO_PKG_VERSION")));
+        log.record(LogLevel::Info, LogCategory::Service, "service.start", format!("Apexy VPN service {} starting", env!("CARGO_PKG_VERSION")));
 
         let platform = vpn_platform::init(InitOptions { driver_dir: cfg.driver_dir(), require_signed_driver: true })
             .map_err(|e| anyhow::anyhow!("platform init failed: {e}"))?;
@@ -695,7 +695,7 @@ fn geo_of(obs: Option<&IpObservation>) -> Option<GeoPoint> {
 
 /// Executables allowed to reach the API while the kill switch blocks.
 /// The desktop app's executable name in the installed layout.
-const DESKTOP_APP_EXE: &str = "meridian-app.exe";
+const DESKTOP_APP_EXE: &str = "apexy-app.exe";
 
 fn exceptions(cfg: &ServiceConfig, api_addrs: &[SocketAddr]) -> Vec<AppException> {
     let service_exe = std::env::current_exe().ok();
@@ -730,9 +730,9 @@ mod api_client_tests {
 
     #[test]
     fn the_installed_desktop_app_may_reach_the_api_while_blocking() {
-        let dir = std::env::temp_dir().join(format!("meridian-install-{}", std::process::id()));
+        let dir = std::env::temp_dir().join(format!("apexy-install-{}", std::process::id()));
         std::fs::create_dir_all(&dir).unwrap();
-        let service = dir.join("meridiand.exe");
+        let service = dir.join("apexyd.exe");
         assert_eq!(allowed_api_clients(Some(&service), &ServiceConfig::default()), vec![service.clone()], "no app installed next to it");
         std::fs::write(dir.join(DESKTOP_APP_EXE), b"").unwrap();
         assert_eq!(allowed_api_clients(Some(&service), &ServiceConfig::default()), vec![service.clone(), dir.join(DESKTOP_APP_EXE)]);

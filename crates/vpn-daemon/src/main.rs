@@ -1,10 +1,10 @@
-//! meridiand — the privileged Meridian VPN service.
+//! apexyd — the privileged Apexy VPN service.
 //!
 //! ```text
-//! meridiand run-service         (started by the Windows service manager)
-//! meridiand foreground          (development: run in this console, Ctrl-C to stop)
-//! meridiand install | uninstall (installer hooks; need administrator)
-//! meridiand reset-firewall      (remove every Meridian filter; recovery tool)
+//! apexyd run-service         (started by the Windows service manager)
+//! apexyd foreground          (development: run in this console, Ctrl-C to stop)
+//! apexyd install | uninstall (installer hooks; need administrator)
+//! apexyd reset-firewall      (remove every Apexy VPN filter; recovery tool)
 //! ```
 
 mod api;
@@ -29,11 +29,11 @@ use tokio::sync::mpsc;
 use vpn_core::PlatformEvent;
 
 #[derive(Parser)]
-#[command(name = "meridiand", version, about = "Meridian VPN service")]
+#[command(name = "apexyd", version, about = "Apexy VPN service")]
 struct Cli {
     #[command(subcommand)]
     command: Cmd,
-    /// Private state directory (default: %ProgramData%\Meridian).
+    /// Private state directory (default: %ProgramData%\Apexy VPN).
     #[arg(long, global = true)]
     data_dir: Option<PathBuf>,
     /// Service configuration (default: <data-dir>/service.json).
@@ -81,7 +81,7 @@ fn main() -> anyhow::Result<()> {
         #[cfg(windows)]
         Cmd::ResetFirewall => {
             vpn_platform::windows::reset_firewall().map_err(|e| anyhow::anyhow!("{e}"))?;
-            println!("All Meridian firewall rules removed.");
+            println!("All Apexy VPN firewall rules removed.");
             Ok(())
         }
         #[cfg(not(windows))]

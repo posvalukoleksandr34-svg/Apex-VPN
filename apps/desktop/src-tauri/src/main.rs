@@ -1,6 +1,6 @@
-//! Meridian desktop app. The UI is a WebView; this is its Rust core:
+//! Apexy VPN desktop app. The UI is a WebView; this is its Rust core:
 //!
-//! * `service`: the IPC connection to `meridiand` (the privileged service
+//! * `service`: the IPC connection to `apexyd` (the privileged service
 //!   that owns the tunnel, kill switch and DNS);
 //! * `account`: the account session, tokens in the OS credential store;
 //! * `desktop` / `tray`: window, tray, notifications, autostart, files.
@@ -89,5 +89,5 @@ fn main() {
             desktop::app_set_global_shortcut,
         ])
         .run(tauri::generate_context!())
-        .expect("Meridian failed to start");
+        .expect("Apexy VPN failed to start");
 }

@@ -1,6 +1,6 @@
 [package]
 name = "vpn-daemon"
-description = "meridiand: the privileged VPN service"
+description = "apexyd: the privileged VPN service"
 version.workspace = true
 edition.workspace = true
 rust-version.workspace = true
@@ -13,7 +13,7 @@ publish.workspace = true
 dev-fleet = []
 
 [[bin]]
-name = "meridiand"
+name = "apexyd"
 path = "src/main.rs"
 
 [dependencies]
