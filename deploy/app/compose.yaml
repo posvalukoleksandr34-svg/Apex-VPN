@@ -3,14 +3,13 @@
 #
 # No port is published: cloudflared connects out to Cloudflare, so the
 # server's address never appears in DNS and nothing on it answers the
-# internet (see docs/PRODUCTION.md). Run from this folder:
+# internet (see docs/PRODUCTION.md). Run it through stack.sh, which picks the
+# deployment's settings (env/production by default):
 #
-#   docker compose --env-file stack.env up -d --build
+#   bash deploy/app/stack.sh production up -d --build
 #
-# Settings: stack.env (domains, tunnel token), api.env, web.env. Copy them
-# from the *.example files; keep them 0600.
-
-name: apexy
+# Settings: env/<target>/stack.env, api.env, web.env and secrets/, made by
+# `bash env/generate.sh <target>` (docs in env/README.md).
 
 x-hardened: &hardened
   restart: unless-stopped
@@ -26,19 +25,19 @@ services:
     <<: *hardened
     image: ${APEXY_REGISTRY:-local}/apexy-api:${APEXY_VERSION:-dev}
     build: { context: ../.., dockerfile: deploy/app/Dockerfile.api }
-    env_file: api.env
+    env_file: ${APEXY_ENV_DIR:-../../env/production}/api.env
     read_only: true
     tmpfs: ["/tmp"]
     volumes:
       - uploads:/data/uploads
       # The database's CA certificate (Supabase: Project Settings → Database → SSL).
-      - ./secrets:/run/secrets:ro
+      - ${APEXY_ENV_DIR:-../../env/production}/secrets:/run/secrets:ro
 
   web:
     <<: *hardened
     image: ${APEXY_REGISTRY:-local}/apexy-web:${APEXY_VERSION:-dev}
     build: { context: ../.., dockerfile: deploy/app/Dockerfile.web }
-    env_file: web.env
+    env_file: ${APEXY_ENV_DIR:-../../env/production}/web.env
     environment:
       API_INTERNAL_URL: http://api:8787
     read_only: true
@@ -51,8 +50,8 @@ services:
     image: caddy:2.10-alpine
     cap_add: [NET_BIND_SERVICE]
     environment:
-      APP_DOMAIN: ${APP_DOMAIN:?set APP_DOMAIN in stack.env}
-      API_DOMAIN: ${API_DOMAIN:?set API_DOMAIN in stack.env}
+      APP_DOMAIN: ${APP_DOMAIN:?set APP_DOMAIN in env/<target>/stack.env}
+      API_DOMAIN: ${API_DOMAIN:?set API_DOMAIN in env/<target>/stack.env}
     volumes:
       - ./Caddyfile:/etc/caddy/Caddyfile:ro
       - caddy_data:/data
@@ -64,7 +63,7 @@ services:
     image: cloudflare/cloudflared:2025.9.1
     command: ["tunnel", "--no-autoupdate", "run"]
     environment:
-      TUNNEL_TOKEN: ${TUNNEL_TOKEN:?set TUNNEL_TOKEN in stack.env}
+      TUNNEL_TOKEN: ${TUNNEL_TOKEN:?set TUNNEL_TOKEN in env/<target>/stack.env}
     depends_on: [caddy]
 
 volumes:

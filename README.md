@@ -18,7 +18,9 @@ The product rule: **the app never shows a state, a measurement or a protection t
 | `apps/desktop` | The desktop app: React UI (`src/`) and its Tauri Rust core (`src-tauri/`). |
 | `apps/web` | The web dashboard (Next.js): sign-up, subscription and Stripe billing, devices with WireGuard configs and QR codes, server search. |
 | `server/api` | Account backend: Fastify + PostgreSQL (PGlite in development and tests). |
-| `docs/` | Architecture, product map, security, setup and operations. |
+| `env/` | Settings for every environment: templates, `generate.sh` (real files with fresh secrets) and `check.sh` (checks before going live). |
+| `deploy/` | The web stack (`deploy/app`: Docker, Caddy, Cloudflare Tunnel) and VPN nodes (`deploy/node`). |
+| `docs/` | Architecture, product map, security, setup and operations; going live: [docs/PRODUCTION.md](docs/PRODUCTION.md). |
 
 Start with [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md). The data model, access gating and no-logs guarantees are in [docs/DATABASE.md](docs/DATABASE.md). The feature map with what is real and what is an integration point is [docs/PRODUCT.md](docs/PRODUCT.md).
 

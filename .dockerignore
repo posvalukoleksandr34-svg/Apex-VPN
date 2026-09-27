@@ -12,6 +12,7 @@ crates
 docs
 dev
 deploy
+env
 apps/desktop/src
 apps/desktop/src-tauri
 **/.data

@@ -91,6 +91,9 @@ const Env = z.object({
 
 export type Config = z.infer<typeof Env>;
 
+/** Every variable the API reads (the templates in env/ must list them all). */
+export const CONFIG_KEYS: readonly string[] = Object.keys(Env.shape);
+
 export function loadConfig(env: NodeJS.ProcessEnv = process.env): Config {
   if (env === process.env && existsSync(".env.local") && env.NODE_ENV !== "production") {
     process.loadEnvFile(".env.local");

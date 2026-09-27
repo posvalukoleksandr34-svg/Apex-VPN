@@ -24,10 +24,10 @@ apps/desktop/src-tauri/binaries/
 server/api/.data/
 server/api/uploads/
 
-# Production settings and certificates of the web stack (deploy/app)
-deploy/app/*.env
-deploy/app/secrets/
-deploy/app/certs/
+# Real deployment settings, made by env/generate.sh: only templates and docs are tracked
+env/*/*.env
+env/*/secrets/
+env/*/certs/
 
 # Vendored driver archives (the unpacked, signature-checked SDK is kept)
 vendor/*.zip

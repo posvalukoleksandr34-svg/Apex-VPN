@@ -17,6 +17,9 @@ const Env = z.object({
 
 export type WebEnv = z.infer<typeof Env>;
 
+/** Every variable the dashboard reads (the templates in env/ must list them all). */
+export const WEB_ENV_KEYS: readonly string[] = Object.keys(Env.shape);
+
 let cached: WebEnv | undefined;
 
 /** Read on first use, so a build doesn't need the runtime secrets. */

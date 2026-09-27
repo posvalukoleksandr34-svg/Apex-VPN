@@ -8,7 +8,8 @@ The account API and the web dashboard on one server, reachable only through a Cl
 | `compose.yaml` | API, dashboard, Caddy and cloudflared. No published ports; read-only containers, all capabilities dropped. |
 | `Caddyfile` | Routes `APP_DOMAIN` and `API_DOMAIN`, and turns Cloudflare's client address into the only `X-Forwarded-For` the services see. |
 | `compose.direct.yaml`, `Caddyfile.direct` | Option B without a tunnel: port 443 with a Cloudflare Origin CA certificate, and connections from anywhere but Cloudflare dropped. |
-| `stack.env.example`, `api.env.example`, `web.env.example` | Settings templates. The real files (`*.env`, `secrets/`, `certs/`) are gitignored. |
+| `stack.sh` | `docker compose` with a deployment's settings from `env/<target>`: `bash deploy/app/stack.sh production up -d --build`. |
+| (settings) | In [env/](../../env/README.md): templates, `generate.sh`, `check.sh`. The real files are gitignored. |
 | `apexy-stack.service` | systemd: starts the stack at boot; `reload` after updates. |
 | `firewall.nft` | Host firewall: SSH only. |
 | `ci/smoke.sh` | The CI smoke test of the images (`.github/workflows/images.yml`). |

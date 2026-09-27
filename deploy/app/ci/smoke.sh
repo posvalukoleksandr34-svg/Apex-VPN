@@ -94,12 +94,28 @@ openssl req -x509 -newkey rsa:2048 -nodes -days 1 -subj "/CN=apexy.test" -keyout
 docker run --rm -e APP_DOMAIN=app.apexy.test -e API_DOMAIN=api.apexy.test \
   -v "$app/Caddyfile.direct:/etc/caddy/Caddyfile:ro" -v "$work/certs:/certs:ro" \
   caddy:2.10-alpine caddy validate --config /etc/caddy/Caddyfile --adapter caddyfile >/dev/null || fail "Caddyfile.direct doesn't validate"
-cp "$app/stack.env.example" "$work/stack.env"
-sed -i 's/^TUNNEL_TOKEN=$/TUNNEL_TOKEN=placeholder/' "$work/stack.env"
-for f in api web; do cp "$app/$f.env.example" "$app/$f.env"; done
-trap 'code=$?; rm -f "$app/api.env" "$app/web.env"; (exit $code); cleanup' EXIT
-docker compose -f "$app/compose.yaml" --env-file "$work/stack.env" config -q || fail "compose.yaml doesn't validate"
-docker compose -f "$app/compose.yaml" -f "$app/compose.direct.yaml" --env-file "$work/stack.env" config -q || fail "compose.direct.yaml doesn't validate"
 echo "valid"
+
+echo "== Settings: env/generate.sh, then env/check.sh with the API's own production check"
+prod="$repo/env/production"
+trap 'code=$?; rm -rf "$prod"/*.env "$prod/secrets"; (exit $code); cleanup' EXIT
+bash "$repo/env/generate.sh" production --domain apexy.test >/dev/null
+[ "$(stat -c %a "$prod/api.env")" = 600 ] || fail "generate.sh left api.env readable by others"
+grep -q '^APEXY_RELAY_KEYS=fleet-1:.\{44\}$' "$prod/desktop-build.env" || fail "generate.sh didn't fill the server list key"
+if bash "$repo/env/check.sh" production >/dev/null; then fail "check.sh passed settings that still hold placeholders"; fi
+# What an operator fills in by hand.
+sed -i 's/^TUNNEL_TOKEN=$/TUNNEL_TOKEN=placeholder/' "$prod/stack.env"
+sed -i 's/<project-ref>/abcdefgh/; s/<database-password>/secret/; s/<smtp-user>/user/; s/<smtp-password>/pass/; s/<smtp-host>/smtp.example.org/;
+  s/^STRIPE_SECRET_KEY=$/STRIPE_SECRET_KEY=rk_live_x/; s/^STRIPE_WEBHOOK_SECRET=$/STRIPE_WEBHOOK_SECRET=whsec_x/;
+  s/^STRIPE_PRICE_MONTHLY=$/STRIPE_PRICE_MONTHLY=price_m/; s/^STRIPE_PRICE_ANNUAL=$/STRIPE_PRICE_ANNUAL=price_a/' "$prod/api.env"
+echo "-----BEGIN CERTIFICATE-----" >"$prod/secrets/supabase-ca.crt"
+# The images under the names stack.env points at (local/apexy-*:dev).
+docker tag apexy/api:smoke local/apexy-api:dev
+docker tag apexy/web:smoke local/apexy-web:dev
+report="$(bash "$repo/env/check.sh" production)" || { echo "$report"; fail "check.sh refused filled-in settings"; }
+echo "$report" | grep -q "the API accepts it" || { echo "$report"; fail "the API's own configuration check didn't run"; }
+bash "$app/stack.sh" production config -q || fail "compose.yaml doesn't validate with the generated settings"
+APEXY_DIRECT=1 bash "$app/stack.sh" production config -q || fail "compose.direct.yaml doesn't validate"
+echo "generated, checked, accepted by the API, and compose resolves them"
 
 printf '\nAll smoke checks passed.\n'

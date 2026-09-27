@@ -2,7 +2,7 @@
 # and stops it cleanly. The containers restart themselves on failure.
 #
 #   systemctl enable --now apexy-stack
-#   systemctl reload apexy-stack      # after pulling new images or editing env files
+#   systemctl reload apexy-stack      # after pulling new images or editing env/production
 
 [Unit]
 Description=Apexy VPN web stack (API, dashboard, Caddy, Cloudflare Tunnel)
@@ -13,10 +13,9 @@ Wants=network-online.target
 [Service]
 Type=oneshot
 RemainAfterExit=yes
-WorkingDirectory=/opt/apexy/deploy/app
-ExecStart=/usr/bin/docker compose --env-file stack.env up -d --remove-orphans
-ExecReload=/usr/bin/docker compose --env-file stack.env up -d --remove-orphans
-ExecStop=/usr/bin/docker compose --env-file stack.env down
+ExecStart=/usr/bin/bash /opt/apexy/deploy/app/stack.sh production up -d --remove-orphans
+ExecReload=/usr/bin/bash /opt/apexy/deploy/app/stack.sh production up -d --remove-orphans
+ExecStop=/usr/bin/bash /opt/apexy/deploy/app/stack.sh production down
 TimeoutStartSec=600
 
 [Install]

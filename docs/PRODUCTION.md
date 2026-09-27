@@ -39,33 +39,53 @@ The firewall allows SSH only. Narrow it to your own addresses, or put SSH behind
 
 ## 3. Code and secrets
 
+All settings live in `env/production/` ([env/README.md](../env/README.md)). The generator makes them from the templates, with fresh secrets, on the server:
+
 ```bash
 sudo git clone https://github.com/<you>/<repo>.git /opt/apexy
-cd /opt/apexy/deploy/app
-sudo cp stack.env.example stack.env && sudo cp api.env.example api.env && sudo cp web.env.example web.env
-sudo chmod 600 stack.env api.env web.env
-openssl rand -base64 32    # run four times: ACCESS_TOKEN_SEED, RELAY_SIGNING_SEED, DATA_ENCRYPTION_KEY (api.env), WEB_SESSION_SECRET (web.env)
-sudo install -D -m 0644 ~/supabase-ca.crt secrets/supabase-ca.crt   # Supabase → Project Settings → Database → SSL
+cd /opt/apexy
+bash env/generate.sh production --domain <your-domain>
 ```
 
-Fill in the three files. The relay signing key's public half must be built into the desktop app (`APEXY_RELAY_KEYS`, see [DEPLOYMENT.md](DEPLOYMENT.md#build)). Keep a copy of every secret in a password manager: losing `DATA_ENCRYPTION_KEY` makes stored two-step secrets unreadable.
+This writes `env/production/stack.env`, `api.env`, `web.env` and `desktop-build.env` (0600, gitignored). They get:
+* your domain;
+* the three API keys and the dashboard's session secret;
+* the server list's public key for the desktop app.
+
+**What only you can fill in:**
+* `stack.env`: `TUNNEL_TOKEN` (step 4).
+* `api.env`:
+  * `DATABASE_URL`: `<project-ref>`, `<database-password>`, and the region in the host.
+  * `SMTP_URL`: the SMTP login, password and host.
+  * The Stripe values (step 6). Until then, set `BILLING_PROVIDER=manual`.
+
+The database certificate goes to `env/production/secrets/supabase-ca.crt` (Supabase → Project Settings → Database → SSL). Then check:
+
+```bash
+bash env/check.sh production
+```
+
+Keep `api.env` and `web.env` in a password manager: losing `DATA_ENCRYPTION_KEY` makes stored two-step secrets unreadable.
 
 ## 4. Cloudflare Tunnel
 
-1. **Create the tunnel.** Zero Trust → Networks → Tunnels → Create a tunnel (Cloudflared). Copy its token into `stack.env` as `TUNNEL_TOKEN`.
+1. **Create the tunnel.** Zero Trust → Networks → Tunnels → Create a tunnel (Cloudflared). Copy its token into `env/production/stack.env` as `TUNNEL_TOKEN`.
 2. **Public hostnames.** Add `app.<domain>` and `api.<domain>`, both pointing at service `HTTP` → `caddy:80`. Cloudflare creates the proxied DNS records itself.
 3. **No other DNS record points at this server.** Not in this zone, not anywhere.
 
 ## 5. Start
 
 ```bash
-cd /opt/apexy/deploy/app
-sudo docker compose --env-file stack.env up -d --build
-sudo install -m 0644 apexy-stack.service /etc/systemd/system/ && sudo systemctl enable apexy-stack
-curl https://api.<domain>/v1/health          # {"status":"ok",…}
+cd /opt/apexy
+bash env/check.sh production                                  # must end with "Ready"
+sudo bash deploy/app/stack.sh production up -d --build
+sudo install -m 0644 deploy/app/apexy-stack.service /etc/systemd/system/ && sudo systemctl enable apexy-stack
+curl https://api.<domain>/v1/health                           # {"status":"ok",…}
 ```
 
-Migrations run when the API starts. To run images built by CI instead of building here, set `APEXY_REGISTRY=ghcr.io/<owner>` and `APEXY_VERSION=v1.0.0` in `stack.env`, then run `docker compose pull && systemctl reload apexy-stack`.
+After the images are built, `bash env/check.sh production` also runs the API's own configuration check (the production rules).
+
+`deploy/app/stack.sh` is `docker compose` with the deployment's settings: `ps`, `logs -f api`, `exec …` all work through it. Migrations run when the API starts. To run images built by CI instead of building here, set `APEXY_REGISTRY=ghcr.io/<owner>` and `APEXY_VERSION=v1.0.0` in `env/production/stack.env`, then `sudo bash deploy/app/stack.sh production pull && sudo systemctl reload apexy-stack`.
 
 **The first staff account:**
 1. Register it on the dashboard.
@@ -73,14 +93,14 @@ Migrations run when the API starts. To run images built by CI instead of buildin
 3. Grant the role:
 
    ```bash
-   sudo docker compose --env-file stack.env exec api node dist/scripts/userRole.js --email you@<domain> --role admin
+   sudo bash deploy/app/stack.sh production exec api node dist/scripts/userRole.js --email you@<domain> --role admin
    ```
 
 **VPN nodes** are separate servers: [deploy/node/README.md](../deploy/node/README.md). Register each from the `api` container. It has the same options as `npm run node:add`; the container is read-only, so the token goes to `/tmp` and you copy it out:
 
 ```bash
-sudo docker compose --env-file stack.env exec api node dist/scripts/addNode.js --id de-fra-001 … --token-out /tmp/de-fra-001.token
-sudo docker compose --env-file stack.env cp api:/tmp/de-fra-001.token . && sudo docker compose --env-file stack.env exec api rm /tmp/de-fra-001.token
+sudo bash deploy/app/stack.sh production exec api node dist/scripts/addNode.js --id de-fra-001 … --token-out /tmp/de-fra-001.token
+sudo bash deploy/app/stack.sh production cp api:/tmp/de-fra-001.token . && sudo bash deploy/app/stack.sh production exec api rm /tmp/de-fra-001.token
 ```
 
 ## 6. Stripe: test first, then live
@@ -101,7 +121,7 @@ stripe listen --forward-to http://127.0.0.1:8787/v1/billing/webhooks/stripe   # 
 
 Pay with `4242 4242 4242 4242`, then try the customer portal, a cancellation, and a refund from `/admin`.
 
-**The settings, per environment** (`api.env`):
+**The settings, per environment** (`env/production/api.env`; a staging copy is made with `bash env/generate.sh staging`, which sets `STRIPE_MODE=test`):
 
 | Setting | Staging (test mode) | Production (live mode) |
 |---|---|---|
@@ -133,7 +153,7 @@ Pay with `4242 4242 4242 4242`, then try the customer portal, a cancellation, an
    * cancellation (at period end);
    * switching between the two prices.
 5. **Branding and receipts:** the statement descriptor, email receipts, and, if you need it, Stripe Tax.
-6. **Deploy.** Put the live values in `api.env` (`STRIPE_MODE=live`), then `sudo systemctl reload apexy-stack`. The API refuses to start if anything is missing or from the wrong mode.
+6. **Deploy.** Put the live values in `env/production/api.env` (`STRIPE_MODE=live`), run `bash env/check.sh production`, then `sudo systemctl reload apexy-stack`. The API refuses to start if anything is missing or from the wrong mode.
 7. **Prove it with real money:**
    * Buy the monthly plan with your own card. The dashboard shows "active" within seconds; the webhook did that.
    * Refund it from `/admin` (tick "also end the subscription"). Check Stripe shows the refund, and the account shows "Canceled".
@@ -209,7 +229,7 @@ The webhook secret can be rolled without downtime: Stripe signs with both secret
 **Update:**
 
 ```bash
-cd /opt/apexy && sudo git pull && cd deploy/app && sudo docker compose --env-file stack.env up -d --build
+cd /opt/apexy && sudo git pull && sudo bash deploy/app/stack.sh production up -d --build
 ```
 
 With CI images: set the new `APEXY_VERSION`, then `docker compose pull` and `systemctl reload apexy-stack`.
@@ -218,7 +238,7 @@ With CI images: set the new `APEXY_VERSION`, then `docker compose pull` and `sys
 * With CI images, set the previous `APEXY_VERSION` and reload. Migrations only ever add, so an older API runs on a newer schema.
 * When building locally, check out the previous tag first.
 
-**Logs:** `sudo docker compose logs -f api`. Requests are logged as method and path only. Caddy keeps no access log, and there is none of client addresses (see [DATABASE.md](DATABASE.md#no-logs)).
+**Logs:** `sudo bash deploy/app/stack.sh production logs -f api`. Requests are logged as method and path only. Caddy keeps no access log, and there is none of client addresses (see [DATABASE.md](DATABASE.md#no-logs)).
 
 **Secrets:**
 * Changing `WEB_SESSION_SECRET` signs everyone out of the dashboard.
