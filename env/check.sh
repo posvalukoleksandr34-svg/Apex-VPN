@@ -59,8 +59,8 @@ if [ -f "$api" ]; then
   mode="$(value_of "$api" STRIPE_MODE)"
   if [ -n "$key" ]; then
     case "$key" in
-      sk_live_* | rk_live_*) key_mode=live ;;
-      sk_test_* | rk_test_*) key_mode=test ;;
+      sk_live_* | rk_live_*) key_mode="live" ;;
+      sk_test_* | rk_test_*) key_mode="test" ;;
       *) key_mode="" ;;
     esac
     if [ -z "$key_mode" ]; then bad "STRIPE_SECRET_KEY isn't a secret (sk_…) or restricted (rk_…) key"
